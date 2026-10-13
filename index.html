@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shift Score · watch your pay add up</title>
 <meta name="description" content="A free hourly pay tracker that turns every shift into a game. Live earnings, a timesheet, spending and savings. Private: your data stays on your device.">
-<meta name="theme-color" content="#eef2f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#f1f2f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
@@ -21,7 +21,7 @@
 
 /* Liquid Glass: frosted, translucent layers floating over a soft color field. System (SF) type. */
 :root {
-  --bg: #eef2f6;
+  --bg: #f1f2f8;
   --glass: rgba(255, 255, 255, 0.58);
   --glass-strong: rgba(255, 255, 255, 0.74);
   --glass-edge: rgba(255, 255, 255, 0.75);
@@ -32,14 +32,14 @@
   --muted: #55555c;
   --line: rgba(60, 60, 67, 0.16);
   --fill: rgba(118, 118, 128, 0.12);
-  --accent: #248a3d;
-  --accent-soft: rgba(52, 199, 89, 0.16);
-  --tint: #0071e3;
+  --accent: #5856d6;
+  --accent-soft: rgba(88, 86, 214, 0.13);
+  --tint: #5856d6;
   --bone: rgba(118, 118, 128, 0.16);
-  --lit: #34c759;
-  --good: #248a3d;
-  --bad: #d70015;
-  --blob1: rgba(52, 199, 89, 0.45); --blob2: rgba(90, 200, 250, 0.45); --blob3: rgba(175, 130, 255, 0.30); --blob4: rgba(255, 179, 128, 0.35);
+  --lit: #8e8cf5;
+  --good: #2b7a8c;
+  --bad: #c0392b;
+  --blob1: rgba(160, 150, 255, 0.42); --blob2: rgba(130, 190, 255, 0.40); --blob3: rgba(245, 170, 205, 0.28); --blob4: rgba(255, 200, 170, 0.32);
   --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: var(--body);
@@ -49,16 +49,16 @@
   :root:not([data-theme="light"]) {
     --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
-    --accent: #30d158; --accent-soft: rgba(48, 209, 88, 0.18); --tint: #0a84ff; --bone: rgba(255, 255, 255, 0.12); --lit: #30d158; --good: #30d158; --bad: #ff453a;
-    --blob1: rgba(48, 209, 88, 0.22); --blob2: rgba(10, 132, 255, 0.24); --blob3: rgba(191, 90, 242, 0.18); --blob4: rgba(255, 159, 10, 0.12);
+    --accent: #a5a3ff; --accent-soft: rgba(125, 122, 255, 0.20); --tint: #8e8cff; --bone: rgba(255, 255, 255, 0.12); --lit: #7d7aff; --good: #6cc7d6; --bad: #ff6b6b;
+    --blob1: rgba(94, 92, 230, 0.26); --blob2: rgba(10, 132, 255, 0.18); --blob3: rgba(191, 90, 242, 0.16); --blob4: rgba(255, 140, 120, 0.08);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
-  --accent: #30d158; --accent-soft: rgba(48, 209, 88, 0.18); --tint: #0a84ff; --bone: rgba(255, 255, 255, 0.12); --lit: #30d158; --good: #30d158; --bad: #ff453a;
-  --blob1: rgba(48, 209, 88, 0.22); --blob2: rgba(10, 132, 255, 0.24); --blob3: rgba(191, 90, 242, 0.18); --blob4: rgba(255, 159, 10, 0.12);
+  --accent: #a5a3ff; --accent-soft: rgba(125, 122, 255, 0.20); --tint: #8e8cff; --bone: rgba(255, 255, 255, 0.12); --lit: #7d7aff; --good: #6cc7d6; --bad: #ff6b6b;
+  --blob1: rgba(94, 92, 230, 0.26); --blob2: rgba(10, 132, 255, 0.18); --blob3: rgba(191, 90, 242, 0.16); --blob4: rgba(255, 140, 120, 0.08);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -143,7 +143,7 @@ button:hover { filter: brightness(1.05); }
 .tablewrap { overflow-x: auto; }
 .sheet { min-width: 560px; }
 .sheet td.neg { color: var(--bad); font-weight: 500; }
-.sheet td.pos { color: var(--good); }
+.sheet td.pos { color: var(--good); font-weight: 500; }
 .sheet td, .sheet th { text-align: right; white-space: nowrap; }
 .sheet td:first-child, .sheet th:first-child { text-align: left; }
 .sheet tr.wk td { font-family: var(--body); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-top: 14px; background: transparent; }
@@ -217,30 +217,55 @@ body::before { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointe
 .money .tick { font-family: var(--rounded); }
 .rate-line { font-family: var(--body); font-size: .85rem; }
 .clockbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-.clockbtns #btnUndo { grid-column: 1 / -1; }
+.clockbtns #btnUndo, .clockbtns #btnIn { grid-column: 1 / -1; }
+#btnBreak { background: var(--accent-soft); color: var(--accent); min-height: 50px; }
+#btnBreak.onbreak { background: var(--accent); color: #fff; }
 
 button, .filebtn { font-family: var(--body); font-weight: 600; font-size: 1rem; border-radius: 999px; padding: 12px 20px; min-height: 46px;
   background: var(--fill); border: 1px solid transparent; color: var(--tint); -webkit-tap-highlight-color: transparent; transition: transform .15s, filter .15s; }
 button:active, .filebtn:active { transform: scale(0.97); }
 button:hover { filter: brightness(1.04); }
-button.primary { background: var(--tint); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(0, 113, 227, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
-#btnIn { color: #fff; background: linear-gradient(180deg, #2fbf5b, #1f8a3f); box-shadow: 0 8px 20px rgba(36, 138, 61, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4); min-height: 54px; font-size: 1.06rem; }
-#btnOut { background: rgba(215, 0, 21, 0.10); color: var(--bad); min-height: 54px; font-size: 1.06rem; }
+button.primary { background: var(--tint); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(88, 86, 214, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+#btnIn { color: #fff; background: linear-gradient(180deg, #7c7af2, #5856d6); box-shadow: 0 8px 20px rgba(88, 86, 214, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.4); min-height: 54px; font-size: 1.06rem; }
+#btnOut { background: rgba(192, 57, 43, 0.09); color: var(--bad); min-height: 54px; font-size: 1.06rem; }
 button.danger { background: rgba(215, 0, 21, 0.10); color: var(--bad); border-color: transparent; }
 button.danger.armed { background: var(--bad); color: #fff; }
 button:focus-visible, input:focus-visible, .tabbtn:focus-visible { outline: 3px solid color-mix(in srgb, var(--tint) 45%, transparent); outline-offset: 2px; }
 
 .field label, .stat .k { font-size: .8rem; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--muted); }
+select { font-family: var(--body); font-size: 1.06rem; background: var(--fill); border: 1px solid transparent; border-radius: 12px; padding: 11px 13px; color: var(--ink); width: 100%; min-width: 0; -webkit-appearance: none; appearance: none; }
 input { font-family: var(--body); font-size: 1.06rem; background: var(--fill); border: 1px solid transparent; border-radius: 12px; padding: 11px 13px; color: var(--ink); }
 input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, var(--tint) 40%, transparent); }
 .stat .v { font-family: var(--rounded); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
 
 .goalbar { height: 8px; background: var(--fill); }
-.goalbar i { background: linear-gradient(90deg, #34c759, #30b0c7); }
+.goalbar i { background: linear-gradient(90deg, #8e8cf5, #7fb2e5); }
 .goaltext { font-family: var(--body); font-size: .82rem; }
 .spine { gap: 6px; }
 .bone { width: 100%; aspect-ratio: auto; height: 34px; border-radius: 10px; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); }
 .bone::before, .bone::after { display: none; }
+.spine.style-spine .bone { width: 70%; height: auto; aspect-ratio: 1 / .78; border-radius: 40% 40% 34% 34%; position: relative; }
+.spine.style-spine .bone::before, .spine.style-spine .bone::after { display: block; content: ""; position: absolute; top: 30%; width: 28%; height: 26%; background: var(--bone); border-radius: 6px; }
+.spine.style-spine .bone::before { left: -24%; } .spine.style-spine .bone::after { right: -24%; }
+.spine.style-spine .vert.done .bone::before, .spine.style-spine .vert.done .bone::after { background: var(--lit); }
+.spine.style-coffee .bone { width: 62%; height: 34px; border-radius: 4px 4px 12px 12px; position: relative; margin-right: 16%; }
+.spine.style-coffee .bone::after { display: block; content: ""; position: absolute; right: -38%; top: 20%; width: 34%; height: 48%; border: 3px solid var(--bone); border-left: none; border-radius: 0 10px 10px 0; }
+.spine.style-coffee .vert.done .bone::after { border-color: var(--lit); }
+.spine.style-battery .bone { width: 60%; height: 36px; border-radius: 6px; position: relative; margin-top: 5px; }
+.spine.style-battery .bone::before { display: block; content: ""; position: absolute; top: -5px; left: 32%; width: 36%; height: 5px; border-radius: 2px 2px 0 0; background: var(--bone); }
+.spine.style-battery .vert.done .bone::before { background: var(--lit); }
+.spine.style-dots .bone { width: 80%; height: auto; aspect-ratio: 1; border-radius: 50%; }
+.lvlpick { margin-top: 12px; }
+.lvlpick summary { cursor: pointer; color: var(--tint); font-weight: 600; font-size: .9rem; list-style: none; }
+.lvlpick summary::-webkit-details-marker { display: none; }
+.pickrow { display: grid; gap: 8px; margin-top: 12px; }
+.picklabel { font-size: .8rem; color: var(--muted); font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { min-height: 36px; padding: 6px 14px; font-size: .88rem; color: var(--ink); }
+.chips button[aria-pressed="true"] { background: var(--tint); color: #fff; }
+.swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatches button { width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 50%; background: var(--sw); border: 3px solid transparent; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
+.swatches button[aria-pressed="true"] { border-color: var(--ink); }
 .vert .lv { font-family: var(--body); font-size: .72rem; }
 .level-name b { font-family: var(--display); font-weight: 600; }
 .next { font-family: var(--body); }
@@ -274,6 +299,66 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .addpast[open] summary::before { content: "− "; }
 .addpast form { margin-top: 12px; }
 #timeRow { margin-bottom: 10px; }
+.seg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 999px; background: var(--fill); margin-bottom: 12px; }
+.seg button { min-height: 36px; padding: 6px 0; font-size: .82rem; background: transparent; color: var(--ink); box-shadow: none; }
+.seg button[aria-pressed="true"] { background: var(--glass-strong); color: var(--ink); box-shadow: 0 2px 8px rgba(24, 39, 75, 0.12), inset 0 1px 0 var(--glass-shine); }
+.paycur { text-align: center; padding: 6px 0 14px; border-bottom: 1px solid var(--line); }
+.paycur .k { font-size: .82rem; color: var(--muted); font-weight: 500; }
+.paybig { font-family: var(--rounded); font-weight: 700; font-size: 2.4rem; letter-spacing: -0.02em; color: var(--accent); }
+.paylist { list-style: none; margin: 0; padding: 0; }
+.paylist li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.paylist li:last-child { border-bottom: none; }
+.paylist .pl { min-width: 0; }
+.paylist .pl b { display: block; font-weight: 600; font-size: .95rem; }
+.paylist .pl small { color: var(--muted); font-size: .8rem; }
+.paylist .pr { display: flex; align-items: center; gap: 10px; font-family: var(--rounded); font-weight: 600; }
+.paylist button { min-height: 34px; padding: 6px 12px; font-size: .82rem; }
+.paylist .now b::after { content: " · now"; color: var(--accent); font-weight: 600; }
+.check { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: .95rem; }
+.check input { width: 22px; height: 22px; accent-color: var(--tint); }
+#repPreview { margin-top: 14px; }
+.reportview { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: rgba(0, 0, 0, 0.35); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.reportbar { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center; max-width: 820px; margin: 0 auto 12px; padding: 6px;
+  border-radius: 999px; background: var(--glass-strong); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid var(--glass-edge); box-shadow: var(--shadow); }
+.reportbar .grow { flex: 1; }
+.reportbar button { min-height: 40px; padding: 8px 14px; font-size: .9rem; }
+.paper { max-width: 820px; margin: 0 auto; background: #fff; color: #1c1c1e; border-radius: 14px; padding: 40px 36px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; font-size: 13px; line-height: 1.45; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.paper h1 { font-size: 22px; margin: 0 0 2px; letter-spacing: -0.01em; }
+.paper .meta { color: #55555c; margin: 0 0 18px; }
+.paper .who { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 6px 18px; margin-bottom: 18px; padding: 12px 14px; background: #f5f5f7; border-radius: 10px; }
+.paper .who b { display: block; font-size: 11px; color: #55555c; font-weight: 600; }
+.paper .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
+.paper .kpi { border: 1px solid #e5e5ea; border-radius: 10px; padding: 10px 12px; }
+.paper .kpi b { display: block; font-size: 11px; color: #55555c; font-weight: 600; }
+.paper .kpi span { font-size: 18px; font-weight: 700; }
+.paper h2 { font-size: 14px; margin: 22px 0 8px; }
+.paper table { width: 100%; border-collapse: collapse; }
+.paper th { text-align: left; font-size: 11px; color: #55555c; font-weight: 600; border-bottom: 1.5px solid #1c1c1e; padding: 6px 6px; }
+.paper td { padding: 6px; border-bottom: 1px solid #e5e5ea; vertical-align: top; }
+.paper td.n, .paper th.n { text-align: right; }
+.paper tr.sub td { background: #f5f5f7; font-weight: 600; }
+.paper tr.wk td { font-weight: 700; border-bottom: 1.5px solid #1c1c1e; background: #f0effc; }
+.paper tr.tot td { font-weight: 700; font-size: 14px; border-top: 2px solid #1c1c1e; border-bottom: none; }
+.paper .calc { background: #f5f5f7; border-radius: 10px; padding: 12px 14px; }
+.paper .calc p { margin: 4px 0; }
+.paper .calc code { font-family: inherit; font-weight: 600; }
+.paper .neg { color: #d70015; }
+.paper .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
+.paper .sign div { border-top: 1px solid #1c1c1e; padding-top: 6px; color: #55555c; font-size: 11px; }
+.paper .foot { margin-top: 26px; color: #8e8e93; font-size: 10.5px; text-align: left; padding: 0; }
+.paper .empty { padding: 24px 0; color: #55555c; }
+@media (max-width: 560px) { .paper { padding: 24px 16px; font-size: 12px; } .paper .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .reportbar button { padding: 8px 10px; } }
+@media print {
+  @page { margin: 0.55in; }
+  body { background: #fff !important; padding: 0 !important; }
+  body::before, .wrap, .tabbar, .toast, .onboard, .reportbar { display: none !important; }
+  .reportview { position: static; display: block !important; background: none; padding: 0; overflow: visible; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .paper { box-shadow: none; border-radius: 0; max-width: none; margin: 0; padding: 0; }
+  .paper tr { break-inside: avoid; }
+}
 
 .tabbar { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   width: min(440px, calc(100% - 28px)); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 6px; border-radius: 999px;
@@ -308,7 +393,8 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <div class="rate-line" id="rateLine">+$0.20 every minute · +$3.00 every 15 min</div>
     <div class="clockbtns">
       <button id="btnIn" type="button">Clock In</button>
-      <button id="btnOut" type="button">Clock Out</button>
+      <button id="btnBreak" type="button" hidden>Start Break</button>
+      <button id="btnOut" type="button" hidden>Clock Out</button>
       <button id="btnUndo" type="button" hidden>Undo clock-out</button>
     </div>
   </section>
@@ -316,6 +402,19 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <h2>Level <span id="nextText">Next level in --:--</span></h2>
     <div class="spine" id="spine" aria-label="Hours completed, one block per hour"></div>
     <div class="level-name" id="levelName"></div>
+    <details class="lvlpick">
+      <summary>Customize bar</summary>
+      <div class="pickrow"><span class="picklabel">Style</span>
+        <div class="chips" id="lvlStyles" role="group" aria-label="Level bar style">
+          <button type="button" data-s="blocks">Blocks</button><button type="button" data-s="spine">Spine</button><button type="button" data-s="coffee">Coffee</button><button type="button" data-s="battery">Battery</button><button type="button" data-s="dots">Dots</button>
+        </div>
+      </div>
+      <div class="pickrow"><span class="picklabel">Fill color</span>
+        <div class="swatches" id="lvlColors" role="group" aria-label="Fill color">
+          <button type="button" data-c="#8e8cf5" style="--sw:#8e8cf5" aria-label="Lavender"></button><button type="button" data-c="#5ac8fa" style="--sw:#5ac8fa" aria-label="Sky"></button><button type="button" data-c="#5fcfb0" style="--sw:#5fcfb0" aria-label="Mint"></button><button type="button" data-c="#ff8fab" style="--sw:#ff8fab" aria-label="Rose"></button><button type="button" data-c="#f6b04d" style="--sw:#f6b04d" aria-label="Amber"></button><button type="button" data-c="#c19bff" style="--sw:#c19bff" aria-label="Lilac"></button>
+        </div>
+      </div>
+    </details>
   </section>
   <section class="panel">
     <h2>Shift stats <span id="shiftDate"></span></h2>
@@ -341,6 +440,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <div class="controls">
       <div class="field"><label for="rate">Pay per hour $</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
       <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
+      <div class="field span2"><label for="payFreq">I get paid</label><select id="payFreq">
+        <option value="weekly">Every week</option><option value="biweekly">Every 2 weeks</option><option value="semimonthly">Twice a month (1st–15th, 16th–end)</option><option value="monthly">Once a month</option><option value="daily">Every day</option>
+      </select></div>
+      <div class="field span2" id="payAnchorWrap" hidden><label for="payAnchor">A day your current pay period started</label><input id="payAnchor" type="date"></div>
     </div>
     <details class="addpast">
       <summary>Forgot to clock in? Add a shift</summary>
@@ -348,6 +451,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         <div class="field span2"><label for="pastDate">Day</label><input id="pastDate" type="date" required></div>
         <div class="field"><label for="pastIn">Start</label><input id="pastIn" type="time" step="60" required></div>
         <div class="field"><label for="pastOut">End</label><input id="pastOut" type="time" step="60" required></div>
+        <div class="field span2"><label for="pastBreak">Unpaid break (minutes)</label><input id="pastBreak" type="number" min="0" step="5" inputmode="numeric" placeholder="0"></div>
         <button class="primary span2" type="submit">Add shift</button>
       </form>
     </details>
@@ -363,6 +467,25 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <div class="btns"><button id="btnXlsx" type="button">Download spreadsheet (.xlsx)</button></div>
     <p class="note">Fills in by itself from your clock-ins and Today's spending: one row per day, weekly subtotals, and what was left after spending (red means you spent more than you earned). The download is an Excel file with working formulas, plus sheets for every clock-in, every purchase and every bank balance you entered.</p>
   </section>
+  <section class="panel" id="reportPanel">
+    <h2>Reports <span>Hours and pay, ready to print or send</span></h2>
+    <div class="seg" id="repSeg" role="group" aria-label="Report period">
+      <button type="button" data-p="day" aria-pressed="false">Day</button>
+      <button type="button" data-p="week" aria-pressed="true">Week</button>
+      <button type="button" data-p="pay" aria-pressed="false">Paycheck</button>
+      <button type="button" data-p="month" aria-pressed="false">Month</button>
+      <button type="button" data-p="custom" aria-pressed="false">Custom</button>
+    </div>
+    <div class="controls" id="repDates">
+      <div class="field span2" id="repOnWrap"><label for="repOn" id="repOnLabel">Any day in the week</label><input id="repOn" type="date"></div>
+      <div class="field" id="repFromWrap" hidden><label for="repFrom">From</label><input id="repFrom" type="date"></div>
+      <div class="field" id="repToWrap" hidden><label for="repTo">To</label><input id="repTo" type="date"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="repSpend"> Include spending</label>
+    <label class="check"><input type="checkbox" id="repSign" checked> Add signature lines</label>
+    <div class="verdict" id="repPreview"><b>This week</b><span class="amt"></span></div>
+    <div class="btns"><button class="primary" id="btnReport" type="button">Create report</button></div>
+  </section>
   <section class="panel">
     <h2>All-time totals <span id="careerSince"></span></h2>
     <div class="stats">
@@ -374,6 +497,27 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 </section>
 <section class="tab" id="tab-money" aria-label="Money" hidden>
   <header class="largetitle"><h1>Money</h1></header>
+  <section class="panel" id="payPanel">
+    <h2>Paychecks <span id="payFreqLabel">Paid every week</span></h2>
+    <div class="paycur">
+      <div class="k" id="payCurLabel">This pay period</div>
+      <div class="paybig" id="payCurNet">$0.00</div>
+      <div class="note" id="payCurSub">take-home estimate</div>
+    </div>
+    <ul class="paylist" id="payList"></ul>
+    <details class="addpast" id="stubBox">
+      <summary>Got a pay stub? Add it</summary>
+      <form class="controls" id="stubForm">
+        <div class="field span2"><label for="stubPeriod">Pay period</label><select id="stubPeriod"></select></div>
+        <div class="field"><label for="stubGross">Gross pay $</label><input id="stubGross" type="number" min="0.01" step="0.01" inputmode="decimal" required></div>
+        <div class="field"><label for="stubNet">Take-home (net) $</label><input id="stubNet" type="number" min="0.01" step="0.01" inputmode="decimal" required></div>
+        <div class="field span2"><label for="stubHours">Hours on the stub (optional)</label><input id="stubHours" type="number" min="0" step="0.01" inputmode="decimal"></div>
+        <button class="primary span2" type="submit">Save pay stub</button>
+      </form>
+      <p class="note">Your real take-home % from stubs replaces the estimate everywhere in Shift Score.</p>
+    </details>
+    <p class="note">Set how often you're paid under Shift details on the Today tab. Tap Summary for a printable paycheck summary.</p>
+  </section>
   <section class="panel">
     <h2>Today's spending <span id="spendDate"></span></h2>
     <div class="stats">
@@ -432,15 +576,22 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   <section class="panel">
     <h2>Settings <span>Private · stored on this device</span></h2>
     <div class="controls">
+      <div class="field span2"><label for="setName">Your name (shows on reports)</label><input id="setName" type="text" maxlength="60" autocomplete="name"></div>
       <div class="field span2"><label for="setJob">Job name</label><input id="setJob" type="text" maxlength="40" autocomplete="organization"></div>
-      <div class="field span2"><label for="setTH">Take-home %</label><input id="setTH" type="number" min="1" max="100" step="0.01" inputmode="decimal"></div>
+      <div class="field span2"><label for="setState">State</label><select id="setState"><option value="">Choose your state…</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select></div>
+      <div class="field span2"><label for="setFiling">Filing status</label><select id="setFiling"><option value="single">Single</option><option value="mfj">Married filing jointly</option><option value="hoh">Head of household</option></select></div>
+      <div class="field span2"><label for="setStateRate">State income tax %</label><input id="setStateRate" type="number" min="0" max="15" step="0.01" inputmode="decimal"></div>
+      <div class="field span2"><label for="setTH">Take-home % <small id="thMode">(estimated for you)</small></label><input id="setTH" type="number" min="1" max="100" step="0.01" inputmode="decimal"></div>
     </div>
     <div class="btns">
       <button id="btnBackup" type="button">Back up my data</button>
       <label class="filebtn">Restore a backup<input id="fileRestore" type="file" accept="application/json,.json" hidden></label>
       <button id="btnReset" type="button" class="danger">Erase all data</button>
     </div>
-    <p class="note">Take-home % estimates your pay after taxes: 92.35% removes only Social Security and Medicare. Lower it if federal or state income tax comes out of your checks. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
+    <div class="verdict" id="thBreak"><b>Take-home estimate</b><span class="amt"></span></div>
+    <p class="note" id="thExplain"></p>
+    <div class="btns"><button type="button" id="btnTHAuto" hidden>Go back to the automatic estimate</button></div>
+    <p class="note">Estimates only: real paychecks depend on your W-4 and local taxes. State rates are approximate for typical part-time pay; edit yours if you know it. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
   </section>
   <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
   <footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.</footer>
@@ -465,10 +616,21 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     </ul>
     <div class="field"><label for="obJob">Where do you work?</label><input id="obJob" type="text" maxlength="40" placeholder="Campus library, coffee shop…" required></div>
     <div class="field"><label for="obRate">Hourly pay $</label><input id="obRate" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.00" required></div>
+    <div class="field"><label for="obState">What state do you live in?</label><select id="obState" required><option value="">Choose your state…</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select></div>
     <div class="field"><label for="obGoal">Daily goal $ (optional)</label><input id="obGoal" type="number" min="1" step="1" inputmode="decimal" placeholder="60"></div>
     <button class="primary" type="submit">Start Tracking</button>
     <p class="note">You can change any of this later in Settings.</p>
   </form>
+</div>
+<div class="reportview" id="reportView" hidden role="dialog" aria-modal="true" aria-label="Report">
+  <div class="reportbar">
+    <button type="button" id="repClose">Done</button>
+    <span class="grow"></span>
+    <button type="button" id="repPrint" class="primary">Save PDF / Print</button>
+    <button type="button" id="repDoc">Word</button>
+    <button type="button" id="repXlsx">Excel</button>
+  </div>
+  <article class="paper" id="paper"></article>
 </div>
 <div class="toast" id="toast" role="status"></div>
 
@@ -491,7 +653,54 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   // saveLocal: browser cache only (migrations). save: a real change — stamps it and syncs to the account.
   function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
   function save() { state.updatedAt = Date.now(); saveLocal(); }
-  function TH() { return typeof state.takeHome === "number" && state.takeHome > 0 && state.takeHome <= 1 ? state.takeHome : 0.9235; }
+  // Unpaid breaks inside the current shift (ms), including a break in progress.
+  function liveBreakMs() { return (state.curBreakMs || 0) + (state.onBreak ? Math.max(0, Date.now() - state.onBreak) : 0); }
+  var STATES = {AL:{n:"Alabama",r:4.0},AK:{n:"Alaska",r:0},AZ:{n:"Arizona",r:2.5},AR:{n:"Arkansas",r:3.0},CA:{n:"California",r:2.0},CO:{n:"Colorado",r:4.4},CT:{n:"Connecticut",r:3.5},DE:{n:"Delaware",r:4.0},DC:{n:"District of Columbia",r:5.0},FL:{n:"Florida",r:0},GA:{n:"Georgia",r:5.19},HI:{n:"Hawaii",r:6.0},ID:{n:"Idaho",r:5.3},IL:{n:"Illinois",r:4.95},IN:{n:"Indiana",r:2.95},IA:{n:"Iowa",r:3.8},KS:{n:"Kansas",r:4.5},KY:{n:"Kentucky",r:3.5},LA:{n:"Louisiana",r:3.0},ME:{n:"Maine",r:5.8},MD:{n:"Maryland",r:4.75},MA:{n:"Massachusetts",r:5.0},MI:{n:"Michigan",r:4.25},MN:{n:"Minnesota",r:5.35},MS:{n:"Mississippi",r:4.0},MO:{n:"Missouri",r:3.5},MT:{n:"Montana",r:4.7},NE:{n:"Nebraska",r:3.5},NV:{n:"Nevada",r:0},NH:{n:"New Hampshire",r:0},NJ:{n:"New Jersey",r:2.0},NM:{n:"New Mexico",r:3.0},NY:{n:"New York",r:4.5},NC:{n:"North Carolina",r:3.99},ND:{n:"North Dakota",r:0},OH:{n:"Ohio",r:1.5},OK:{n:"Oklahoma",r:3.5},OR:{n:"Oregon",r:7.0},PA:{n:"Pennsylvania",r:3.07},RI:{n:"Rhode Island",r:3.75},SC:{n:"South Carolina",r:3.0},SD:{n:"South Dakota",r:0},TN:{n:"Tennessee",r:0},TX:{n:"Texas",r:0},UT:{n:"Utah",r:4.5},VT:{n:"Vermont",r:3.35},VA:{n:"Virginia",r:4.0},WA:{n:"Washington",r:0},WV:{n:"West Virginia",r:3.5},WI:{n:"Wisconsin",r:4.0},WY:{n:"Wyoming",r:0}};
+  // 2026 federal brackets and standard deductions (IRS Rev. Proc. 2025-32). Head-of-household thresholds approximate.
+  var FED = {
+    single: { std: 16100, br: [12400, 50400, 105700, 201775, 256225, 640600] },
+    mfj: { std: 32200, br: [24800, 100800, 211400, 403550, 512450, 768700] },
+    hoh: { std: 24150, br: [17700, 67450, 105700, 201750, 256200, 640600] }
+  };
+  var FED_RATES = [0.10, 0.12, 0.22, 0.24, 0.32, 0.35, 0.37];
+  function fedTax(income, filing) {
+    var f = FED[filing] || FED.single, taxable = Math.max(0, income - f.std), tax = 0, prev = 0;
+    for (var i = 0; i < FED_RATES.length; i++) {
+      var top = i < f.br.length ? f.br[i] : Infinity;
+      if (taxable > prev) tax += (Math.min(taxable, top) - prev) * FED_RATES[i];
+      prev = top;
+    }
+    return tax;
+  }
+  function annualPay() {
+    var since = Date.now() - 28 * 86400000, hrs = 0, gross = 0, first = Infinity;
+    (state.history || []).forEach(function (h) { if (h.in >= since) { hrs += h.hours; gross += h.earned; first = Math.min(first, h.in); } });
+    if (state.clockIn && !state.clockOut && state.clockIn >= since) { var lh = Math.max(0, Date.now() - state.clockIn - liveBreakMs()) / 3600000; hrs += lh; gross += lh * state.rate; first = Math.min(first, state.clockIn); }
+    // Average over the weeks actually worked (at least one week, at most four).
+    var weeks = isFinite(first) ? Math.max(1, (Date.now() - first) / (7 * 86400000)) : 1;
+    var basis = hrs >= 4 ? "your recent shifts" : "about 20 hours a week";
+    var annual = hrs >= 4 ? gross / weeks * 52 : (state.rate || 0) * 20 * 52;
+    return { annual: annual, basis: basis };
+  }
+  function taxParts() {
+    var a = annualPay(), fed = a.annual > 0 ? fedTax(a.annual, state.filing || "single") / a.annual : 0;
+    var st = typeof state.stateRate === "number" ? state.stateRate / 100 : (STATES[state.region] ? STATES[state.region].r / 100 : 0);
+    return { fica: 0.0765, fed: fed, st: st, annual: a.annual, basis: a.basis };
+  }
+  function stubRatio() {
+    var st = Object.keys(state.stubs || {}).map(function (k) { return state.stubs[k]; }).filter(function (x) { return x.gross > 0 && x.net > 0; })
+      .sort(function (a, b) { return b.from - a.from; }).slice(0, 3);
+    if (!st.length) return null;
+    var g = st.reduce(function (a, x) { return a + x.gross; }, 0), n = st.reduce(function (a, x) { return a + x.net; }, 0);
+    return { r: Math.min(1, n / g), count: st.length };
+  }
+  function TH() {
+    var sr = state.taxMode !== "custom" ? stubRatio() : null;
+    if (sr) return sr.r;
+    if (state.taxMode === "custom" && typeof state.takeHome === "number" && state.takeHome > 0 && state.takeHome <= 1) return state.takeHome;
+    var t = taxParts();
+    return Math.max(0.5, 1 - t.fica - t.fed - t.st);
+  }
 
   function todayAt(h, m) { var d = new Date(); d.setHours(h, m, 0, 0); return d.getTime(); }
   var state = load() || { rate: 12, goal: 60, clockIn: null, clockOut: null, history: [], lastShift: null, setup: false };
@@ -546,9 +755,12 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     $("clockState").textContent = !state.clockIn ? "Not on the clock" : running ? "On the clock" : "Last shift · " + day;
     $("clockHint").textContent = !state.clockIn
       ? "Tap Clock In when your shift starts. Its times will show here so you can fix them if you forget."
-      : running ? "Clocked in late? Change the start time and your pay updates."
+      : running ? (state.onBreak || state.curBreakMs ? "Breaks so far: " + Math.round(liveBreakMs() / 60000) + " min (unpaid). " : "") + "Clocked in late? Change the start time and your pay updates."
       : "Fix the start or end time of your last shift here.";
     $("rate").value = state.rate;
+    $("payFreq").value = state.payFreq || "weekly";
+    $("payAnchorWrap").hidden = (state.payFreq || "weekly") !== "biweekly";
+    if (state.payAnchor && typeof ymd === "function") $("payAnchor").value = ymd(state.payAnchor);
     $("balance").value = typeof state.balance === "number" ? state.balance.toFixed(2) : "";
     $("goal").value = state.goal;
     if (!$("pastDate").value) { var n = new Date(); $("pastDate").value = n.getFullYear() + "-" + pad(n.getMonth() + 1) + "-" + pad(n.getDate()); }
@@ -564,7 +776,8 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var running = state.clockIn && !state.clockOut;
     var end = state.clockOut || Date.now();
     // Current clock-in segment (feeds money totals) vs. the whole day's shift (feeds the scoreboard).
-    var segMs = state.clockIn ? Math.max(0, end - state.clockIn) : 0;
+    var segRec = state.clockOut ? state.history.find(function (h) { return h.in === state.clockIn; }) : null;
+    var segMs = !state.clockIn ? 0 : running ? Math.max(0, end - state.clockIn - liveBreakMs()) : segRec ? segRec.hours * 3600000 : Math.max(0, end - state.clockIn);
     var segHours = segMs / 3600000;
     var earned = segHours * state.rate;
     var dayKey = state.clockIn ? dayStart(state.clockIn) : null;
@@ -579,13 +792,18 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var frac = Math.floor((dayEarned * 10000) % 100);
     $("tick").textContent = pad(frac);
     var perMin = state.rate / 60;
-    $("rateLine").textContent = "+" + money(perMin) + " every minute · +" + money(state.rate / 4) + " every 15 min";
+    $("rateLine").textContent = state.onBreak && running ? "On break · unpaid · " + fmtDur(Date.now() - state.onBreak).replace(/^0:/, "")
+      : "+" + money(perMin) + " every minute · +" + money(state.rate / 4) + " every 15 min";
+    var bb = $("btnBreak"); bb.hidden = !running;
+    $("btnIn").hidden = !!running; $("btnOut").hidden = !running;
+    bb.classList.toggle("onbreak", !!state.onBreak);
+    bb.textContent = state.onBreak ? "End Break" : "Start Break";
 
     var staleEl = $("stale"), isStale = running && (state.clockIn < dayStart(Date.now()) || segMs > 14 * 3600000);
     staleEl.hidden = !isStale;
     if (isStale) staleEl.textContent = "Still clocked in from " + new Date(state.clockIn).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + "? Set your real clock-out time under Clock below.";
     $("status").classList.toggle("live", !!running);
-    $("statusText").textContent = running ? "On the clock" : (state.clockIn ? "Clocked out" : "Not clocked in");
+    $("statusText").textContent = running ? (state.onBreak ? "On break" : "On the clock") : (state.clockIn ? "Clocked out" : "Not clocked in");
 
     var lvl = Math.floor(hours);
     var verts = spine.children;
@@ -700,17 +918,17 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   // Timesheet: one row per day (clocking back in the same day adds to that day), newest first, grouped by week.
   function weekOf(t) { var d = new Date(t); var day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d.getTime(); }
   function daySheet() {
-    var segs = state.history.map(function (h) { return { in: h.in, out: h.out, hours: h.hours, earned: h.earned }; });
+    var segs = state.history.map(function (h) { return { in: h.in, out: h.out, hours: h.hours, earned: h.earned, brk: h.brk || 0 }; });
     if (state.clockIn && !state.clockOut) {
-      var now = Date.now(), hr = Math.max(0, now - state.clockIn) / 3600000;
-      segs.push({ in: state.clockIn, out: now, hours: hr, earned: hr * state.rate, live: true });
+      var now = Date.now(), bk = liveBreakMs(), hr = Math.max(0, now - state.clockIn - bk) / 3600000;
+      segs.push({ in: state.clockIn, out: now, hours: hr, earned: hr * state.rate, brk: bk, live: true });
     }
     var byDay = {};
-    var mk = function (k) { return byDay[k] || (byDay[k] = { day: k, in: null, out: null, hours: 0, earned: 0, parts: 0, live: false, spent: 0, buys: 0 }); };
+    var mk = function (k) { return byDay[k] || (byDay[k] = { day: k, in: null, out: null, hours: 0, earned: 0, parts: 0, live: false, spent: 0, buys: 0, brk: 0 }); };
     segs.forEach(function (h) {
       var d = mk(dayStart(h.in));
       d.in = d.in === null ? h.in : Math.min(d.in, h.in); d.out = d.out === null ? h.out : Math.max(d.out, h.out);
-      d.hours += h.hours; d.earned += h.earned; d.parts++; d.live = d.live || !!h.live;
+      d.hours += h.hours; d.earned += h.earned; d.parts++; d.live = d.live || !!h.live; d.brk += h.brk || 0;
     });
     state.expenses.forEach(function (e) { var d = mk(dayStart(e.t)); d.spent += e.amt; d.buys++; });
     var days = Object.keys(byDay).map(Number).sort(function (a, b) { return b - a; }).map(function (k) {
@@ -735,7 +953,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         body.appendChild(wr);
       }
       var tr = document.createElement("tr"); if (d.live) tr.className = "live";
-      cell(tr, new Date(d.day).toLocaleDateString([], { weekday: "short", month: "numeric", day: "numeric" }) + (d.parts > 1 ? " · " + d.parts + " parts" : ""));
+      cell(tr, new Date(d.day).toLocaleDateString([], { weekday: "short", month: "numeric", day: "numeric" }) + (d.brk >= 60000 ? " · " + Math.round(d.brk / 60000) + "m break" : "") + (d.parts > 1 ? " · " + d.parts + " parts" : ""));
       cell(tr, d.in === null ? "Off" : fmtTime(d.in)); cell(tr, d.in === null ? "" : (d.live ? "On the clock" : fmtTime(d.out)));
       cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); cell(tr, d.spent ? money(d.spent) : "—"); cell(tr, signed(d.left), leftCls(d.left));
       body.appendChild(tr);
@@ -750,6 +968,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     }
     $("histEmpty").hidden = days.length > 0;
     $("histTotal").textContent = days.length ? hrs.toFixed(2) + " hrs · " + money(tot) + " earned · " + money(sp) + " spent" : "";
+    if (typeof renderPaychecks === "function") renderPaychecks();
   }
 
   // Excel download (SheetJS builds the workbook; the platform's downloads capability saves it).
@@ -757,8 +976,11 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   function fmtSheet(ws, from, to, spec) {
     for (var r = from; r <= to; r++) Object.keys(spec).forEach(function (c) { var x = ws[c + r]; if (x && (x.t === "n" || x.f)) x.z = spec[c]; });
   }
-  function buildWorkbook() {
+  function buildWorkbook(range) {
     var X = window.XLSX, sheet = daySheet(), days = sheet.days.slice().reverse();
+    var inR = function (t) { return !range || (t >= range.from && t < range.to); };
+    days = days.filter(function (d) { return inR(d.day); });
+    sheet = { days: sheet.days, segs: sheet.segs.filter(function (x) { return inR(x.in); }) };
     var USD = "$#,##0.00;[Red]-$#,##0.00", DATE = "mm/dd/yyyy";
     // Sheet 1: one row per day, hours, pay, spending, what's left.
     var aoa = [[(state.job || "My job") + " · Daily Hours & Money"], ["Hourly rate", state.rate], ["Take-home factor", TH()], [],
@@ -790,7 +1012,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     ws2["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 13 }, { wch: 8 }, { wch: 11 }];
     // Sheet 3: every purchase logged in Today's spending.
     var sp = [["Date", "Time", "What", "Amount"]];
-    state.expenses.slice().sort(function (a, b) { return a.t - b.t; }).forEach(function (e) {
+    state.expenses.filter(function (e) { return inR(e.t); }).sort(function (a, b) { return a.t - b.t; }).forEach(function (e) {
       sp.push([xlDate(dayStart(e.t)), fmtTime(e.t), e.what || "Spending", e.amt]);
     });
     sp.push([]); sp.push(["Total", "", "", { f: "SUM(D2:D" + Math.max(2, sp.length - 1) + ")" }]);
@@ -834,8 +1056,11 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var t = out.getTime();
     if (t <= state.clockIn) { toast("Clock-out has to be after clock-in"); syncInputs(); return; }
     if (t > Date.now()) { toast("Clock-out can't be in the future"); syncInputs(); return; }
-    var hrs = (t - state.clockIn) / 3600000;
-    var shift = { in: state.clockIn, out: t, hours: hrs, earned: hrs * state.rate };
+    var prevRec = state.history.find(function (h) { return h.in === state.clockIn; });
+    var brk = prevRec ? (prevRec.brk || 0) : liveBreakMs();
+    if (!prevRec) { state.onBreak = null; state.curBreakMs = 0; }
+    var hrs = Math.max(0, t - state.clockIn - brk) / 3600000;
+    var shift = { in: state.clockIn, out: t, hours: hrs, earned: hrs * state.rate, brk: brk };
     var i = state.history.findIndex(function (h) { return h.in === state.clockIn; });
     if (i >= 0) state.history[i] = shift; else state.history.push(shift);
     state.clockOut = t; state.lastShift = shift; save();
@@ -854,8 +1079,8 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     state.clockIn = t;
     var i = state.history.findIndex(function (h) { return h.in === old; });
     if (i >= 0) {
-      var o = state.history[i].out, hrs = (o - t) / 3600000, r = state.history[i].hours ? state.history[i].earned / state.history[i].hours : state.rate;
-      state.history[i] = { in: t, out: o, hours: hrs, earned: hrs * r };
+      var o = state.history[i].out, b = state.history[i].brk || 0, hrs = Math.max(0, o - t - b) / 3600000, r = state.history[i].hours ? state.history[i].earned / state.history[i].hours : state.rate;
+      state.history[i] = { in: t, out: o, hours: hrs, earned: hrs * r, brk: b };
       if (state.lastShift && state.lastShift.in === old) state.lastShift = state.history[i];
     }
     save(); lastLevel = -1; lastBadge = -1; render(); renderHistory();
@@ -870,10 +1095,12 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     if (end > Date.now()) { toast("That shift hasn't ended yet. Use Clock In instead."); return; }
     var clash = state.history.some(function (h) { return start < h.out && end > h.in; }) || (state.clockIn && !state.clockOut && end > state.clockIn && start < Date.now());
     if (clash) { toast("That overlaps a shift you already have"); return; }
-    var hrs = (end - start) / 3600000;
-    state.history.push({ in: start, out: end, hours: hrs, earned: hrs * state.rate });
+    var brk = Math.max(0, parseFloat($("pastBreak").value) || 0) * 60000;
+    if (brk >= end - start) { toast("The break is longer than the shift"); return; }
+    var hrs = (end - start - brk) / 3600000;
+    state.history.push({ in: start, out: end, hours: hrs, earned: hrs * state.rate, brk: brk });
     state.history.sort(function (x, y) { return x.in - y.in; });
-    save(); render(); renderHistory(); $("pastIn").value = ""; $("pastOut").value = "";
+    save(); render(); renderHistory(); $("pastIn").value = ""; $("pastOut").value = ""; $("pastBreak").value = "";
     toast("Added " + hrs.toFixed(2) + " hrs · " + money(hrs * state.rate));
   });
   $("rate").addEventListener("input", function () { var r = parseFloat(this.value); if (r >= 0) { state.rate = r; save(); render(); } });
@@ -938,7 +1165,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 
   $("btnIn").addEventListener("click", function () {
     var now = Date.now(), earlier = state.history.filter(function (h) { return dayStart(h.in) === dayStart(now); });
-    state.clockIn = now; state.clockOut = null; state.lastShift = null; save();
+    state.clockIn = now; state.clockOut = null; state.lastShift = null; state.onBreak = null; state.curBreakMs = 0; save();
     lastLevel = -1; lastBadge = -1; syncInputs(); $("btnUndo").hidden = true; render(); renderHistory();
     if (earlier.length) {
       var soFar = earlier.reduce(function (a, h) { return a + h.earned; }, 0);
@@ -948,8 +1175,9 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("btnOut").addEventListener("click", function () {
     if (!state.clockIn || state.clockOut) { toast("You're not on the clock"); return; }
     state.clockOut = Date.now();
-    var hrs = (state.clockOut - state.clockIn) / 3600000;
-    var shift = { in: state.clockIn, out: state.clockOut, hours: hrs, earned: hrs * state.rate };
+    var brk = liveBreakMs(); state.onBreak = null; state.curBreakMs = 0;
+    var hrs = Math.max(0, state.clockOut - state.clockIn - brk) / 3600000;
+    var shift = { in: state.clockIn, out: state.clockOut, hours: hrs, earned: hrs * state.rate, brk: brk };
     state.history.push(shift); state.lastShift = shift; save();
     $("btnUndo").hidden = false; syncInputs(); render(); renderHistory();
     toast("Shift saved · " + hrs.toFixed(2) + " hrs · " + money(shift.earned));
@@ -957,8 +1185,21 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("btnUndo").addEventListener("click", function () {
     if (!state.lastShift) return;
     state.history = state.history.filter(function (h) { return !(h.in === state.lastShift.in && h.out === state.lastShift.out); });
+    state.curBreakMs = state.lastShift.brk || 0; state.onBreak = null;
     state.clockOut = null; state.lastShift = null; save();
     this.hidden = true; syncInputs(); render(); renderHistory(); toast("Back on the clock");
+  });
+
+  $("btnBreak").addEventListener("click", function () {
+    if (!state.clockIn || state.clockOut) return;
+    if (state.onBreak) {
+      var took = Date.now() - state.onBreak;
+      state.curBreakMs = (state.curBreakMs || 0) + took; state.onBreak = null; save(); render(); renderHistory();
+      toast("Break over · " + Math.max(1, Math.round(took / 60000)) + " min unpaid. Back to earning.");
+    } else {
+      state.onBreak = Date.now(); save(); render();
+      toast("Enjoy your break. Pay is paused until you tap End Break.");
+    }
   });
 
   function renderAll() {
@@ -972,29 +1213,56 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 
   // ---- First-run setup, settings, backup, install ----
   function normalize() {
+    if (state.taxMode === undefined) state.taxMode = typeof state.takeHome === "number" && Math.abs(state.takeHome - 0.9235) > 0.0001 ? "custom" : "auto";
     if (typeof state.rate !== "number") state.rate = 12;
     if (typeof state.goal !== "number") state.goal = 60;
     ["history", "expenses", "deposits", "balanceLog"].forEach(function (k) { if (!Array.isArray(state[k])) state[k] = []; });
   }
   function syncSettings() {
+    if (typeof applyLevelLook === "function") applyLevelLook();
     $("jobName").textContent = state.job || "My job";
     document.title = "Shift Score · " + (state.job || "watch your pay add up");
     if (document.activeElement !== $("setJob")) $("setJob").value = state.job || "";
+    if (document.activeElement !== $("setName")) $("setName").value = state.name || "";
     if (document.activeElement !== $("setTH")) $("setTH").value = (TH() * 100).toFixed(2).replace(/\.?0+$/, "");
+    $("setState").value = state.region || "";
+    $("setFiling").value = state.filing || "single";
+    var t = taxParts(), pctx = function (x) { return (x * 100).toFixed(2).replace(/\.?0+$/, "") + "%"; };
+    if (document.activeElement !== $("setStateRate")) $("setStateRate").value = (t.st * 100).toFixed(2).replace(/\.?0+$/, "");
+    var custom = state.taxMode === "custom";
+    $("thMode").textContent = custom ? "(your own number)" : "(estimated for you)";
+    $("btnTHAuto").hidden = !custom;
+    $("thBreak").querySelector(".amt").textContent = pctx(TH()) + " of gross";
+    var stName = STATES[state.region] ? STATES[state.region].n : "your state";
+    var srx = stubRatio();
+    $("thExplain").textContent = custom ? "Using the take-home % you entered."
+      : srx ? "Using your real pay stubs (last " + srx.count + "): you keep " + pctx(srx.r) + " of gross. Add new stubs on the Money tab to keep it current."
+      : "Social Security and Medicare " + pctx(t.fica) + " · Federal income tax " + pctx(t.fed) + " · " + stName + " " + pctx(t.st)
+        + ". Based on about " + money(t.annual).replace(/\.\d\d$/, "") + " a year (" + t.basis + ")" + (t.fed === 0 ? ", which is under the federal standard deduction, so no federal income tax." : ".");
   }
   $("obForm").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var job = $("obJob").value.trim(), rate = parseFloat($("obRate").value), goal = parseFloat($("obGoal").value);
     if (!(rate > 0)) { toast("Enter your hourly pay"); return; }
     state.job = job || "My job"; state.rate = rate; if (goal > 0) state.goal = goal; else state.goal = Math.round(rate * 5);
+    state.region = $("obState").value || state.region || ""; state.filing = state.filing || "single"; state.taxMode = "auto";
     state.setup = true; save(); $("onboard").hidden = true; syncInputs(); syncSettings(); render();
     toast("You're set. Tap Clock in now when your shift starts.");
   });
   $("setJob").addEventListener("input", function () { state.job = this.value.trim(); save(); syncSettings(); });
+  $("setName").addEventListener("input", function () { state.name = this.value.trim(); save(); });
   $("setTH").addEventListener("change", function () {
     var v = parseFloat(this.value);
     if (!(v > 0 && v <= 100)) { toast("Use a number from 1 to 100"); syncSettings(); return; }
-    state.takeHome = Math.round(v * 100) / 10000; save(); syncSettings(); renderAll();
+    state.takeHome = Math.round(v * 100) / 10000; state.taxMode = "custom"; save(); syncSettings(); renderAll();
+  });
+  $("btnTHAuto").addEventListener("click", function () { state.taxMode = "auto"; save(); syncSettings(); renderAll(); toast("Back to the automatic estimate"); });
+  $("setState").addEventListener("change", function () { state.region = this.value; delete state.stateRate; state.taxMode = "auto"; save(); syncSettings(); renderAll(); });
+  $("setFiling").addEventListener("change", function () { state.filing = this.value; save(); syncSettings(); renderAll(); });
+  $("setStateRate").addEventListener("change", function () {
+    var v = parseFloat(this.value);
+    if (!(v >= 0 && v <= 15)) { toast("Use a number from 0 to 15"); syncSettings(); return; }
+    state.stateRate = v; state.taxMode = "auto"; save(); syncSettings(); renderAll();
   });
   $("btnBackup").addEventListener("click", function () {
     saveFile("shift-score-backup-" + stamp() + ".json", JSON.stringify({ app: "shift-score", v: 1, exported: new Date().toISOString(), state: state }, null, 2), "application/json");
@@ -1044,6 +1312,217 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 
+
+  // ---- Reports: day / week / month / custom, printable, Word and Excel ----
+  var repPeriod = "week";
+  function ymd(t) { var d = new Date(t); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function fromYmd(v) { var p = (v || "").split("-"); return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]).getTime() : NaN; }
+  function addDays(t, n) { var d = new Date(t); d.setDate(d.getDate() + n); return d.getTime(); }
+  function esc(x) { return String(x == null ? "" : x).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function fmtDay(t, opts) { return new Date(t).toLocaleDateString([], opts || { weekday: "short", month: "short", day: "numeric" }); }
+  function hm(h) { var m = Math.round(h * 60); return Math.floor(m / 60) + " h " + pad(m % 60) + " min"; }
+  function reportRange() {
+    var on = fromYmd($("repOn").value); if (isNaN(on)) on = dayStart(Date.now());
+    if (repPeriod === "day") return { from: on, to: addDays(on, 1), label: fmtDay(on, { weekday: "long", month: "long", day: "numeric", year: "numeric" }), kind: "Daily" };
+    if (repPeriod === "pay") { var pp = payPeriod(on); return { from: pp.from, to: pp.to, label: pp.label, kind: "Paycheck" }; }
+    if (repPeriod === "week") { var w = weekOf(on); return { from: w, to: addDays(w, 7), label: fmtDay(w, { month: "short", day: "numeric" }) + " – " + fmtDay(addDays(w, 6), { month: "short", day: "numeric", year: "numeric" }), kind: "Weekly" }; }
+    if (repPeriod === "month") { var d = new Date(on); var m0 = new Date(d.getFullYear(), d.getMonth(), 1).getTime(), m1 = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime();
+      return { from: m0, to: m1, label: new Date(m0).toLocaleDateString([], { month: "long", year: "numeric" }), kind: "Monthly" }; }
+    var a = fromYmd($("repFrom").value), b = fromYmd($("repTo").value);
+    if (isNaN(a)) a = weekOf(Date.now()); if (isNaN(b)) b = dayStart(Date.now());
+    if (b < a) { var t = a; a = b; b = t; }
+    return { from: a, to: addDays(b, 1), label: fmtDay(a, { month: "short", day: "numeric", year: "numeric" }) + " – " + fmtDay(b, { month: "short", day: "numeric", year: "numeric" }), kind: "Custom" };
+  }
+  function reportData(r) {
+    var segs = daySheet().segs.filter(function (x) { return x.in >= r.from && x.in < r.to; }).sort(function (a, b) { return a.in - b.in; });
+    var exp = state.expenses.filter(function (e) { return e.t >= r.from && e.t < r.to; }).sort(function (a, b) { return a.t - b.t; });
+    var hours = segs.reduce(function (a, x) { return a + x.hours; }, 0), gross = segs.reduce(function (a, x) { return a + x.earned; }, 0);
+    var days = {}; segs.forEach(function (x) { days[dayStart(x.in)] = 1; });
+    var spent = exp.reduce(function (a, e) { return a + e.amt; }, 0);
+    return { segs: segs, exp: exp, hours: hours, gross: gross, net: gross * TH(), spent: spent, dayCount: Object.keys(days).length };
+  }
+  function syncReportControls() {
+    Array.prototype.forEach.call(document.querySelectorAll("#repSeg button"), function (b) { b.setAttribute("aria-pressed", b.dataset.p === repPeriod ? "true" : "false"); });
+    var custom = repPeriod === "custom";
+    $("repOnWrap").hidden = custom; $("repFromWrap").hidden = !custom; $("repToWrap").hidden = !custom;
+    $("repOnLabel").textContent = { day: "Day", week: "Any day in the week", month: "Any day in the month", pay: "Any day in the pay period" }[repPeriod] || "Day";
+    if (!$("repOn").value) $("repOn").value = ymd(Date.now());
+    if (!$("repFrom").value) $("repFrom").value = ymd(weekOf(Date.now()));
+    if (!$("repTo").value) $("repTo").value = ymd(Date.now());
+    var r = reportRange(), d = reportData(r);
+    $("repPreview").querySelector("b").textContent = r.label;
+    $("repPreview").querySelector(".amt").textContent = d.hours.toFixed(2) + " hrs · " + money(d.gross);
+  }
+  function buildReport(rOverride) {
+    var r = rOverride || reportRange(), d = reportData(r), withSpend = $("repSpend").checked, rates = {};
+    d.segs.forEach(function (x) { rates[(x.hours ? x.earned / x.hours : state.rate).toFixed(2)] = 1; });
+    var rateKeys = Object.keys(rates), oneRate = rateKeys.length <= 1, rateTxt = oneRate ? money(+(rateKeys[0] || state.rate)) + "/hr" : "your saved rates";
+    var h = "";
+    h += "<h1>" + esc(r.kind === "Paycheck" ? "Paycheck summary" : r.kind + " timesheet") + "</h1><p class=\"meta\">" + esc(r.label) + "</p>";
+    h += "<div class=\"who\"><div><b>Name</b>" + esc(state.name || "—") + "</div><div><b>Workplace</b>" + esc(state.job || "—") + "</div><div><b>Pay rate</b>" + esc(rateTxt) + "</div><div><b>Prepared</b>" + esc(fmtDay(Date.now(), { month: "short", day: "numeric", year: "numeric" })) + "</div></div>";
+    h += "<div class=\"kpis\"><div class=\"kpi\"><b>Total hours</b><span>" + d.hours.toFixed(2) + "</span></div><div class=\"kpi\"><b>Days worked</b><span>" + d.dayCount + "</span></div>"
+      + "<div class=\"kpi\"><b>Gross pay</b><span>" + money(d.gross) + "</span></div><div class=\"kpi\"><b>Take-home est.</b><span>" + money(d.net) + "</span></div></div>";
+    h += "<h2>Shifts</h2>";
+    if (!d.segs.length) h += "<p class=\"empty\">No shifts in this period.</p>";
+    else {
+      h += "<table><thead><tr><th>Date</th><th>Clock in</th><th>Clock out</th><th class=\"n\">Break</th><th class=\"n\">Hours</th><th class=\"n\">Rate</th><th class=\"n\">Gross</th></tr></thead><tbody>";
+      var byWeek = repPeriod === "month" || repPeriod === "custom", curDay = null, curWeek = null, dayH = 0, dayG = 0, dayN = 0, wkH = 0, wkG = 0;
+      var flushDay = function () { if (dayN > 1) h += "<tr class=\"sub\"><td colspan=\"4\">Day total</td><td class=\"n\">" + dayH.toFixed(2) + "</td><td></td><td class=\"n\">" + money(dayG) + "</td></tr>"; dayH = dayG = dayN = 0; };
+      var flushWeek = function () { if (byWeek && curWeek !== null) h += "<tr class=\"wk\"><td colspan=\"4\">Week of " + esc(fmtDay(curWeek, { month: "short", day: "numeric" })) + "</td><td class=\"n\">" + wkH.toFixed(2) + "</td><td></td><td class=\"n\">" + money(wkG) + "</td></tr>"; wkH = wkG = 0; };
+      d.segs.forEach(function (x) {
+        var dk = dayStart(x.in), wk = weekOf(x.in);
+        if (dk !== curDay) { flushDay(); if (wk !== curWeek) { flushWeek(); curWeek = wk; } curDay = dk; }
+        var rate = x.hours ? x.earned / x.hours : state.rate;
+        h += "<tr><td>" + (dayN === 0 ? esc(fmtDay(x.in)) : "") + "</td><td>" + esc(fmtTime(x.in)) + "</td><td>" + (x.live ? "In progress" : esc(fmtTime(x.out))) + "</td><td class=\"n\">" + (x.brk >= 60000 ? Math.round(x.brk / 60000) + " min" : "—") + "</td><td class=\"n\">" + x.hours.toFixed(2) + "</td><td class=\"n\">" + money(rate) + "</td><td class=\"n\">" + money(x.earned) + "</td></tr>";
+        dayH += x.hours; dayG += x.earned; dayN++; wkH += x.hours; wkG += x.earned;
+      });
+      flushDay(); flushWeek();
+      h += "<tr class=\"tot\"><td colspan=\"4\">Total</td><td class=\"n\">" + d.hours.toFixed(2) + "</td><td></td><td class=\"n\">" + money(d.gross) + "</td></tr></tbody></table>";
+    }
+    h += "<h2>How it's calculated</h2><div class=\"calc\">";
+    h += "<p>Total time worked: <code>" + d.hours.toFixed(2) + " hours</code> (" + hm(d.hours) + "), the sum of every clock-in to clock-out above" + (d.segs.some(function (x) { return x.brk >= 60000; }) ? ", minus unpaid breaks" : "") + ".</p>";
+    h += oneRate ? "<p>Gross pay: <code>" + d.hours.toFixed(2) + " h × " + money(+(rateKeys[0] || state.rate)) + "/hr = " + money(d.gross) + "</code></p>"
+                 : "<p>Gross pay: each shift's hours × the rate saved for it, added up = <code>" + money(d.gross) + "</code></p>";
+    h += "<p>Estimated take-home: <code>" + money(d.gross) + " × " + (TH() * 100).toFixed(2).replace(/\.?0+$/, "") + "% = " + money(d.net) + "</code> (an estimate; actual withholding depends on your paycheck).</p>";
+    var stubR = (state.stubs || {})[r.from];
+    if (stubR && r.kind === "Paycheck") h += "<p>From your pay stub: gross <code>" + money(stubR.gross) + "</code> · take-home <code>" + money(stubR.net) + "</code> (you kept " + (stubR.net / stubR.gross * 100).toFixed(1) + "%)" + (Math.abs(stubR.gross - d.gross) >= 0.01 ? " · difference from clocked pay: <code>" + signed(stubR.gross - d.gross) + "</code>" : "") + ".</p>";
+    if (withSpend) h += "<p>Spending logged: <code>" + money(d.spent) + "</code> · Left over after spending: <code" + (d.net - d.spent < 0 ? " class=\"neg\"" : "") + ">" + signed(d.net - d.spent) + "</code></p>";
+    h += "</div>";
+    if (withSpend) {
+      h += "<h2>Spending</h2>";
+      if (!d.exp.length) h += "<p class=\"empty\">No spending logged in this period.</p>";
+      else {
+        h += "<table><thead><tr><th>Date</th><th>Time</th><th>What for</th><th class=\"n\">Amount</th></tr></thead><tbody>";
+        d.exp.forEach(function (e) { h += "<tr><td>" + esc(fmtDay(e.t)) + "</td><td>" + esc(fmtTime(e.t)) + "</td><td>" + esc(e.what || "Spending") + "</td><td class=\"n\">" + money(e.amt) + "</td></tr>"; });
+        h += "<tr class=\"tot\"><td colspan=\"3\">Total spent</td><td class=\"n\">" + money(d.spent) + "</td></tr></tbody></table>";
+      }
+    }
+    if ($("repSign").checked) h += "<div class=\"sign\"><div>Employee signature · Date</div><div>Supervisor signature · Date</div></div>";
+    h += "<p class=\"foot\">Made with Shift Score. Times come from clock-ins recorded on this device.</p>";
+    $("paper").innerHTML = h;
+    return r;
+  }
+  var lastReport = null;
+  $("repSeg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; repPeriod = b.dataset.p; syncReportControls(); });
+  ["repOn", "repFrom", "repTo"].forEach(function (id) { $(id).addEventListener("change", syncReportControls); });
+  $("btnReport").addEventListener("click", function () { lastReport = buildReport(); $("reportView").hidden = false; $("reportView").scrollTop = 0; });
+  $("repClose").addEventListener("click", function () { $("reportView").hidden = true; });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("reportView").hidden) $("reportView").hidden = true; });
+  $("repPrint").addEventListener("click", function () { window.print(); });
+  function reportFileName(ext) {
+    var r = lastReport || reportRange();
+    return "Shift-Score-" + r.kind + "-" + ymd(r.from) + (r.to - r.from > 86400000 ? "-to-" + ymd(addDays(r.to, -1)) : "") + "." + ext;
+  }
+  $("repDoc").addEventListener("click", function () {
+    var css = Array.prototype.map.call(document.querySelectorAll("style"), function (x) { return x.textContent; }).join("\n").match(/\.paper[^{]*\{[^}]*\}/g) || [];
+    var html = "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns=\"http://www.w3.org/TR/REC-html40\"><head><meta charset=\"utf-8\"><title>Timesheet</title><style>body{font-family:Arial,sans-serif;font-size:11pt}" + css.join("\n") + "</style></head><body><div class=\"paper\">" + $("paper").innerHTML + "</div></body></html>";
+    saveFile(reportFileName("doc"), "﻿" + html, "application/msword");
+    toast("Word document downloaded");
+  });
+  $("repXlsx").addEventListener("click", function () {
+    if (!window.XLSX) { toast("Still loading, try again in a second"); return; }
+    var r = lastReport || reportRange();
+    saveFile(reportFileName("xlsx"), buildWorkbook(r), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    toast("Spreadsheet downloaded");
+  });
+
+  // ---- Level bar look: 5 styles x 6 colors, with a style suggested from the job ----
+  function suggestStyle() {
+    var j = (state.job || "").toLowerCase();
+    if (/chiro|spine|wellness|physical therap|massage|clinic|physio/.test(j)) return "spine";
+    if (/coffee|cafe|café|barista|starbucks|dunkin|tea|boba|bakery/.test(j)) return "coffee";
+    if (/tech|\bit\b|computer|help ?desk|software|electronic|best buy|apple store|repair/.test(j)) return "battery";
+    return "blocks";
+  }
+  function applyLevelLook() {
+    var st = state.levelStyle || suggestStyle();
+    spine.className = "spine style-" + st;
+    if (state.levelColor) spine.style.setProperty("--lit", state.levelColor); else spine.style.removeProperty("--lit");
+    Array.prototype.forEach.call(document.querySelectorAll("#lvlStyles button"), function (b) { b.setAttribute("aria-pressed", b.dataset.s === st ? "true" : "false"); });
+    var col = state.levelColor || "";
+    Array.prototype.forEach.call(document.querySelectorAll("#lvlColors button"), function (b) { b.setAttribute("aria-pressed", b.dataset.c === col ? "true" : "false"); });
+  }
+  $("lvlStyles").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.levelStyle = b.dataset.s; save(); applyLevelLook(); });
+  $("lvlColors").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state.levelColor = b.dataset.c; save(); applyLevelLook(); });
+
+  // ---- Pay schedule and paycheck summaries ----
+  var FREQ_LABEL = { weekly: "Paid every week", biweekly: "Paid every 2 weeks", semimonthly: "Paid twice a month", monthly: "Paid once a month", daily: "Paid every day" };
+  function payAnchor() {
+    if (state.payAnchor) return dayStart(state.payAnchor);
+    var first = (state.history || []).reduce(function (m, h) { return Math.min(m, h.in); }, state.clockIn || Date.now());
+    return weekOf(first);
+  }
+  function payPeriod(t) {
+    var f = state.payFreq || "weekly", d0 = dayStart(t), from, to;
+    if (f === "daily") { from = d0; to = addDays(d0, 1); }
+    else if (f === "biweekly") {
+      var a = payAnchor(), days = Math.round((d0 - a) / 86400000), n = Math.floor(days / 14);
+      from = addDays(a, 14 * n); to = addDays(from, 14);
+    } else if (f === "semimonthly") {
+      var d = new Date(d0);
+      if (d.getDate() <= 15) { from = new Date(d.getFullYear(), d.getMonth(), 1).getTime(); to = new Date(d.getFullYear(), d.getMonth(), 16).getTime(); }
+      else { from = new Date(d.getFullYear(), d.getMonth(), 16).getTime(); to = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime(); }
+    } else if (f === "monthly") { var m = new Date(d0); from = new Date(m.getFullYear(), m.getMonth(), 1).getTime(); to = new Date(m.getFullYear(), m.getMonth() + 1, 1).getTime(); }
+    else { from = weekOf(d0); to = addDays(from, 7); }
+    var last = addDays(to, -1);
+    var label = from === last ? fmtDay(from, { weekday: "short", month: "short", day: "numeric" })
+      : fmtDay(from, { month: "short", day: "numeric" }) + " – " + fmtDay(last, { month: "short", day: "numeric", year: new Date(last).getFullYear() !== new Date().getFullYear() ? "numeric" : undefined });
+    return { from: from, to: to, label: label };
+  }
+  function renderPaychecks() {
+    var f = state.payFreq || "weekly";
+    $("payFreqLabel").textContent = FREQ_LABEL[f];
+    var segs = daySheet().segs, now = Date.now(), cur = payPeriod(now);
+    var sum = function (p) { var h = 0, g = 0; segs.forEach(function (x) { if (x.in >= p.from && x.in < p.to) { h += x.hours; g += x.earned; } }); return { h: h, g: g }; };
+    var c = sum(cur);
+    $("payCurLabel").textContent = "This pay period · " + cur.label;
+    $("payCurNet").textContent = money(c.g * TH());
+    $("payCurSub").textContent = c.h.toFixed(2) + " hrs · " + money(c.g) + " gross · take-home estimate";
+    var list = $("payList"); list.innerHTML = ""; fillStubPeriods();
+    var first = segs.reduce(function (m, x) { return Math.min(m, x.in); }, now), p = cur, n = 0;
+    while (n < 12 && p.to > first) {
+      var t = sum(p);
+      if (t.h > 0 || p === cur) {
+        var li = document.createElement("li"); if (p === cur) li.className = "now";
+        var l = document.createElement("div"); l.className = "pl";
+        var b = document.createElement("b"); b.textContent = p.label; l.appendChild(b);
+        var sm = document.createElement("small"); sm.textContent = t.h.toFixed(2) + " hrs · " + money(t.g) + " gross"; l.appendChild(sm);
+        var stub = (state.stubs || {})[p.from];
+        if (stub) sm.textContent = (stub.hours ? stub.hours.toFixed(2) : t.h.toFixed(2)) + " hrs · " + money(stub.gross) + " gross · from your stub (est. " + money(t.g * TH()) + ")";
+        var r = document.createElement("div"); r.className = "pr"; r.appendChild(document.createTextNode(stub ? money(stub.net) : money(t.g * TH())));
+        var btn = document.createElement("button"); btn.type = "button"; btn.textContent = "Summary";
+        (function (period) { btn.addEventListener("click", function () {
+          lastReport = buildReport({ from: period.from, to: period.to, label: period.label, kind: "Paycheck" });
+          $("reportView").hidden = false; $("reportView").scrollTop = 0;
+        }); })(p);
+        r.appendChild(btn); li.appendChild(l); li.appendChild(r); list.appendChild(li);
+      }
+      p = payPeriod(addDays(p.from, -1)); n++;
+    }
+  }
+  function fillStubPeriods() {
+    var sel = $("stubPeriod"), keep = sel.value, p = payPeriod(Date.now()), html = "";
+    for (var i = 0; i < 12; i++) { html += '<option value="' + p.from + '">' + esc(p.label) + ((state.stubs || {})[p.from] ? " ✓" : "") + "</option>"; p = payPeriod(addDays(p.from, -1)); }
+    sel.innerHTML = html; if (keep) sel.value = keep;
+  }
+  $("stubForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var from = +$("stubPeriod").value, gross = parseFloat($("stubGross").value), net = parseFloat($("stubNet").value), hrs = parseFloat($("stubHours").value);
+    if (!(gross > 0) || !(net > 0)) { toast("Enter the gross and take-home amounts"); return; }
+    if (net > gross) { toast("Take-home can't be more than gross pay"); return; }
+    state.stubs = state.stubs || {};
+    state.stubs[from] = { from: from, gross: Math.round(gross * 100) / 100, net: Math.round(net * 100) / 100, hours: hrs > 0 ? hrs : null, t: Date.now() };
+    save(); $("stubGross").value = ""; $("stubNet").value = ""; $("stubHours").value = "";
+    renderPaychecks(); syncSettings(); renderAll();
+    toast("Pay stub saved · you keep " + (net / gross * 100).toFixed(1) + "% of gross");
+  });
+  $("payFreq").addEventListener("change", function () {
+    state.payFreq = this.value;
+    if (this.value === "biweekly" && !state.payAnchor) state.payAnchor = payAnchor();
+    save(); syncInputs(); renderPaychecks(); syncReportControls();
+  });
+  $("payAnchor").addEventListener("change", function () { var t = fromYmd(this.value); if (!isNaN(t)) { state.payAnchor = t; save(); renderPaychecks(); syncReportControls(); } });
+
   var TABS = ["today", "sheet", "money", "settings"];
   function showTab(t) {
     TABS.forEach(function (n) {
@@ -1052,7 +1531,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     });
     try { localStorage.setItem("shiftscore.tab", t); } catch (e) {}
     window.scrollTo(0, 0);
-    if (t === "sheet") renderHistory();
+    if (t === "sheet") { renderHistory(); syncReportControls(); }
   }
   Array.prototype.forEach.call(document.querySelectorAll(".tabbtn"), function (b) { b.addEventListener("click", function () { showTab(b.dataset.tab); }); });
   var startTab = "today";
@@ -1063,7 +1542,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   if (!state.setup) $("onboard").hidden = false;
   syncInputs(); renderHistory(); renderSpend(); render();
   var spendDay = dayStart(Date.now());
-  setInterval(function () { var d = dayStart(Date.now()); if (d !== spendDay) { spendDay = d; renderSpend(); } renderHistory(); }, 60000);
+  setInterval(function () { var d = dayStart(Date.now()); if (d !== spendDay) { spendDay = d; renderSpend(); } renderHistory(); syncSettings(); }, 60000);
   $("btnUndo").hidden = !(state.clockOut && state.lastShift);
   setInterval(render, 100);
 })();
