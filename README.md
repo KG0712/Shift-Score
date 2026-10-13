@@ -1,3 +1,5 @@
+<p align="center"><img src="icons/wordmark.png" alt="Shift Score" width="450"></p>
+
 # Shift Score
 
 A free hourly pay tracker that turns every shift into a game.

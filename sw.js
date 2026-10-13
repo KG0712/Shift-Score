@@ -1,6 +1,6 @@
 // Shift Score service worker: makes the app load instantly and work offline.
 // Bump VERSION on every deploy so phones pick up the new files.
-const VERSION = "shiftscore-v5-pay-reports";
+const VERSION = "shiftscore-v6-retro-logo";
 const SHELL = [
   "./",
   "index.html",
@@ -9,7 +9,9 @@ const SHELL = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-maskable-512.png",
-  "icons/apple-touch-icon.png"
+  "icons/apple-touch-icon.png",
+  "icons/favicon-48.png",
+  "icons/wordmark.png"
 ];
 
 self.addEventListener("install", (event) => {

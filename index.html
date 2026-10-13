@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#f1f2f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -166,6 +167,7 @@ button:hover { filter: brightness(1.05); }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; min-height: 100vh; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.obmark { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 14px; border-radius: 18px; box-shadow: 0 10px 30px rgba(60, 30, 10, .25); }
 .onboard { position: fixed; inset: 0; z-index: 10; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
 .obcard { width: 100%; max-width: 440px; display: grid; gap: 16px; margin: auto; min-width: 0; }
 .obcard > * { min-width: 0; }
@@ -606,7 +608,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 
 <div class="onboard" id="onboard" hidden>
   <form class="obcard" id="obForm">
-    <div class="brand">Shift Score</div>
+    <img class="obmark" src="icons/wordmark.png" alt="Shift Score" width="900" height="280">
     <h1>Watch your pay <em>add up</em>, live.</h1>
     <ul class="obpoints">
       <li>A live counter and levels for every hour you work</li>
