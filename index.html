@@ -266,6 +266,14 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .note, .empty { font-size: .8rem; }
 .sync { margin: 0; font-family: var(--body); font-size: .82rem; justify-content: center; }
 .foot { padding: 4px 16px 0; }
+.hint { margin: -4px 0 12px; }
+.addpast { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.addpast summary { cursor: pointer; color: var(--tint); font-weight: 600; font-size: .95rem; list-style: none; }
+.addpast summary::-webkit-details-marker { display: none; }
+.addpast summary::before { content: "+ "; }
+.addpast[open] summary::before { content: "− "; }
+.addpast form { margin-top: 12px; }
+#timeRow { margin-bottom: 10px; }
 
 .tabbar { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   width: min(440px, calc(100% - 28px)); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 6px; border-radius: 999px;
@@ -324,14 +332,26 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <div class="badges" id="badges"></div>
   </section>
   <section class="panel">
-    <h2>Shift details <span>Edit times, pay and goal</span></h2>
+    <h2>Shift details <span id="clockState">Not on the clock</span></h2>
+    <p class="note hint" id="clockHint">Tap Clock In when your shift starts. Its times will show here so you can fix them if you forget.</p>
+    <div class="controls" id="timeRow" hidden>
+      <div class="field" id="inWrap"><label for="inTime">Started at</label><input id="inTime" type="time" step="60"></div>
+      <div class="field" id="outWrap"><label for="outTime">Clocked out at</label><input id="outTime" type="time" step="60"></div>
+    </div>
     <div class="controls">
-      <div class="field"><label for="inTime">Clock-in</label><input id="inTime" type="time" step="60"></div>
-      <div class="field"><label for="rate">Rate $/hr</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
-      <div class="field"><label for="outTime">Clock-out</label><input id="outTime" type="time" step="60"></div>
+      <div class="field"><label for="rate">Pay per hour $</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
       <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
     </div>
-    <p class="note" id="thNote">Take-home is an estimate using the Take-home % in Settings.</p>
+    <details class="addpast">
+      <summary>Forgot to clock in? Add a shift</summary>
+      <form class="controls" id="pastForm">
+        <div class="field span2"><label for="pastDate">Day</label><input id="pastDate" type="date" required></div>
+        <div class="field"><label for="pastIn">Start</label><input id="pastIn" type="time" step="60" required></div>
+        <div class="field"><label for="pastOut">End</label><input id="pastOut" type="time" step="60" required></div>
+        <button class="primary span2" type="submit">Add shift</button>
+      </form>
+    </details>
+    <p class="note" id="thNote">Pay changes apply to new time only. Take-home uses the Take-home % in Settings.</p>
   </section>
 </section>
 <section class="tab" id="tab-sheet" aria-label="Timesheet" hidden>
@@ -515,14 +535,23 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   function money(n) { return "$" + n.toFixed(2); }
   function weekStart() { var d = new Date(); var day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d.getTime(); }
 
+  function hhmm(t) { var d = new Date(t); return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
   function syncInputs() {
-    var d = new Date(state.clockIn || Date.now());
-    $("inTime").value = pad(d.getHours()) + ":" + pad(d.getMinutes());
+    var running = state.clockIn && !state.clockOut;
+    $("timeRow").hidden = !state.clockIn;
+    $("outWrap").hidden = !state.clockOut;
+    if (state.clockIn) $("inTime").value = hhmm(state.clockIn);
+    $("outTime").value = state.clockOut ? hhmm(state.clockOut) : "";
+    var day = state.clockIn ? new Date(state.clockIn).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) : "";
+    $("clockState").textContent = !state.clockIn ? "Not on the clock" : running ? "On the clock" : "Last shift · " + day;
+    $("clockHint").textContent = !state.clockIn
+      ? "Tap Clock In when your shift starts. Its times will show here so you can fix them if you forget."
+      : running ? "Clocked in late? Change the start time and your pay updates."
+      : "Fix the start or end time of your last shift here.";
     $("rate").value = state.rate;
     $("balance").value = typeof state.balance === "number" ? state.balance.toFixed(2) : "";
     $("goal").value = state.goal;
-    if (state.clockOut) { var o = new Date(state.clockOut); $("outTime").value = pad(o.getHours()) + ":" + pad(o.getMinutes()); }
-    else $("outTime").value = "";
+    if (!$("pastDate").value) { var n = new Date(); $("pastDate").value = n.getFullYear() + "-" + pad(n.getMonth() + 1) + "-" + pad(n.getDate()); }
   }
 
   var lastLevel = -1, lastBadge = -1, toastTimer;
@@ -810,16 +839,42 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var i = state.history.findIndex(function (h) { return h.in === state.clockIn; });
     if (i >= 0) state.history[i] = shift; else state.history.push(shift);
     state.clockOut = t; state.lastShift = shift; save();
-    $("btnUndo").hidden = false; render(); renderHistory();
+    $("btnUndo").hidden = false; syncInputs(); render(); renderHistory();
     toast("Shift set to " + fmtTime(state.clockIn) + "–" + fmtTime(t) + " · " + money(shift.earned));
   });
 
   $("inTime").addEventListener("change", function () {
-    var p = this.value.split(":"); if (p.length < 2) return;
-    var base = new Date(state.clockIn || Date.now());
-    base.setHours(+p[0], +p[1], 0, 0);
-    if (base.getTime() > Date.now()) { toast("Clock-in can't be in the future"); syncInputs(); return; }
-    state.clockIn = base.getTime(); save(); lastLevel = -1; lastBadge = -1; render();
+    var p = this.value.split(":"); if (p.length < 2 || !state.clockIn) { syncInputs(); return; }
+    var base = new Date(state.clockIn); base.setHours(+p[0], +p[1], 0, 0);
+    var t = base.getTime(), old = state.clockIn;
+    if (t > Date.now()) { toast("Start time can't be in the future"); syncInputs(); return; }
+    if (state.clockOut && t >= state.clockOut) { toast("Start has to be before you clocked out"); syncInputs(); return; }
+    var clash = state.history.some(function (h) { return h.in !== old && t < h.out && (state.clockOut || Date.now()) > h.in; });
+    if (clash) { toast("That overlaps another shift"); syncInputs(); return; }
+    state.clockIn = t;
+    var i = state.history.findIndex(function (h) { return h.in === old; });
+    if (i >= 0) {
+      var o = state.history[i].out, hrs = (o - t) / 3600000, r = state.history[i].hours ? state.history[i].earned / state.history[i].hours : state.rate;
+      state.history[i] = { in: t, out: o, hours: hrs, earned: hrs * r };
+      if (state.lastShift && state.lastShift.in === old) state.lastShift = state.history[i];
+    }
+    save(); lastLevel = -1; lastBadge = -1; render(); renderHistory();
+    toast("Start time set to " + fmtTime(t));
+  });
+  $("pastForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var d = $("pastDate").value.split("-"), a = $("pastIn").value.split(":"), b = $("pastOut").value.split(":");
+    if (d.length < 3 || a.length < 2 || b.length < 2) return;
+    var start = new Date(+d[0], +d[1] - 1, +d[2], +a[0], +a[1]).getTime(), end = new Date(+d[0], +d[1] - 1, +d[2], +b[0], +b[1]).getTime();
+    if (end <= start) end += 86400000; // overnight shift
+    if (end > Date.now()) { toast("That shift hasn't ended yet. Use Clock In instead."); return; }
+    var clash = state.history.some(function (h) { return start < h.out && end > h.in; }) || (state.clockIn && !state.clockOut && end > state.clockIn && start < Date.now());
+    if (clash) { toast("That overlaps a shift you already have"); return; }
+    var hrs = (end - start) / 3600000;
+    state.history.push({ in: start, out: end, hours: hrs, earned: hrs * state.rate });
+    state.history.sort(function (x, y) { return x.in - y.in; });
+    save(); render(); renderHistory(); $("pastIn").value = ""; $("pastOut").value = "";
+    toast("Added " + hrs.toFixed(2) + " hrs · " + money(hrs * state.rate));
   });
   $("rate").addEventListener("input", function () { var r = parseFloat(this.value); if (r >= 0) { state.rate = r; save(); render(); } });
   $("goal").addEventListener("input", function () { var g = parseFloat(this.value); if (g > 0) { state.goal = g; save(); render(); } });
