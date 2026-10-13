@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shift Score · watch your pay add up</title>
+<meta name="description" content="A free hourly pay tracker that turns every shift into a game. Live earnings, a timesheet, spending and savings. Private: your data stays on your device.">
+<meta name="theme-color" content="#e9efec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1a17" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shift Score">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="Shift Score">
+<meta property="og:description" content="Watch your pay add up, shift by shift. Free and private.">
+<meta property="og:image" content="icons/icon-512.png">
+<style>
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 500; font-display: swap; src: url(fonts/bricolage-500.woff2) format("woff2"); }
+@font-face { font-family: "Bricolage Grotesque"; font-weight: 800; font-display: swap; src: url(fonts/bricolage-800.woff2) format("woff2"); }
+@font-face { font-family: "Figtree"; font-weight: 400; font-display: swap; src: url(fonts/figtree-400.woff2) format("woff2"); }
+@font-face { font-family: "Figtree"; font-weight: 500; font-display: swap; src: url(fonts/figtree-500.woff2) format("woff2"); }
+@font-face { font-family: "Figtree"; font-weight: 600; font-display: swap; src: url(fonts/figtree-600.woff2) format("woff2"); }
+@font-face { font-family: "DM Mono"; font-weight: 400; font-display: swap; src: url(fonts/dmmono-400.woff2) format("woff2"); }
+@font-face { font-family: "DM Mono"; font-weight: 500; font-display: swap; src: url(fonts/dmmono-500.woff2) format("woff2"); }
+
+/* Layout: one-column scoreboard — live earnings up top, spine of hourly "levels", stats, badges, controls, history */
+:root {
+  --bg: #e9efec;        /* cool clinic paper, pine-biased */
+  --panel: #f7faf8;
+  --ink: #12312b;       /* deep pine */
+  --muted: #5b736d;
+  --line: #c9d6d1;
+  --accent: #e8582b;    /* money coral */
+  --accent-soft: #fbe1d6;
+  --bone: #d9cdb8;      /* unlit vertebra */
+  --lit: #12312b;       /* lit vertebra */
+  --good: #1f8a5b;
+  --bad: #c2362b;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1a17; --panel: #13241f; --ink: #e4eeea; --muted: #8fa8a1; --line: #24403a;
+    --accent: #ff7a4d; --accent-soft: #3a2219; --bone: #3b4a44; --lit: #ffb08f; --good: #4fd194; --bad: #ff7b72;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1a17; --panel: #13241f; --ink: #e4eeea; --muted: #8fa8a1; --line: #24403a;
+  --accent: #ff7a4d; --accent-soft: #3a2219; --bone: #3b4a44; --lit: #ffb08f; --good: #4fd194; --bad: #ff7b72;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+.verdict { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); }
+.verdict b { font-family: var(--display); font-size: 1.05rem; }
+.verdict .amt { font-family: var(--mono); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.verdict.ahead { border-color: var(--good); color: var(--good); }
+.verdict.over { border-color: var(--bad); color: var(--bad); }
+.spendform { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; gap: 8px; align-items: end; margin-top: 14px; }
+.spendlist { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 0; }
+.spendlist li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.spendlist .what { min-width: 0; overflow-wrap: anywhere; }
+.spendlist .what small { color: var(--muted); font-family: var(--mono); margin-left: 6px; }
+.spendlist .right { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.spendlist button { padding: 2px 9px; border-radius: 8px; font-weight: 500; }
+@media (max-width: 460px) { .spendform { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .spendform button { grid-column: 1 / -1; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 600px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 18px; }
+.wrap > * { min-width: 0; }
+header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+.brand small { font-family: var(--body); font-weight: 500; color: var(--muted); font-size: .8rem; margin-left: 6px; letter-spacing: 0; }
+.status { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.live .dot { background: var(--good); box-shadow: 0 0 0 0 var(--good); animation: pulse 1.6s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 60%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+
+.score { text-align: center; padding-block: 8px 4px; }
+.score .label { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.money { font-family: var(--display); font-weight: 800; font-size: clamp(3.4rem, 15vw, 5.6rem); line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; margin-top: 6px; }
+.money .cur { color: var(--accent); font-size: .55em; vertical-align: .55em; margin-right: 2px; }
+.money .tick { font-family: var(--mono); font-weight: 400; font-size: .22em; color: var(--muted); letter-spacing: 0; vertical-align: .2em; margin-left: 4px; }
+.rate-line { font-family: var(--mono); font-size: .82rem; color: var(--muted); margin-top: 8px; }
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.panel h2 { font-family: var(--display); font-weight: 800; font-size: 1rem; margin: 0 0 12px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: baseline; text-wrap: balance; }
+.panel h2 span { font-family: var(--body); font-weight: 500; font-size: .8rem; color: var(--muted); }
+
+/* Spine: one vertebra per hour */
+.spine { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: end; }
+.vert { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+.bone { position: relative; width: 70%; aspect-ratio: 1 / .78; max-width: 100%; border-radius: 40% 40% 34% 34%; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); transition: background .4s; }
+.bone::before, .bone::after { content: ""; position: absolute; top: 30%; width: 28%; height: 26%; background: var(--bone); border-radius: 6px; }
+.bone::before { left: -24%; }
+.bone::after { right: -24%; }
+.vert.done .bone::before, .vert.done .bone::after { background: var(--lit); }
+.vert .lv { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
+.vert.now .lv { color: var(--accent); font-weight: 500; }
+.level-name { margin-top: 12px; font-size: .92rem; }
+.level-name b { font-family: var(--display); }
+.next { color: var(--muted); font-family: var(--mono); font-size: .82rem; }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { min-width: 0; }
+.stat .k { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.stat .v { font-family: var(--mono); font-size: 1.15rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.goalbar { height: 10px; border-radius: 99px; background: var(--accent-soft); overflow: hidden; margin-top: 14px; }
+.goalbar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width .5s; }
+.goaltext { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); margin-top: 6px; font-family: var(--mono); gap: 8px; flex-wrap: wrap; }
+
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.badge { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 2px; opacity: .55; min-width: 0; }
+.badge.on { opacity: 1; border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.badge b { font-family: var(--display); font-size: .92rem; }
+.badge small { color: var(--muted); font-family: var(--mono); font-size: .74rem; }
+
+.controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.stale { border: 1px solid var(--bad); color: var(--bad); border-radius: 10px; padding: 10px 14px; font-weight: 600; text-align: center; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+input { font: inherit; font-family: var(--mono); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+button { font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:hover { filter: brightness(1.05); }
+
+.hist { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.hist th { text-align: left; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.hist td { padding: 7px 4px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.hist td:last-child, .hist th:last-child { text-align: right; }
+.tablewrap { overflow-x: auto; }
+.sheet { min-width: 560px; }
+.sheet td.neg { color: var(--bad); font-weight: 500; }
+.sheet td.pos { color: var(--good); }
+.sheet td, .sheet th { text-align: right; white-space: nowrap; }
+.sheet td:first-child, .sheet th:first-child { text-align: left; }
+.sheet tr.wk td { font-family: var(--body); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-top: 14px; background: transparent; }
+.sheet tr.live td { color: var(--accent); }
+.sheet tfoot td { font-weight: 600; border-top: 2px solid var(--ink); border-bottom: none; }
+.empty { color: var(--muted); font-size: .85rem; }
+.note { font-size: .78rem; color: var(--muted); }
+
+/* Sync line */
+.sync { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .76rem; color: var(--muted); margin-top: -10px; }
+.sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
+.sync[data-mode=synced] .sdot { background: var(--good); }
+.sync[data-mode=syncing] .sdot { background: var(--accent); }
+.sync[data-mode=offline] .sdot { background: var(--bad); }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(140%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 600; max-width: calc(100% - 32px); text-align: center; transition: transform .35s; z-index: 5; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+@media (max-width: 460px) { .stats, .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+/* Website additions */
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100vh; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.onboard { position: fixed; inset: 0; z-index: 10; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.obcard { width: 100%; max-width: 440px; display: grid; gap: 16px; margin: auto; min-width: 0; }
+.obcard > * { min-width: 0; }
+.obcard h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 9vw, 2.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 4px 0 0; }
+.obcard h1 em { font-style: normal; color: var(--accent); }
+.obcard p { margin: 0; color: var(--muted); }
+.obcard .primary { padding: 14px 18px; font-size: 1.05rem; }
+.obpoints { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .92rem; }
+.obpoints li::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; }
+.filebtn { font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; display: inline-block; }
+.filebtn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.danger { color: var(--bad); border-color: var(--bad); }
+button.danger.armed { background: var(--bad); color: #fff; }
+.install { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.install p { margin: 0; font-size: .9rem; }
+.foot { text-align: center; font-size: .78rem; color: var(--muted); padding: 8px 16px 32px; }
+.span2 { grid-column: span 2; }
+@media (min-width: 461px) { .controls .span2 { grid-column: span 2; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">Shift Score <small id="jobName">My job</small></div>
+    <div class="status" id="status"><span class="dot"></span><span id="statusText">On the clock</span></div>
+  </header>
+  <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
+
+  <div class="stale" id="stale" hidden></div>
+  <section class="score" aria-live="off">
+    <div class="label">Earned today</div>
+    <div class="money" id="money"><span class="cur">$</span><span id="dollars">0.00</span><span class="tick" id="tick">00</span></div>
+    <div class="rate-line" id="rateLine">+$0.20 every minute · +$3.00 every 15 min</div>
+  </section>
+
+  <section class="panel">
+    <h2>Level <span id="nextText">Next level in --:--</span></h2>
+    <div class="spine" id="spine" aria-label="Hours completed, one block per hour"></div>
+    <div class="level-name" id="levelName"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Shift stats <span id="shiftDate"></span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Time worked</div><div class="v" id="worked">0:00:00</div></div>
+      <div class="stat"><div class="k">Take-home est.</div><div class="v" id="net">$0.00</div></div>
+      <div class="stat"><div class="k">This week</div><div class="v" id="week">$0.00</div></div>
+    </div>
+    <div class="goalbar" aria-hidden="true"><i id="goalFill"></i></div>
+    <div class="goaltext"><span id="goalLeft">Daily goal</span><span id="goalPct">0%</span></div>
+  </section>
+
+  <section class="panel">
+    <h2>All-time totals <span id="careerSince"></span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Total earned</div><div class="v" id="careerGross">$0.00</div></div>
+      <div class="stat"><div class="k">Take-home est.</div><div class="v" id="careerNet">$0.00</div></div>
+      <div class="stat"><div class="k">Hours · Days</div><div class="v" id="careerHours">0.00 · 0</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Today's spending <span id="spendDate"></span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Earned today</div><div class="v" id="earnToday">$0.00</div></div>
+      <div class="stat"><div class="k">Spent today</div><div class="v" id="spentToday">$0.00</div></div>
+      <div class="stat"><div class="k">Left over</div><div class="v" id="leftToday">$0.00</div></div>
+    </div>
+    <div class="verdict" id="verdict"><b id="verdictText">No spending logged yet</b><span class="amt" id="verdictAmt"></span></div>
+    <form class="spendform" id="spendForm">
+      <div class="field"><label for="spendAmt">Amount $</label><input id="spendAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.50" required></div>
+      <div class="field"><label for="spendWhat">What for</label><input id="spendWhat" type="text" maxlength="40" placeholder="Chipotle, gas, Starbucks…"></div>
+      <button class="primary" type="submit">Add</button>
+    </form>
+    <ul class="spendlist" id="spendList"></ul>
+    <p class="note">Earned today is take-home pay from today's shifts. Spending also comes off your projected bank balance.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Bank balance <span>You type it in · private to this device</span></h2>
+    <div class="stats">
+      <div class="stat"><div class="field"><label for="balance">Current balance $</label><input id="balance" type="number" step="0.01" inputmode="decimal" placeholder="Enter"></div></div>
+      <div class="stat"><div class="k">Waiting on payday</div><div class="v" id="unpaid">$0.00</div></div>
+      <div class="stat"><div class="k">After payday</div><div class="v" id="projected">—</div></div>
+    </div>
+    <div class="btns"><button id="btnPaid" type="button">I got paid</button></div>
+    <p class="note" id="paidNote">Take-home from every shift since your last paycheck. When a paycheck lands, tap “I got paid”, then fix the balance to the exact deposit if it differs.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Since your last balance <span id="bcWhen"></span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Previous</div><div class="v" id="bcPrev">—</div></div>
+      <div class="stat"><div class="k">Now</div><div class="v" id="bcNow">—</div></div>
+      <div class="stat"><div class="k">Change</div><div class="v" id="bcChange">—</div></div>
+    </div>
+    <div class="verdict" id="bcVerdict"><b id="bcText">Enter your balance twice to compare</b><span class="amt" id="bcAmt"></span></div>
+    <div class="field" id="bcPrevWrap" hidden style="margin-top:12px"><label for="prevBal">Your previous balance $ (if you know it)</label><input id="prevBal" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 650.00"></div>
+    <p class="note">Spent = previous balance + paychecks marked received − balance now. Update the balance whenever you check your bank app.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Saved from earnings <span>All time</span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Take-home earned</div><div class="v" id="svEarned">$0.00</div></div>
+      <div class="stat"><div class="k">Spent since day 1</div><div class="v" id="svSpent">$0.00</div></div>
+      <div class="stat"><div class="k">Saved</div><div class="v" id="svSaved">$0.00</div></div>
+    </div>
+    <div class="goalbar" aria-hidden="true"><i id="svFill"></i></div>
+    <div class="goaltext"><span id="svText">Share of earnings saved</span><span id="svPct">0%</span></div>
+    <p class="note">Spent counts what you log in Today's spending, or what your bank balance shows you spent, whichever is higher.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Badges <span id="badgeCount">0 unlocked</span></h2>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Clock <span>Times, rate and goal</span></h2>
+    <div class="controls">
+      <div class="field"><label for="inTime">Clock-in</label><input id="inTime" type="time" step="60"></div>
+      <div class="field"><label for="rate">Rate $/hr</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
+      <div class="field"><label for="outTime">Clock-out</label><input id="outTime" type="time" step="60"></div>
+      <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
+    </div>
+    <div class="btns">
+      <button class="primary" id="btnIn" type="button">Clock in now</button>
+      <button id="btnOut" type="button">Clock out</button>
+      <button id="btnUndo" type="button" hidden>Undo clock-out</button>
+    </div>
+    <p class="note" id="thNote">Take-home is an estimate using the Take-home % in Settings.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Timesheet &amp; money <span id="histTotal"></span></h2>
+    <div class="tablewrap"><table class="hist sheet"><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Take-home</th><th>Spent</th><th>Left over</th></tr></thead><tbody id="histBody"></tbody><tfoot id="histFoot"></tfoot></table></div>
+    <p class="empty" id="histEmpty">Clock in to start your timesheet.</p>
+    <div class="btns"><button id="btnXlsx" type="button">Download spreadsheet (.xlsx)</button></div>
+    <p class="note">Fills in by itself from your clock-ins and Today's spending: one row per day, weekly subtotals, and what was left after spending (red means you spent more than you earned). The download is an Excel file with working formulas, plus sheets for every clock-in, every purchase and every bank balance you entered.</p>
+  </section>
+  <section class="panel install" id="installBox" hidden>
+    <p id="installText">Add Shift Score to your home screen to use it like an app.</p>
+    <button class="primary" id="btnInstall" type="button" hidden>Install app</button>
+  </section>
+
+  <section class="panel">
+    <h2>Settings <span>Private · stored on this device</span></h2>
+    <div class="controls">
+      <div class="field span2"><label for="setJob">Job name</label><input id="setJob" type="text" maxlength="40" autocomplete="organization"></div>
+      <div class="field span2"><label for="setTH">Take-home %</label><input id="setTH" type="number" min="1" max="100" step="0.01" inputmode="decimal"></div>
+    </div>
+    <div class="btns">
+      <button id="btnBackup" type="button">Back up my data</button>
+      <label class="filebtn">Restore a backup<input id="fileRestore" type="file" accept="application/json,.json" hidden></label>
+      <button id="btnReset" type="button" class="danger">Erase all data</button>
+    </div>
+    <p class="note">Take-home % estimates your pay after taxes: 92.35% removes only Social Security and Medicare. Lower it if federal or state income tax comes out of your checks. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
+  </section>
+</div>
+<footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.</footer>
+<div class="onboard" id="onboard" hidden>
+  <form class="obcard" id="obForm">
+    <div class="brand">Shift Score</div>
+    <h1>Watch your pay <em>add up</em>, live.</h1>
+    <ul class="obpoints">
+      <li>A live counter and levels for every hour you work</li>
+      <li>A timesheet that fills itself in, with Excel export</li>
+      <li>Spending, savings and payday tracking</li>
+      <li>Private: everything stays on this device</li>
+    </ul>
+    <div class="field"><label for="obJob">Where do you work?</label><input id="obJob" type="text" maxlength="40" placeholder="Campus library, coffee shop…" required></div>
+    <div class="field"><label for="obRate">Hourly pay $</label><input id="obRate" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.00" required></div>
+    <div class="field"><label for="obGoal">Daily goal $ (optional)</label><input id="obGoal" type="number" min="1" step="1" inputmode="decimal" placeholder="60"></div>
+    <button class="primary" type="submit">Start tracking</button>
+    <p class="note">You can change any of this later in Settings.</p>
+  </form>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="vendor/xlsx.full.min.js" defer></script>
+<script>
+(function () {
+  var KEY = "shiftscore.v1";
+  var LEVELS = ["Clocked In", "Warmed Up", "Locked In", "Lunch Earned", "Shift Boss", "Overachiever", "Machine", "Full Alignment"];
+  var BADGES = [
+    { at: 1, name: "First Dollar", note: "$1" },
+    { at: 6, name: "Coffee Covered", note: "$6" },
+    { at: 12, name: "Chipotle Bowl", note: "$12 · 1 hour" },
+    { at: 30, name: "Gas Money", note: "$30" },
+    { at: 48, name: "Textbook Fund", note: "$48 · 4 hours" },
+    { at: 60, name: "Goal Crusher", note: "$60 · 5 hours" },
+    { at: 96, name: "Full Day", note: "$96 · 8 hours" }
+  ];
+
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } }
+  // saveLocal: browser cache only (migrations). save: a real change — stamps it and syncs to the account.
+  function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function save() { state.updatedAt = Date.now(); saveLocal(); }
+  function TH() { return typeof state.takeHome === "number" && state.takeHome > 0 && state.takeHome <= 1 ? state.takeHome : 0.9235; }
+
+  function todayAt(h, m) { var d = new Date(); d.setHours(h, m, 0, 0); return d.getTime(); }
+  var state = load() || { rate: 12, goal: 60, clockIn: null, clockOut: null, history: [], lastShift: null, setup: false };
+  if (state.setup === undefined) state.setup = !!(state.history && state.history.length);
+  // Data saved before syncing existed has no timestamp; mark it as real so it isn't treated as empty.
+  if (!state.updatedAt && ((state.history || []).length || (state.expenses || []).length || (state.balanceLog || []).length || typeof state.balance === "number")) {
+    state.updatedAt = 1; saveLocal();
+  }
+  if (typeof state.rate !== "number") state.rate = 12;
+  if (typeof state.goal !== "number") state.goal = 60;
+  if (!Array.isArray(state.history)) state.history = [];
+  if (!Array.isArray(state.expenses)) state.expenses = [];
+  if (!Array.isArray(state.deposits)) state.deposits = [];
+  if (!Array.isArray(state.balanceLog)) state.balanceLog = [];
+  if (!state.balanceLog.length && typeof state.balance === "number") state.balanceLog.push({ t: state.balanceSetAt || Date.now(), bal: state.balance });
+  function logBalance(b) {
+    var last = state.balanceLog[state.balanceLog.length - 1];
+    if (last && Math.abs(last.bal - b) < 0.005) return;
+    state.balanceLog.push({ t: Date.now(), bal: b });
+  }
+  function depositsBetween(a, b) { return state.deposits.filter(function (d) { return d.t > a && d.t <= b; }).reduce(function (s, d) { return s + d.net; }, 0); }
+  function dayStart(t) { var d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); }
+  function spentSince(t) { return state.expenses.filter(function (e) { return e.t >= t; }).reduce(function (a, e) { return a + e.amt; }, 0); }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var spine = $("spine"), badgesEl = $("badges");
+  for (var i = 0; i < 8; i++) {
+    var v = document.createElement("div"); v.className = "vert";
+    v.innerHTML = '<div class="bone"></div><div class="lv">L' + (i + 1) + '</div>';
+    spine.appendChild(v);
+  }
+  BADGES.forEach(function (b) {
+    var el = document.createElement("div"); el.className = "badge";
+    el.innerHTML = "<b>" + b.name + "</b><small>" + b.note + "</small>";
+    badgesEl.appendChild(el);
+  });
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function fmtDur(ms) { var s = Math.max(0, Math.floor(ms / 1000)); return Math.floor(s / 3600) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60); }
+  function fmtTime(t) { return new Date(t).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+  function money(n) { return "$" + n.toFixed(2); }
+  function weekStart() { var d = new Date(); var day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d.getTime(); }
+
+  function syncInputs() {
+    var d = new Date(state.clockIn || Date.now());
+    $("inTime").value = pad(d.getHours()) + ":" + pad(d.getMinutes());
+    $("rate").value = state.rate;
+    $("balance").value = typeof state.balance === "number" ? state.balance.toFixed(2) : "";
+    $("goal").value = state.goal;
+    if (state.clockOut) { var o = new Date(state.clockOut); $("outTime").value = pad(o.getHours()) + ":" + pad(o.getMinutes()); }
+    else $("outTime").value = "";
+  }
+
+  var lastLevel = -1, lastBadge = -1, toastTimer;
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("show"); }, 3200);
+  }
+
+  function render() {
+    var running = state.clockIn && !state.clockOut;
+    var end = state.clockOut || Date.now();
+    // Current clock-in segment (feeds money totals) vs. the whole day's shift (feeds the scoreboard).
+    var segMs = state.clockIn ? Math.max(0, end - state.clockIn) : 0;
+    var segHours = segMs / 3600000;
+    var earned = segHours * state.rate;
+    var dayKey = state.clockIn ? dayStart(state.clockIn) : null;
+    var daySegs = dayKey === null ? [] : state.history.filter(function (h) { return dayStart(h.in) === dayKey && h.in !== state.clockIn; });
+    var ms = segMs + daySegs.reduce(function (a, h) { return a + h.hours; }, 0) * 3600000;
+    var hours = ms / 3600000;
+    var dayEarned = hours * state.rate;
+    var firstInDay = daySegs.reduce(function (m, h) { return Math.min(m, h.in); }, state.clockIn || Infinity);
+
+    var whole = Math.floor(dayEarned * 100) / 100;
+    $("dollars").textContent = whole.toFixed(2);
+    var frac = Math.floor((dayEarned * 10000) % 100);
+    $("tick").textContent = pad(frac);
+    var perMin = state.rate / 60;
+    $("rateLine").textContent = "+" + money(perMin) + " every minute · +" + money(state.rate / 4) + " every 15 min";
+
+    var staleEl = $("stale"), isStale = running && (state.clockIn < dayStart(Date.now()) || segMs > 14 * 3600000);
+    staleEl.hidden = !isStale;
+    if (isStale) staleEl.textContent = "Still clocked in from " + new Date(state.clockIn).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + "? Set your real clock-out time under Clock below.";
+    $("status").classList.toggle("live", !!running);
+    $("statusText").textContent = running ? "On the clock" : (state.clockIn ? "Clocked out" : "Not clocked in");
+
+    var lvl = Math.floor(hours);
+    var verts = spine.children;
+    for (var i = 0; i < verts.length; i++) {
+      var fill = i < lvl ? 100 : (i === lvl ? (hours - lvl) * 100 : 0);
+      verts[i].firstChild.style.setProperty("--fill", fill.toFixed(1) + "%");
+      verts[i].classList.toggle("done", i < lvl);
+      verts[i].classList.toggle("now", i === lvl && running);
+    }
+    var name = LEVELS[Math.min(lvl, LEVELS.length - 1)];
+    $("levelName").innerHTML = "Level " + (lvl + 1 > 8 ? "8+" : lvl + 1) + " · <b>" + name + "</b>";
+    var toNext = (lvl + 1) * 3600000 - ms;
+    $("nextText").textContent = running ? "Next level in " + fmtDur(toNext).replace(/^0:/, "") + " (+" + money(state.rate) + ")" : "Paused";
+
+    $("worked").textContent = fmtDur(ms);
+    $("net").textContent = money(dayEarned * TH());
+    $("shiftDate").textContent = state.clockIn ? new Date(state.clockIn).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + " · in " + fmtTime(firstInDay) + (daySegs.length ? " · " + (daySegs.length + 1) + " parts" : "") : "";
+
+    var ws = weekStart();
+    var weekPast = state.history.filter(function (h) { return h.in >= ws; }).reduce(function (a, h) { return a + h.earned; }, 0);
+    var currentCounts = state.clockIn >= ws && running ? earned : 0;
+    $("week").textContent = money(weekPast + currentCounts);
+
+    var paidThrough = state.paidThrough || 0;
+    var unpaidGross = state.history.filter(function (h) { return h.in >= paidThrough; }).reduce(function (a, h) { return a + h.earned; }, 0)
+      + (running && state.clockIn >= paidThrough ? earned : 0);
+    var unpaidNet = unpaidGross * TH();
+    $("unpaid").textContent = money(unpaidNet);
+    $("projected").textContent = typeof state.balance === "number" ? money(state.balance + unpaidNet - spentSince(state.balanceSetAt || 0)) : "Add balance";
+
+    var t0 = dayStart(Date.now());
+    var grossToday = state.history.filter(function (h) { return h.in >= t0; }).reduce(function (a, h) { return a + h.earned; }, 0)
+      + (running && state.clockIn >= t0 ? earned : 0);
+    var netToday = grossToday * TH(), spent = spentSince(t0), left = netToday - spent;
+    $("earnToday").textContent = money(netToday);
+    $("spentToday").textContent = money(spent);
+    $("leftToday").textContent = (left < 0 ? "−" : "") + money(Math.abs(left));
+    var vd = $("verdict");
+    vd.classList.toggle("over", spent > 0 && left < 0);
+    vd.classList.toggle("ahead", spent > 0 && left >= 0);
+    if (spent === 0) { $("verdictText").textContent = "No spending logged yet"; $("verdictAmt").textContent = money(netToday) + " kept"; }
+    else if (left < 0) { $("verdictText").textContent = "Over today's earnings"; $("verdictAmt").textContent = "−" + money(-left); }
+    else { $("verdictText").textContent = "Spending under earnings"; $("verdictAmt").textContent = "+" + money(left); }
+
+    var allGross = state.history.reduce(function (a, h) { return a + h.earned; }, 0) + (running ? earned : 0);
+    var allHours = state.history.reduce(function (a, h) { return a + h.hours; }, 0) + (running ? segHours : 0);
+    var days = {};
+    state.history.forEach(function (h) { days[dayStart(h.in)] = 1; });
+    if (running) days[dayStart(state.clockIn)] = 1;
+    var firstIn = state.history.reduce(function (m, h) { return Math.min(m, h.in); }, running ? state.clockIn : Infinity);
+    $("careerGross").textContent = money(allGross);
+    $("careerNet").textContent = money(allGross * TH());
+    $("careerHours").textContent = allHours.toFixed(2) + " · " + Object.keys(days).length;
+    $("careerSince").textContent = isFinite(firstIn) ? "Since " + new Date(firstIn).toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" }) : "";
+
+    // Since last balance
+    var bl = state.balanceLog, n = bl.length;
+    var fmtWhen = function (t) { return new Date(t).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + " " + fmtTime(t); };
+    $("bcPrevWrap").hidden = n >= 2;
+    var bcV = $("bcVerdict");
+    if (n >= 2) {
+      var pv = bl[n - 2], cv = bl[n - 1], dep = depositsBetween(pv.t, cv.t), chg = cv.bal - pv.bal, sp = pv.bal + dep - cv.bal;
+      $("bcPrev").textContent = money(pv.bal); $("bcNow").textContent = money(cv.bal);
+      $("bcChange").textContent = (chg < 0 ? "−" : "+") + money(Math.abs(chg));
+      $("bcWhen").textContent = fmtWhen(pv.t) + " → " + fmtWhen(cv.t);
+      bcV.classList.toggle("over", sp > 0); bcV.classList.toggle("ahead", sp <= 0);
+      if (sp > 0) { $("bcText").textContent = "Spent since last balance" + (dep ? " (after " + money(dep) + " paycheck)" : ""); $("bcAmt").textContent = money(sp); }
+      else { $("bcText").textContent = "Extra money came in"; $("bcAmt").textContent = "+" + money(-sp); }
+    } else {
+      $("bcPrev").textContent = "—"; $("bcNow").textContent = n ? money(bl[0].bal) : "—"; $("bcChange").textContent = "—"; $("bcWhen").textContent = "";
+      bcV.classList.remove("over", "ahead"); $("bcText").textContent = n ? "Next balance update will show what you spent" : "Enter your balance to start"; $("bcAmt").textContent = "";
+    }
+
+    // Saved from earnings
+    var firstShift = state.history.reduce(function (m, h) { return Math.min(m, h.in); }, running ? state.clockIn : Infinity);
+    var takeHome = allGross * TH(), loggedSpent = 0, bankSpent = 0;
+    if (isFinite(firstShift)) {
+      var d0 = dayStart(firstShift);
+      loggedSpent = spentSince(d0);
+      for (var k = 1; k < bl.length; k++) {
+        if (bl[k].t < d0) continue;
+        var s = bl[k - 1].bal + depositsBetween(bl[k - 1].t, bl[k].t) - bl[k].bal;
+        if (s > 0) bankSpent += s;
+      }
+    }
+    var spentAll = Math.max(loggedSpent, bankSpent), saved = takeHome - spentAll;
+    $("svEarned").textContent = money(takeHome); $("svSpent").textContent = money(spentAll);
+    $("svSaved").textContent = (saved < 0 ? "−" : "") + money(Math.abs(saved));
+    var svPct = takeHome > 0 ? Math.max(0, Math.min(100, saved / takeHome * 100)) : 0;
+    $("svFill").style.width = svPct.toFixed(1) + "%"; $("svPct").textContent = Math.round(svPct) + "%";
+    $("svText").textContent = saved < 0 ? "Spending is ahead of earnings by " + money(-saved) : "Share of earnings saved";
+
+    var pct = Math.min(100, dayEarned / state.goal * 100);
+    $("goalFill").style.width = pct.toFixed(1) + "%";
+    $("goalPct").textContent = Math.floor(pct) + "%";
+    $("goalLeft").textContent = dayEarned >= state.goal ? "Daily goal hit · " + money(state.goal) : money(state.goal - dayEarned) + " to daily goal";
+
+    var unlocked = 0, highest = -1;
+    Array.prototype.forEach.call(badgesEl.children, function (el, i) {
+      var on = dayEarned >= BADGES[i].at; el.classList.toggle("on", on);
+      if (on) { unlocked++; highest = i; }
+    });
+    $("badgeCount").textContent = unlocked + " of " + BADGES.length + " unlocked";
+
+    if (running) {
+      if (lastLevel !== -1 && lvl > lastLevel) toast("Level up! Level " + (lvl + 1) + " · " + LEVELS[Math.min(lvl, 7)] + " · " + money(dayEarned));
+      else if (lastBadge !== -1 && highest > lastBadge) toast("Badge unlocked: " + BADGES[highest].name);
+    }
+    lastLevel = lvl; lastBadge = highest;
+  }
+
+  // Timesheet: one row per day (clocking back in the same day adds to that day), newest first, grouped by week.
+  function weekOf(t) { var d = new Date(t); var day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d.getTime(); }
+  function daySheet() {
+    var segs = state.history.map(function (h) { return { in: h.in, out: h.out, hours: h.hours, earned: h.earned }; });
+    if (state.clockIn && !state.clockOut) {
+      var now = Date.now(), hr = Math.max(0, now - state.clockIn) / 3600000;
+      segs.push({ in: state.clockIn, out: now, hours: hr, earned: hr * state.rate, live: true });
+    }
+    var byDay = {};
+    var mk = function (k) { return byDay[k] || (byDay[k] = { day: k, in: null, out: null, hours: 0, earned: 0, parts: 0, live: false, spent: 0, buys: 0 }); };
+    segs.forEach(function (h) {
+      var d = mk(dayStart(h.in));
+      d.in = d.in === null ? h.in : Math.min(d.in, h.in); d.out = d.out === null ? h.out : Math.max(d.out, h.out);
+      d.hours += h.hours; d.earned += h.earned; d.parts++; d.live = d.live || !!h.live;
+    });
+    state.expenses.forEach(function (e) { var d = mk(dayStart(e.t)); d.spent += e.amt; d.buys++; });
+    var days = Object.keys(byDay).map(Number).sort(function (a, b) { return b - a; }).map(function (k) {
+      var d = byDay[k]; d.net = d.earned * TH(); d.left = d.net - d.spent; return d;
+    });
+    return { days: days, segs: segs };
+  }
+  function signed(n) { return (n < -0.004 ? "−" : "") + money(Math.abs(n)); }
+  function renderHistory() {
+    var body = $("histBody"), foot = $("histFoot"); body.innerHTML = ""; foot.innerHTML = "";
+    var days = daySheet().days, curWeek = null, wk = {};
+    days.forEach(function (d) { var w = weekOf(d.day); wk[w] = wk[w] || { h: 0, n: 0, s: 0 }; wk[w].h += d.hours; wk[w].n += d.net; wk[w].s += d.spent; });
+    var cell = function (tr, text, cls) { var td = document.createElement("td"); td.textContent = text; if (cls) td.className = cls; tr.appendChild(td); };
+    var leftCls = function (v) { return v < -0.004 ? "neg" : (v > 0.004 ? "pos" : ""); };
+    days.forEach(function (d) {
+      var w = weekOf(d.day);
+      if (w !== curWeek) {
+        curWeek = w;
+        var wr = document.createElement("tr"); wr.className = "wk";
+        cell(wr, "Week of " + new Date(w).toLocaleDateString([], { month: "short", day: "numeric" })); cell(wr, ""); cell(wr, "");
+        cell(wr, wk[w].h.toFixed(2)); cell(wr, money(wk[w].n)); cell(wr, money(wk[w].s)); cell(wr, signed(wk[w].n - wk[w].s), leftCls(wk[w].n - wk[w].s));
+        body.appendChild(wr);
+      }
+      var tr = document.createElement("tr"); if (d.live) tr.className = "live";
+      cell(tr, new Date(d.day).toLocaleDateString([], { weekday: "short", month: "numeric", day: "numeric" }) + (d.parts > 1 ? " · " + d.parts + " parts" : ""));
+      cell(tr, d.in === null ? "Off" : fmtTime(d.in)); cell(tr, d.in === null ? "" : (d.live ? "On the clock" : fmtTime(d.out)));
+      cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); cell(tr, d.spent ? money(d.spent) : "—"); cell(tr, signed(d.left), leftCls(d.left));
+      body.appendChild(tr);
+    });
+    var sum = function (f) { return days.reduce(function (a, d) { return a + d[f]; }, 0); };
+    var hrs = sum("hours"), tot = sum("earned"), net = sum("net"), sp = sum("spent");
+    if (days.length) {
+      var fr = document.createElement("tr");
+      cell(fr, "All time · " + days.length + (days.length === 1 ? " day" : " days")); cell(fr, ""); cell(fr, "");
+      cell(fr, hrs.toFixed(2)); cell(fr, money(net)); cell(fr, money(sp)); cell(fr, signed(net - sp), leftCls(net - sp));
+      foot.appendChild(fr);
+    }
+    $("histEmpty").hidden = days.length > 0;
+    $("histTotal").textContent = days.length ? hrs.toFixed(2) + " hrs · " + money(tot) + " earned · " + money(sp) + " spent" : "";
+  }
+
+  // Excel download (SheetJS builds the workbook; the platform's downloads capability saves it).
+  function xlDate(t) { var d = new Date(t); return (d.getTime() - d.getTimezoneOffset() * 60000) / 86400000 + 25569; }
+  function fmtSheet(ws, from, to, spec) {
+    for (var r = from; r <= to; r++) Object.keys(spec).forEach(function (c) { var x = ws[c + r]; if (x && (x.t === "n" || x.f)) x.z = spec[c]; });
+  }
+  function buildWorkbook() {
+    var X = window.XLSX, sheet = daySheet(), days = sheet.days.slice().reverse();
+    var USD = "$#,##0.00;[Red]-$#,##0.00", DATE = "mm/dd/yyyy";
+    // Sheet 1: one row per day, hours, pay, spending, what's left.
+    var aoa = [[(state.job || "My job") + " · Daily Hours & Money"], ["Hourly rate", state.rate], ["Take-home factor", TH()], [],
+      ["Date", "Day", "Week of", "Clock in", "Clock out", "Parts", "Hours", "Gross pay", "Take-home est.", "Spent", "Left over"]];
+    days.forEach(function (d) {
+      var r = aoa.length + 1;
+      aoa.push([xlDate(d.day), new Date(d.day).toLocaleDateString([], { weekday: "long" }), xlDate(weekOf(d.day)),
+        d.in === null ? "Off" : fmtTime(d.in), d.in === null ? "" : (d.live ? "On the clock" : fmtTime(d.out)), d.parts,
+        Math.round(d.hours * 10000) / 10000, { f: "G" + r + "*$B$2" }, { f: "H" + r + "*$B$3" },
+        Math.round(d.spent * 100) / 100, { f: "I" + r + "-J" + r }]);
+    });
+    var first = 6, last = Math.max(aoa.length, first);
+    aoa.push([]);
+    var tot = ["Total", "", "", "", ""];
+    ["F", "G", "H", "I", "J", "K"].forEach(function (c) { tot.push({ f: "SUM(" + c + first + ":" + c + last + ")" }); });
+    aoa.push(tot);
+    var ws = X.utils.aoa_to_sheet(aoa);
+    fmtSheet(ws, first, last, { A: DATE, C: DATE });
+    fmtSheet(ws, first, last + 2, { G: "0.00", H: USD, I: USD, J: USD, K: USD });
+    ws["B2"].z = "$#,##0.00";
+    ws["!cols"] = [{ wch: 12 }, { wch: 11 }, { wch: 12 }, { wch: 10 }, { wch: 13 }, { wch: 6 }, { wch: 8 }, { wch: 11 }, { wch: 14 }, { wch: 10 }, { wch: 11 }];
+    // Sheet 2: every clock-in and clock-out.
+    var log = [["Date", "Clock in", "Clock out", "Hours", "Gross pay"]];
+    sheet.segs.slice().sort(function (a, b) { return a.in - b.in; }).forEach(function (s, i) {
+      log.push([xlDate(dayStart(s.in)), fmtTime(s.in), s.live ? "On the clock" : fmtTime(s.out), Math.round(s.hours * 10000) / 10000, { f: "D" + (i + 2) + "*'Daily Hours'!$B$2" }]);
+    });
+    var ws2 = X.utils.aoa_to_sheet(log);
+    fmtSheet(ws2, 2, log.length, { A: DATE, D: "0.00", E: USD });
+    ws2["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 13 }, { wch: 8 }, { wch: 11 }];
+    // Sheet 3: every purchase logged in Today's spending.
+    var sp = [["Date", "Time", "What", "Amount"]];
+    state.expenses.slice().sort(function (a, b) { return a.t - b.t; }).forEach(function (e) {
+      sp.push([xlDate(dayStart(e.t)), fmtTime(e.t), e.what || "Spending", e.amt]);
+    });
+    sp.push([]); sp.push(["Total", "", "", { f: "SUM(D2:D" + Math.max(2, sp.length - 1) + ")" }]);
+    var ws3 = X.utils.aoa_to_sheet(sp);
+    fmtSheet(ws3, 2, sp.length, { A: DATE, D: USD });
+    ws3["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 28 }, { wch: 11 }];
+    // Sheet 4: each bank balance you entered, and what it shows you spent in between.
+    var bal = [["Date", "Time", "Balance", "Paychecks marked", "Spent since previous"]];
+    state.balanceLog.forEach(function (b, i) {
+      var r = bal.length + 1, prev = state.balanceLog[i - 1];
+      bal.push([xlDate(dayStart(b.t)), fmtTime(b.t), b.bal, prev ? Math.round(depositsBetween(prev.t, b.t) * 100) / 100 : 0,
+        prev ? { f: "C" + (r - 1) + "+D" + r + "-C" + r } : ""]);
+    });
+    var ws4 = X.utils.aoa_to_sheet(bal);
+    fmtSheet(ws4, 2, bal.length, { A: DATE, C: USD, D: USD, E: USD });
+    ws4["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 11 }, { wch: 16 }, { wch: 19 }];
+    var wb = X.utils.book_new();
+    X.utils.book_append_sheet(wb, ws, "Daily Hours");
+    X.utils.book_append_sheet(wb, ws2, "Clock Log");
+    X.utils.book_append_sheet(wb, ws3, "Spending");
+    X.utils.book_append_sheet(wb, ws4, "Balance Checks");
+    return X.write(wb, { bookType: "xlsx", type: "array" });
+  }
+  function saveFile(name, data, type) {
+    var url = URL.createObjectURL(new Blob([data], { type: type }));
+    var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1500);
+  }
+  function stamp() { var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  $("btnXlsx").addEventListener("click", function () {
+    if (!window.XLSX) { toast("Still loading, try again in a second"); return; }
+    try { saveFile("Shift-Score-Hours-" + stamp() + ".xlsx", buildWorkbook(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); toast("Spreadsheet downloaded"); }
+    catch (e) { toast("Couldn't build the spreadsheet"); }
+  });
+
+  $("outTime").addEventListener("change", function () {
+    var p = this.value.split(":");
+    if (!state.clockIn) { toast("Clock in first"); this.value = ""; return; }
+    if (p.length < 2) return;
+    var out = new Date(state.clockIn); out.setHours(+p[0], +p[1], 0, 0);
+    var t = out.getTime();
+    if (t <= state.clockIn) { toast("Clock-out has to be after clock-in"); syncInputs(); return; }
+    if (t > Date.now()) { toast("Clock-out can't be in the future"); syncInputs(); return; }
+    var hrs = (t - state.clockIn) / 3600000;
+    var shift = { in: state.clockIn, out: t, hours: hrs, earned: hrs * state.rate };
+    var i = state.history.findIndex(function (h) { return h.in === state.clockIn; });
+    if (i >= 0) state.history[i] = shift; else state.history.push(shift);
+    state.clockOut = t; state.lastShift = shift; save();
+    $("btnUndo").hidden = false; render(); renderHistory();
+    toast("Shift set to " + fmtTime(state.clockIn) + "–" + fmtTime(t) + " · " + money(shift.earned));
+  });
+
+  $("inTime").addEventListener("change", function () {
+    var p = this.value.split(":"); if (p.length < 2) return;
+    var base = new Date(state.clockIn || Date.now());
+    base.setHours(+p[0], +p[1], 0, 0);
+    if (base.getTime() > Date.now()) { toast("Clock-in can't be in the future"); syncInputs(); return; }
+    state.clockIn = base.getTime(); save(); lastLevel = -1; lastBadge = -1; render();
+  });
+  $("rate").addEventListener("input", function () { var r = parseFloat(this.value); if (r >= 0) { state.rate = r; save(); render(); } });
+  $("goal").addEventListener("input", function () { var g = parseFloat(this.value); if (g > 0) { state.goal = g; save(); render(); } });
+
+  $("balance").addEventListener("input", function () {
+    var b = parseFloat(this.value); state.balance = isNaN(b) ? null : b; state.balanceSetAt = Date.now(); save(); render();
+  });
+  $("balance").addEventListener("change", function () {
+    var b = parseFloat(this.value); if (isNaN(b)) return;
+    var prev = state.balanceLog[state.balanceLog.length - 1];
+    logBalance(b); save(); render();
+    if (prev && Math.abs(prev.bal - b) >= 0.005) {
+      var spent = prev.bal + depositsBetween(prev.t, Date.now()) - b;
+      toast(spent > 0 ? "You spent about " + money(spent) + " since your last balance" : "Balance up " + money(-spent) + " since last time");
+    }
+  });
+  $("prevBal").addEventListener("change", function () {
+    var p = parseFloat(this.value); if (isNaN(p)) return;
+    var first = state.balanceLog[0];
+    var t = first ? first.t - 60000 : Date.now() - 86400000;
+    state.balanceLog.unshift({ t: t, bal: p }); save(); this.value = ""; render();
+  });
+
+  function renderSpend() {
+    var t0 = dayStart(Date.now());
+    $("spendDate").textContent = new Date().toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
+    var list = $("spendList"); list.innerHTML = "";
+    state.expenses.filter(function (e) { return e.t >= t0; }).slice().reverse().forEach(function (e) {
+      var li = document.createElement("li");
+      var what = document.createElement("span"); what.className = "what";
+      what.textContent = e.what || "Spending";
+      var tm = document.createElement("small"); tm.textContent = fmtTime(e.t); what.appendChild(tm);
+      var right = document.createElement("span"); right.className = "right";
+      right.appendChild(document.createTextNode(money(e.amt)));
+      var del = document.createElement("button"); del.type = "button"; del.textContent = "Remove"; del.setAttribute("aria-label", "Remove " + (e.what || "spending"));
+      del.addEventListener("click", function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); });
+      right.appendChild(del); li.appendChild(what); li.appendChild(right); list.appendChild(li);
+    });
+  }
+  $("spendForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var amt = parseFloat($("spendAmt").value);
+    if (!(amt > 0)) { toast("Enter an amount above $0"); return; }
+    var what = $("spendWhat").value.trim();
+    state.expenses.push({ id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), t: Date.now(), amt: Math.round(amt * 100) / 100, what: what });
+    save(); $("spendAmt").value = ""; $("spendWhat").value = ""; renderSpend(); render(); renderHistory();
+    toast("Logged " + money(amt) + (what ? " · " + what : ""));
+  });
+  $("btnPaid").addEventListener("click", function () {
+    var now = Date.now(), paidThrough = state.paidThrough || 0;
+    var running = state.clockIn && !state.clockOut;
+    var gross = state.history.filter(function (h) { return h.in >= paidThrough; }).reduce(function (a, h) { return a + h.earned; }, 0);
+    var net = gross * TH();
+    if (typeof state.balance === "number") state.balance = Math.round((state.balance + net - spentSince(state.balanceSetAt || 0)) * 100) / 100;
+    state.balanceSetAt = now;
+    if (net > 0) state.deposits.push({ t: now, net: Math.round(net * 100) / 100 });
+    state.paidThrough = running ? state.clockIn : now;
+    save(); syncInputs(); render();
+    toast("Added " + money(net) + " estimate. Update the balance to the exact deposit if it's different.");
+  });
+
+  $("btnIn").addEventListener("click", function () {
+    var now = Date.now(), earlier = state.history.filter(function (h) { return dayStart(h.in) === dayStart(now); });
+    state.clockIn = now; state.clockOut = null; state.lastShift = null; save();
+    lastLevel = -1; lastBadge = -1; syncInputs(); $("btnUndo").hidden = true; render(); renderHistory();
+    if (earlier.length) {
+      var soFar = earlier.reduce(function (a, h) { return a + h.earned; }, 0);
+      toast("Back on the clock at " + fmtTime(now) + " · today's shift picks up at " + money(soFar));
+    } else toast("Clocked in at " + fmtTime(now) + ". Let's get it.");
+  });
+  $("btnOut").addEventListener("click", function () {
+    if (!state.clockIn || state.clockOut) { toast("You're not on the clock"); return; }
+    state.clockOut = Date.now();
+    var hrs = (state.clockOut - state.clockIn) / 3600000;
+    var shift = { in: state.clockIn, out: state.clockOut, hours: hrs, earned: hrs * state.rate };
+    state.history.push(shift); state.lastShift = shift; save();
+    $("btnUndo").hidden = false; syncInputs(); render(); renderHistory();
+    toast("Shift saved · " + hrs.toFixed(2) + " hrs · " + money(shift.earned));
+  });
+  $("btnUndo").addEventListener("click", function () {
+    if (!state.lastShift) return;
+    state.history = state.history.filter(function (h) { return !(h.in === state.lastShift.in && h.out === state.lastShift.out); });
+    state.clockOut = null; state.lastShift = null; save();
+    this.hidden = true; syncInputs(); render(); renderHistory(); toast("Back on the clock");
+  });
+
+  function renderAll() {
+    if (!(document.activeElement && document.activeElement.tagName === "INPUT")) syncInputs();
+    renderHistory(); renderSpend(); render();
+    $("btnUndo").hidden = !(state.clockOut && state.lastShift);
+  }
+
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") renderAll(); });
+  window.addEventListener("storage", function (e) { if (e.key === KEY) { var n = load(); if (n) { state = n; normalize(); renderAll(); } } });
+
+  // ---- First-run setup, settings, backup, install ----
+  function normalize() {
+    if (typeof state.rate !== "number") state.rate = 12;
+    if (typeof state.goal !== "number") state.goal = 60;
+    ["history", "expenses", "deposits", "balanceLog"].forEach(function (k) { if (!Array.isArray(state[k])) state[k] = []; });
+  }
+  function syncSettings() {
+    $("jobName").textContent = state.job || "My job";
+    document.title = "Shift Score · " + (state.job || "watch your pay add up");
+    if (document.activeElement !== $("setJob")) $("setJob").value = state.job || "";
+    if (document.activeElement !== $("setTH")) $("setTH").value = (TH() * 100).toFixed(2).replace(/\.?0+$/, "");
+  }
+  $("obForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var job = $("obJob").value.trim(), rate = parseFloat($("obRate").value), goal = parseFloat($("obGoal").value);
+    if (!(rate > 0)) { toast("Enter your hourly pay"); return; }
+    state.job = job || "My job"; state.rate = rate; if (goal > 0) state.goal = goal; else state.goal = Math.round(rate * 5);
+    state.setup = true; save(); $("onboard").hidden = true; syncInputs(); syncSettings(); render();
+    toast("You're set. Tap Clock in now when your shift starts.");
+  });
+  $("setJob").addEventListener("input", function () { state.job = this.value.trim(); save(); syncSettings(); });
+  $("setTH").addEventListener("change", function () {
+    var v = parseFloat(this.value);
+    if (!(v > 0 && v <= 100)) { toast("Use a number from 1 to 100"); syncSettings(); return; }
+    state.takeHome = Math.round(v * 100) / 10000; save(); syncSettings(); renderAll();
+  });
+  $("btnBackup").addEventListener("click", function () {
+    saveFile("shift-score-backup-" + stamp() + ".json", JSON.stringify({ app: "shift-score", v: 1, exported: new Date().toISOString(), state: state }, null, 2), "application/json");
+    toast("Backup downloaded");
+  });
+  $("fileRestore").addEventListener("change", function () {
+    var f = this.files && this.files[0]; this.value = "";
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var data = JSON.parse(r.result), next = data && data.state ? data.state : data;
+        if (!next || !Array.isArray(next.history)) throw new Error("not a backup");
+        state = next; state.setup = true; normalize(); save(); $("onboard").hidden = true; lastLevel = -1; lastBadge = -1;
+        syncSettings(); renderAll(); toast("Backup restored");
+      } catch (e) { toast("That file isn't a Shift Score backup"); }
+    };
+    r.readAsText(f);
+  });
+  var resetTimer = null;
+  $("btnReset").addEventListener("click", function () {
+    var b = this;
+    if (!b.classList.contains("armed")) {
+      b.classList.add("armed"); b.textContent = "Tap again to erase everything";
+      resetTimer = setTimeout(function () { b.classList.remove("armed"); b.textContent = "Erase all data"; }, 4000);
+      return;
+    }
+    clearTimeout(resetTimer);
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    location.reload();
+  });
+  var deferredPrompt = null, standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (!standalone) {
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    $("installText").textContent = ios ? "Use it like an app: tap Share, then Add to Home Screen." : "Use it like an app: install it to your home screen from your browser menu.";
+    $("installBox").hidden = false;
+  }
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferredPrompt = e; $("btnInstall").hidden = false; $("installText").textContent = "Install Shift Score to use it like an app, even offline.";
+  });
+  $("btnInstall").addEventListener("click", function () {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt(); deferredPrompt.userChoice.then(function () { deferredPrompt = null; $("btnInstall").hidden = true; });
+  });
+  window.addEventListener("appinstalled", function () { $("installBox").hidden = true; });
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+
+  normalize(); syncSettings();
+  if (!state.setup) $("onboard").hidden = false;
+  syncInputs(); renderHistory(); renderSpend(); render();
+  var spendDay = dayStart(Date.now());
+  setInterval(function () { var d = dayStart(Date.now()); if (d !== spendDay) { spendDay = d; renderSpend(); } renderHistory(); }, 60000);
+  $("btnUndo").hidden = !(state.clockOut && state.lastShift);
+  setInterval(render, 100);
+})();
+</script>
