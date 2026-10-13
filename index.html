@@ -597,7 +597,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <p class="note">Estimates only: real paychecks depend on your W-4 and local taxes. State rates are approximate for typical part-time pay; edit yours if you know it. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
   </section>
   <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
-  <footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.</footer>
+  <footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.<br><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a></footer>
 </section>
 </main>
 <nav class="tabbar" aria-label="Sections">
@@ -654,7 +654,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } }
   // saveLocal: browser cache only (migrations). save: a real change — stamps it and syncs to the account.
-  function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function saveLocal() { var j = JSON.stringify(state); try { localStorage.setItem(KEY, j); } catch (e) {} if (window.ShiftNative) ShiftNative.persist(KEY, j); }
   function save() { state.updatedAt = Date.now(); saveLocal(); }
   // Unpaid breaks inside the current shift (ms), including a break in progress.
   function liveBreakMs() { return (state.curBreakMs || 0) + (state.onBreak ? Math.max(0, Date.now() - state.onBreak) : 0); }
@@ -1040,6 +1040,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     return X.write(wb, { bookType: "xlsx", type: "array" });
   }
   function saveFile(name, data, type) {
+    if (window.ShiftNative) { ShiftNative.saveFile(name, data, type).catch(function () { toast("Couldn't share the file"); }); return; }
     var url = URL.createObjectURL(new Blob([data], { type: type }));
     var a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1500);
@@ -1047,7 +1048,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   function stamp() { var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
   $("btnXlsx").addEventListener("click", function () {
     if (!window.XLSX) { toast("Still loading, try again in a second"); return; }
-    try { saveFile("Shift-Score-Hours-" + stamp() + ".xlsx", buildWorkbook(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); toast("Spreadsheet downloaded"); }
+    try { saveFile("Shift-Score-Hours-" + stamp() + ".xlsx", buildWorkbook(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); toast(window.ShiftNative ? "Spreadsheet ready" : "Spreadsheet downloaded"); }
     catch (e) { toast("Couldn't build the spreadsheet"); }
   });
 
@@ -1067,6 +1068,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var i = state.history.findIndex(function (h) { return h.in === state.clockIn; });
     if (i >= 0) state.history[i] = shift; else state.history.push(shift);
     state.clockOut = t; state.lastShift = shift; save();
+    if (window.ShiftNative) ShiftNative.clockedOut();
     $("btnUndo").hidden = false; syncInputs(); render(); renderHistory();
     toast("Shift set to " + fmtTime(state.clockIn) + "–" + fmtTime(t) + " · " + money(shift.earned));
   });
@@ -1169,6 +1171,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("btnIn").addEventListener("click", function () {
     var now = Date.now(), earlier = state.history.filter(function (h) { return dayStart(h.in) === dayStart(now); });
     state.clockIn = now; state.clockOut = null; state.lastShift = null; state.onBreak = null; state.curBreakMs = 0; save();
+    if (window.ShiftNative) ShiftNative.clockedIn(now);
     lastLevel = -1; lastBadge = -1; syncInputs(); $("btnUndo").hidden = true; render(); renderHistory();
     if (earlier.length) {
       var soFar = earlier.reduce(function (a, h) { return a + h.earned; }, 0);
@@ -1182,6 +1185,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var hrs = Math.max(0, state.clockOut - state.clockIn - brk) / 3600000;
     var shift = { in: state.clockIn, out: state.clockOut, hours: hrs, earned: hrs * state.rate, brk: brk };
     state.history.push(shift); state.lastShift = shift; save();
+    if (window.ShiftNative) ShiftNative.clockedOut();
     $("btnUndo").hidden = false; syncInputs(); render(); renderHistory();
     toast("Shift saved · " + hrs.toFixed(2) + " hrs · " + money(shift.earned));
   });
@@ -1190,6 +1194,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     state.history = state.history.filter(function (h) { return !(h.in === state.lastShift.in && h.out === state.lastShift.out); });
     state.curBreakMs = state.lastShift.brk || 0; state.onBreak = null;
     state.clockOut = null; state.lastShift = null; save();
+    if (window.ShiftNative) ShiftNative.clockedIn(state.clockIn);
     this.hidden = true; syncInputs(); render(); renderHistory(); toast("Back on the clock");
   });
 
@@ -1200,7 +1205,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       state.curBreakMs = (state.curBreakMs || 0) + took; state.onBreak = null; save(); render(); renderHistory();
       toast("Break over · " + Math.max(1, Math.round(took / 60000)) + " min unpaid. Back to earning.");
     } else {
-      state.onBreak = Date.now(); save(); render();
+      state.onBreak = Date.now(); save(); render(); if (window.ShiftNative) ShiftNative.buzz("tap");
       toast("Enjoy your break. Pay is paused until you tap End Break.");
     }
   });
@@ -1295,6 +1300,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     }
     clearTimeout(resetTimer);
     try { localStorage.removeItem(KEY); } catch (e) {}
+    if (window.ShiftNative) ShiftNative.persist(KEY, null);
     location.reload();
   });
   var deferredPrompt = null, standalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
@@ -1311,7 +1317,8 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     deferredPrompt.prompt(); deferredPrompt.userChoice.then(function () { deferredPrompt = null; $("btnInstall").hidden = true; });
   });
   window.addEventListener("appinstalled", function () { $("installBox").hidden = true; });
-  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  if (window.ShiftNative) { $("installBox").hidden = true; }
+  else if ("serviceWorker" in navigator && location.protocol !== "file:") {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 
@@ -1411,7 +1418,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("btnReport").addEventListener("click", function () { lastReport = buildReport(); $("reportView").hidden = false; $("reportView").scrollTop = 0; });
   $("repClose").addEventListener("click", function () { $("reportView").hidden = true; });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("reportView").hidden) $("reportView").hidden = true; });
-  $("repPrint").addEventListener("click", function () { window.print(); });
+  $("repPrint").addEventListener("click", function () {
+    if (window.ShiftNative) { $("repDoc").click(); toast("Open it in Pages or Word to print"); return; }
+    window.print();
+  });
   function reportFileName(ext) {
     var r = lastReport || reportRange();
     return "Shift-Score-" + r.kind + "-" + ymd(r.from) + (r.to - r.from > 86400000 ? "-to-" + ymd(addDays(r.to, -1)) : "") + "." + ext;

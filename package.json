@@ -1,0 +1,31 @@
+{
+  "name": "shift-score",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shift Score: watch your pay add up, shift by shift.",
+  "scripts": {
+    "build": "node scripts/build-www.mjs",
+    "sync": "npm run build && npx cap sync",
+    "ios": "npm run sync && npx cap open ios",
+    "android": "npm run sync && npx cap open android",
+    "assets": "npx capacitor-assets generate --ios --android --iconBackgroundColor '#F4ECDF' --iconBackgroundColorDark '#F4ECDF' --splashBackgroundColor '#F4ECDF' --splashBackgroundColorDark '#211B17'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.4",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.5.3",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/share": "^8.0.3",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "esbuild": "^0.28.2"
+  }
+}

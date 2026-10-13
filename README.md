@@ -21,3 +21,10 @@ phones or clearing browser data, and **Restore a backup** on the new device.
 It's a static site: no build step. Serve the folder from any static host
 (GitHub Pages, Netlify, Cloudflare Pages). When you change files, bump `VERSION`
 in `sw.js` so installed copies update.
+
+## App Store and Google Play
+
+The same app ships to both stores through [Capacitor](https://capacitorjs.com). See [STORE-GUIDE.md](STORE-GUIDE.md) for the steps and [store/LISTING.md](store/LISTING.md) for the listing text.
+
+- [Privacy Policy](https://kg0712.github.io/Shift-Score/privacy.html)
+- [Terms of Use](https://kg0712.github.io/Shift-Score/terms.html)
