@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shift Score · watch your pay add up</title>
 <meta name="description" content="A free hourly pay tracker that turns every shift into a game. Live earnings, a timesheet, spending and savings. Private: your data stays on your device.">
-<meta name="theme-color" content="#e9efec" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d1a17" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef2f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -18,41 +18,47 @@
 <meta property="og:description" content="Watch your pay add up, shift by shift. Free and private.">
 <meta property="og:image" content="icons/icon-512.png">
 <style>
-@font-face { font-family: "Bricolage Grotesque"; font-weight: 500; font-display: swap; src: url(fonts/bricolage-500.woff2) format("woff2"); }
-@font-face { font-family: "Bricolage Grotesque"; font-weight: 800; font-display: swap; src: url(fonts/bricolage-800.woff2) format("woff2"); }
-@font-face { font-family: "Figtree"; font-weight: 400; font-display: swap; src: url(fonts/figtree-400.woff2) format("woff2"); }
-@font-face { font-family: "Figtree"; font-weight: 500; font-display: swap; src: url(fonts/figtree-500.woff2) format("woff2"); }
-@font-face { font-family: "Figtree"; font-weight: 600; font-display: swap; src: url(fonts/figtree-600.woff2) format("woff2"); }
-@font-face { font-family: "DM Mono"; font-weight: 400; font-display: swap; src: url(fonts/dmmono-400.woff2) format("woff2"); }
-@font-face { font-family: "DM Mono"; font-weight: 500; font-display: swap; src: url(fonts/dmmono-500.woff2) format("woff2"); }
 
-/* Layout: one-column scoreboard — live earnings up top, spine of hourly "levels", stats, badges, controls, history */
+/* Liquid Glass: frosted, translucent layers floating over a soft color field. System (SF) type. */
 :root {
-  --bg: #e9efec;        /* cool clinic paper, pine-biased */
-  --panel: #f7faf8;
-  --ink: #12312b;       /* deep pine */
-  --muted: #5b736d;
-  --line: #c9d6d1;
-  --accent: #e8582b;    /* money coral */
-  --accent-soft: #fbe1d6;
-  --bone: #d9cdb8;      /* unlit vertebra */
-  --lit: #12312b;       /* lit vertebra */
-  --good: #1f8a5b;
-  --bad: #c2362b;
-  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
-  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #eef2f6;
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-strong: rgba(255, 255, 255, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.75);
+  --glass-shine: rgba(255, 255, 255, 0.85);
+  --shadow: 0 10px 30px rgba(24, 39, 75, 0.10), 0 2px 6px rgba(24, 39, 75, 0.05);
+  --panel: var(--glass);
+  --ink: #1c1c1e;
+  --muted: #55555c;
+  --line: rgba(60, 60, 67, 0.16);
+  --fill: rgba(118, 118, 128, 0.12);
+  --accent: #248a3d;
+  --accent-soft: rgba(52, 199, 89, 0.16);
+  --tint: #0071e3;
+  --bone: rgba(118, 118, 128, 0.16);
+  --lit: #34c759;
+  --good: #248a3d;
+  --bad: #d70015;
+  --blob1: rgba(52, 199, 89, 0.45); --blob2: rgba(90, 200, 250, 0.45); --blob3: rgba(175, 130, 255, 0.30); --blob4: rgba(255, 179, 128, 0.35);
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: var(--body);
+  --rounded: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d1a17; --panel: #13241f; --ink: #e4eeea; --muted: #8fa8a1; --line: #24403a;
-    --accent: #ff7a4d; --accent-soft: #3a2219; --bone: #3b4a44; --lit: #ffb08f; --good: #4fd194; --bad: #ff7b72;
+    --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
+    --accent: #30d158; --accent-soft: rgba(48, 209, 88, 0.18); --tint: #0a84ff; --bone: rgba(255, 255, 255, 0.12); --lit: #30d158; --good: #30d158; --bad: #ff453a;
+    --blob1: rgba(48, 209, 88, 0.22); --blob2: rgba(10, 132, 255, 0.24); --blob3: rgba(191, 90, 242, 0.18); --blob4: rgba(255, 159, 10, 0.12);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d1a17; --panel: #13241f; --ink: #e4eeea; --muted: #8fa8a1; --line: #24403a;
-  --accent: #ff7a4d; --accent-soft: #3a2219; --bone: #3b4a44; --lit: #ffb08f; --good: #4fd194; --bad: #ff7b72;
+  --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
+  --accent: #30d158; --accent-soft: rgba(48, 209, 88, 0.18); --tint: #0a84ff; --bone: rgba(255, 255, 255, 0.12); --lit: #30d158; --good: #30d158; --bad: #ff453a;
+  --blob1: rgba(48, 209, 88, 0.22); --blob2: rgba(10, 132, 255, 0.24); --blob3: rgba(191, 90, 242, 0.18); --blob4: rgba(255, 159, 10, 0.12);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -178,28 +184,131 @@ button.danger.armed { background: var(--bad); color: #fff; }
 .foot { text-align: center; font-size: .78rem; color: var(--muted); padding: 8px 16px 32px; }
 .span2 { grid-column: span 2; }
 @media (min-width: 461px) { .controls .span2 { grid-column: span 2; } }
+
+/* ===== Liquid Glass overrides ===== */
+body { font-family: var(--body); font-size: 17px; line-height: 1.4; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; background: var(--bg); }
+body::before { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40vmax 40vmax at 15% 10%, var(--blob1), transparent 60%),
+    radial-gradient(45vmax 45vmax at 90% 20%, var(--blob2), transparent 60%),
+    radial-gradient(40vmax 40vmax at 80% 85%, var(--blob3), transparent 60%),
+    radial-gradient(35vmax 35vmax at 10% 80%, var(--blob4), transparent 60%);
+  filter: blur(20px); }
+.wrap { gap: 14px; padding-block: 8px calc(120px + env(safe-area-inset-bottom, 0px)); }
+.glass, .panel, .score, .tabbar, .toast, .obcard {
+  background: var(--glass); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-edge); box-shadow: var(--shadow), inset 0 1px 0 var(--glass-shine); }
+.panel { border-radius: 22px; padding: 16px 16px 18px; }
+.panel h2 { font-family: var(--display); font-weight: 600; font-size: 1.06rem; letter-spacing: -0.01em; margin-bottom: 12px; }
+.panel h2 span { font-family: var(--body); font-size: .8rem; font-weight: 400; }
+
+.largetitle { padding: 18px 4px 2px; display: grid; gap: 6px; }
+.largetitle h1 { font-family: var(--display); font-weight: 700; font-size: 2.1rem; letter-spacing: -0.025em; line-height: 1.05; margin: 0; }
+.largetitle .sub { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: .95rem; }
+.status { font-size: .78rem; letter-spacing: 0; text-transform: none; font-weight: 600; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--fill); color: var(--muted); }
+.live.status { background: var(--accent-soft); color: var(--accent); }
+.dot { width: 8px; height: 8px; }
+.live .dot { background: var(--lit); }
+
+.score { border-radius: 28px; padding: 22px 16px 16px; text-align: center; }
+.score .label { font-size: .85rem; letter-spacing: 0; text-transform: none; font-weight: 500; }
+.money { font-family: var(--rounded); font-weight: 700; letter-spacing: -0.03em; font-size: clamp(3.6rem, 19vw, 5.6rem); }
+.money .cur { color: var(--accent); }
+.money .tick { font-family: var(--rounded); }
+.rate-line { font-family: var(--body); font-size: .85rem; }
+.clockbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.clockbtns #btnUndo { grid-column: 1 / -1; }
+
+button, .filebtn { font-family: var(--body); font-weight: 600; font-size: 1rem; border-radius: 999px; padding: 12px 20px; min-height: 46px;
+  background: var(--fill); border: 1px solid transparent; color: var(--tint); -webkit-tap-highlight-color: transparent; transition: transform .15s, filter .15s; }
+button:active, .filebtn:active { transform: scale(0.97); }
+button:hover { filter: brightness(1.04); }
+button.primary { background: var(--tint); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(0, 113, 227, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+#btnIn { color: #fff; background: linear-gradient(180deg, #2fbf5b, #1f8a3f); box-shadow: 0 8px 20px rgba(36, 138, 61, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4); min-height: 54px; font-size: 1.06rem; }
+#btnOut { background: rgba(215, 0, 21, 0.10); color: var(--bad); min-height: 54px; font-size: 1.06rem; }
+button.danger { background: rgba(215, 0, 21, 0.10); color: var(--bad); border-color: transparent; }
+button.danger.armed { background: var(--bad); color: #fff; }
+button:focus-visible, input:focus-visible, .tabbtn:focus-visible { outline: 3px solid color-mix(in srgb, var(--tint) 45%, transparent); outline-offset: 2px; }
+
+.field label, .stat .k { font-size: .8rem; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--muted); }
+input { font-family: var(--body); font-size: 1.06rem; background: var(--fill); border: 1px solid transparent; border-radius: 12px; padding: 11px 13px; color: var(--ink); }
+input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, var(--tint) 40%, transparent); }
+.stat .v { font-family: var(--rounded); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
+
+.goalbar { height: 8px; background: var(--fill); }
+.goalbar i { background: linear-gradient(90deg, #34c759, #30b0c7); }
+.goaltext { font-family: var(--body); font-size: .82rem; }
+.spine { gap: 6px; }
+.bone { width: 100%; aspect-ratio: auto; height: 34px; border-radius: 10px; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); }
+.bone::before, .bone::after { display: none; }
+.vert .lv { font-family: var(--body); font-size: .72rem; }
+.level-name b { font-family: var(--display); font-weight: 600; }
+.next { font-family: var(--body); }
+
+.badge { border: none; background: var(--fill); border-radius: 16px; opacity: .6; }
+.badge.on { background: var(--accent-soft); opacity: 1; }
+.badge b { font-family: var(--display); font-weight: 600; font-size: .95rem; }
+.badge small { font-family: var(--body); }
+
+.verdict { border: none; border-radius: 14px; background: var(--fill); }
+.verdict b { font-family: var(--display); font-weight: 600; }
+.verdict .amt { font-family: var(--rounded); font-weight: 600; }
+.verdict.ahead { background: var(--accent-soft); color: var(--accent); }
+.verdict.over { background: rgba(215, 0, 21, 0.10); color: var(--bad); }
+.spendlist li { border-bottom: 1px solid var(--line); }
+.spendlist .right { font-family: var(--rounded); }
+.spendlist button { min-height: 32px; padding: 4px 12px; font-size: .85rem; color: var(--bad); background: rgba(215, 0, 21, 0.08); }
+.hist { font-size: .9rem; }
+.hist th { font-size: .72rem; letter-spacing: 0; text-transform: none; font-weight: 600; border-bottom: 1px solid var(--line); }
+.hist td { font-family: var(--body); border-bottom: 1px solid var(--line); }
+.sheet tr.wk td { font-size: .74rem; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.sheet tfoot td { border-top: 1px solid var(--ink); }
+.note, .empty { font-size: .8rem; }
+.sync { margin: 0; font-family: var(--body); font-size: .82rem; justify-content: center; }
+.foot { padding: 4px 16px 0; }
+
+.tabbar { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  width: min(440px, calc(100% - 28px)); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 6px; border-radius: 999px;
+  background: var(--glass-strong); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%); }
+.tabbtn { display: grid; justify-items: center; gap: 2px; padding: 7px 0 6px; min-height: 52px; border-radius: 999px; background: transparent; border: none; box-shadow: none;
+  color: var(--muted); font-size: .68rem; font-weight: 600; letter-spacing: 0; }
+.tabbtn svg { width: 24px; height: 24px; }
+.tabbtn[aria-selected="true"] { color: var(--tint); background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--glass-shine), 0 2px 8px rgba(24, 39, 75, 0.10); }
+.toast { width: max-content; max-width: calc(100% - 32px); color: var(--ink); background: var(--glass-strong); border-radius: 999px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); font-weight: 600; }
+
+.onboard { background: transparent; }
+.onboard::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--bg); }
+.obcard { border-radius: 30px; padding: 26px 20px 22px; }
+.obcard .brand { font-family: var(--display); font-weight: 600; color: var(--muted); font-size: .95rem; }
+.obcard h1 { font-family: var(--display); font-weight: 700; letter-spacing: -0.03em; }
+.obcard h1 em { color: var(--accent); }
+.obpoints li::before { background: var(--lit); }
+.obcard .primary { min-height: 54px; font-size: 1.06rem; }
+.stale { border: none; border-radius: 16px; background: rgba(215, 0, 21, 0.10); }
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .panel, .score, .tabbar, .toast, .obcard { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--glass-strong); }
+}
 </style>
 
-<div class="wrap">
-  <header>
-    <div class="brand">Shift Score <small id="jobName">My job</small></div>
-    <div class="status" id="status"><span class="dot"></span><span id="statusText">On the clock</span></div>
-  </header>
-  <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
-
+<main class="wrap">
+<section class="tab" id="tab-today" aria-label="Today">
+  <header class="largetitle"><h1>Today</h1><div class="sub"><span id="jobName">My job</span><span class="status" id="status"><span class="dot"></span><span id="statusText">Not clocked in</span></span></div></header>
   <div class="stale" id="stale" hidden></div>
   <section class="score" aria-live="off">
     <div class="label">Earned today</div>
     <div class="money" id="money"><span class="cur">$</span><span id="dollars">0.00</span><span class="tick" id="tick">00</span></div>
     <div class="rate-line" id="rateLine">+$0.20 every minute · +$3.00 every 15 min</div>
+    <div class="clockbtns">
+      <button id="btnIn" type="button">Clock In</button>
+      <button id="btnOut" type="button">Clock Out</button>
+      <button id="btnUndo" type="button" hidden>Undo clock-out</button>
+    </div>
   </section>
-
   <section class="panel">
     <h2>Level <span id="nextText">Next level in --:--</span></h2>
     <div class="spine" id="spine" aria-label="Hours completed, one block per hour"></div>
     <div class="level-name" id="levelName"></div>
   </section>
-
   <section class="panel">
     <h2>Shift stats <span id="shiftDate"></span></h2>
     <div class="stats">
@@ -210,7 +319,30 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <div class="goalbar" aria-hidden="true"><i id="goalFill"></i></div>
     <div class="goaltext"><span id="goalLeft">Daily goal</span><span id="goalPct">0%</span></div>
   </section>
-
+  <section class="panel">
+    <h2>Badges <span id="badgeCount">0 unlocked</span></h2>
+    <div class="badges" id="badges"></div>
+  </section>
+  <section class="panel">
+    <h2>Shift details <span>Edit times, pay and goal</span></h2>
+    <div class="controls">
+      <div class="field"><label for="inTime">Clock-in</label><input id="inTime" type="time" step="60"></div>
+      <div class="field"><label for="rate">Rate $/hr</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
+      <div class="field"><label for="outTime">Clock-out</label><input id="outTime" type="time" step="60"></div>
+      <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
+    </div>
+    <p class="note" id="thNote">Take-home is an estimate using the Take-home % in Settings.</p>
+  </section>
+</section>
+<section class="tab" id="tab-sheet" aria-label="Timesheet" hidden>
+  <header class="largetitle"><h1>Timesheet</h1></header>
+  <section class="panel">
+    <h2>Days worked <span id="histTotal"></span></h2>
+    <div class="tablewrap"><table class="hist sheet"><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Take-home</th><th>Spent</th><th>Left over</th></tr></thead><tbody id="histBody"></tbody><tfoot id="histFoot"></tfoot></table></div>
+    <p class="empty" id="histEmpty">Clock in to start your timesheet.</p>
+    <div class="btns"><button id="btnXlsx" type="button">Download spreadsheet (.xlsx)</button></div>
+    <p class="note">Fills in by itself from your clock-ins and Today's spending: one row per day, weekly subtotals, and what was left after spending (red means you spent more than you earned). The download is an Excel file with working formulas, plus sheets for every clock-in, every purchase and every bank balance you entered.</p>
+  </section>
   <section class="panel">
     <h2>All-time totals <span id="careerSince"></span></h2>
     <div class="stats">
@@ -219,7 +351,9 @@ button.danger.armed { background: var(--bad); color: #fff; }
       <div class="stat"><div class="k">Hours · Days</div><div class="v" id="careerHours">0.00 · 0</div></div>
     </div>
   </section>
-
+</section>
+<section class="tab" id="tab-money" aria-label="Money" hidden>
+  <header class="largetitle"><h1>Money</h1></header>
   <section class="panel">
     <h2>Today's spending <span id="spendDate"></span></h2>
     <div class="stats">
@@ -236,7 +370,6 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <ul class="spendlist" id="spendList"></ul>
     <p class="note">Earned today is take-home pay from today's shifts. Spending also comes off your projected bank balance.</p>
   </section>
-
   <section class="panel">
     <h2>Bank balance <span>You type it in · private to this device</span></h2>
     <div class="stats">
@@ -247,7 +380,6 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <div class="btns"><button id="btnPaid" type="button">I got paid</button></div>
     <p class="note" id="paidNote">Take-home from every shift since your last paycheck. When a paycheck lands, tap “I got paid”, then fix the balance to the exact deposit if it differs.</p>
   </section>
-
   <section class="panel">
     <h2>Since your last balance <span id="bcWhen"></span></h2>
     <div class="stats">
@@ -259,7 +391,6 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <div class="field" id="bcPrevWrap" hidden style="margin-top:12px"><label for="prevBal">Your previous balance $ (if you know it)</label><input id="prevBal" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 650.00"></div>
     <p class="note">Spent = previous balance + paychecks marked received − balance now. Update the balance whenever you check your bank app.</p>
   </section>
-
   <section class="panel">
     <h2>Saved from earnings <span>All time</span></h2>
     <div class="stats">
@@ -271,40 +402,13 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <div class="goaltext"><span id="svText">Share of earnings saved</span><span id="svPct">0%</span></div>
     <p class="note">Spent counts what you log in Today's spending, or what your bank balance shows you spent, whichever is higher.</p>
   </section>
-
-  <section class="panel">
-    <h2>Badges <span id="badgeCount">0 unlocked</span></h2>
-    <div class="badges" id="badges"></div>
-  </section>
-
-  <section class="panel">
-    <h2>Clock <span>Times, rate and goal</span></h2>
-    <div class="controls">
-      <div class="field"><label for="inTime">Clock-in</label><input id="inTime" type="time" step="60"></div>
-      <div class="field"><label for="rate">Rate $/hr</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
-      <div class="field"><label for="outTime">Clock-out</label><input id="outTime" type="time" step="60"></div>
-      <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
-    </div>
-    <div class="btns">
-      <button class="primary" id="btnIn" type="button">Clock in now</button>
-      <button id="btnOut" type="button">Clock out</button>
-      <button id="btnUndo" type="button" hidden>Undo clock-out</button>
-    </div>
-    <p class="note" id="thNote">Take-home is an estimate using the Take-home % in Settings.</p>
-  </section>
-
-  <section class="panel">
-    <h2>Timesheet &amp; money <span id="histTotal"></span></h2>
-    <div class="tablewrap"><table class="hist sheet"><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Take-home</th><th>Spent</th><th>Left over</th></tr></thead><tbody id="histBody"></tbody><tfoot id="histFoot"></tfoot></table></div>
-    <p class="empty" id="histEmpty">Clock in to start your timesheet.</p>
-    <div class="btns"><button id="btnXlsx" type="button">Download spreadsheet (.xlsx)</button></div>
-    <p class="note">Fills in by itself from your clock-ins and Today's spending: one row per day, weekly subtotals, and what was left after spending (red means you spent more than you earned). The download is an Excel file with working formulas, plus sheets for every clock-in, every purchase and every bank balance you entered.</p>
-  </section>
+</section>
+<section class="tab" id="tab-settings" aria-label="Settings" hidden>
+  <header class="largetitle"><h1>Settings</h1></header>
   <section class="panel install" id="installBox" hidden>
     <p id="installText">Add Shift Score to your home screen to use it like an app.</p>
     <button class="primary" id="btnInstall" type="button" hidden>Install app</button>
   </section>
-
   <section class="panel">
     <h2>Settings <span>Private · stored on this device</span></h2>
     <div class="controls">
@@ -318,8 +422,17 @@ button.danger.armed { background: var(--bad); color: #fff; }
     </div>
     <p class="note">Take-home % estimates your pay after taxes: 92.35% removes only Social Security and Medicare. Lower it if federal or state income tax comes out of your checks. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
   </section>
-</div>
-<footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.</footer>
+  <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
+  <footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.</footer>
+</section>
+</main>
+<nav class="tabbar" aria-label="Sections">
+  <button class="tabbtn" type="button" data-tab="today" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>Today</span></button>
+  <button class="tabbtn" type="button" data-tab="sheet" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5"/></svg><span>Timesheet</span></button>
+  <button class="tabbtn" type="button" data-tab="money" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="3.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.6v.01M18 14.4v.01"/></svg><span>Money</span></button>
+  <button class="tabbtn" type="button" data-tab="settings" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></svg><span>Settings</span></button>
+</nav>
+
 <div class="onboard" id="onboard" hidden>
   <form class="obcard" id="obForm">
     <div class="brand">Shift Score</div>
@@ -333,7 +446,7 @@ button.danger.armed { background: var(--bad); color: #fff; }
     <div class="field"><label for="obJob">Where do you work?</label><input id="obJob" type="text" maxlength="40" placeholder="Campus library, coffee shop…" required></div>
     <div class="field"><label for="obRate">Hourly pay $</label><input id="obRate" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.00" required></div>
     <div class="field"><label for="obGoal">Daily goal $ (optional)</label><input id="obGoal" type="number" min="1" step="1" inputmode="decimal" placeholder="60"></div>
-    <button class="primary" type="submit">Start tracking</button>
+    <button class="primary" type="submit">Start Tracking</button>
     <p class="note">You can change any of this later in Settings.</p>
   </form>
 </div>
@@ -875,6 +988,21 @@ button.danger.armed { background: var(--bad); color: #fff; }
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
+
+  var TABS = ["today", "sheet", "money", "settings"];
+  function showTab(t) {
+    TABS.forEach(function (n) {
+      $("tab-" + n).hidden = n !== t;
+      document.querySelector('.tabbtn[data-tab="' + n + '"]').setAttribute("aria-selected", n === t ? "true" : "false");
+    });
+    try { localStorage.setItem("shiftscore.tab", t); } catch (e) {}
+    window.scrollTo(0, 0);
+    if (t === "sheet") renderHistory();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".tabbtn"), function (b) { b.addEventListener("click", function () { showTab(b.dataset.tab); }); });
+  var startTab = "today";
+  try { startTab = localStorage.getItem("shiftscore.tab") || "today"; } catch (e) {}
+  showTab(TABS.indexOf(startTab) >= 0 ? startTab : "today");
 
   normalize(); syncSettings();
   if (!state.setup) $("onboard").hidden = false;
