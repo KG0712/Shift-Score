@@ -365,6 +365,33 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .txlist .wl { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; color: var(--tint); text-decoration: none; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .txlist .tsub { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
 .importrow { margin-top: 12px; }
+.floorrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.floorrow .primary { min-height: 44px; }
+.floorline { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.floorline .k { display: block; font-size: .8rem; color: var(--muted); font-weight: 500; }
+.floorline b { font-family: var(--rounded); font-weight: 700; font-size: 1.35rem; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.floorline .r { text-align: right; }
+.floorline .r.bad b { color: var(--bad); }
+.floorbar { position: relative; height: 10px; border-radius: 99px; background: var(--fill); margin: 12px 0 2px; overflow: visible; }
+.floorbar i { display: block; height: 100%; border-radius: 99px; background: var(--good); transition: width .5s; max-width: 100%; }
+.floorbar.warn i { background: #d99a2b; } .floorbar.bad i { background: var(--bad); }
+.floorbar span { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 2px; opacity: .55; }
+.verdict.warn { border-color: #d99a2b; color: #b87a14; }
+.saver { border-color: color-mix(in srgb, var(--tint) 45%, transparent); background: color-mix(in srgb, var(--tint) 8%, var(--panel)); }
+.saverhero { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; text-align: center; padding: 4px 0 12px; border-bottom: 1px solid var(--line); }
+.saverhero .k { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
+.saverhero b { display: block; font-family: var(--rounded); font-weight: 700; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.saverhero div:first-child b { font-size: 1.7rem; color: var(--tint); }
+.saverplan { list-style: none; margin: 8px 0 0; padding: 0; }
+.saverplan li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .93rem; }
+.saverplan li:last-child { border-bottom: 0; }
+.saverplan .ci { font-size: 1.05rem; text-align: center; }
+.saverplan small { display: block; color: var(--muted); font-size: .78rem; }
+.saverplan .amt { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.saverplan .amt.zero { color: var(--bad); }
+.savertips-h { font-family: var(--display); font-size: .95rem; margin: 16px 0 8px; }
+.budcats li.saverow .ca small { color: var(--tint); font-weight: 600; }
+@media (max-width: 380px) { .saverhero b { font-size: 1.05rem; } .saverhero div:first-child b { font-size: 1.35rem; } }
 .insights { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .insights li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .93rem; }
 .insights .ii { font-size: 1.15rem; line-height: 1.3; text-align: center; }
@@ -666,6 +693,44 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     </div>
     <div class="verdict" id="budPace"><b id="budPaceText">Add a purchase to see your pace</b><span class="amt" id="budPaceAmt"></span></div>
     <p class="note" id="budEarn"></p>
+  </section>
+
+  <section class="panel floorpanel" id="floorPanel">
+    <h2>Balance floor <button type="button" class="linkbtn" id="floorEditBtn" hidden>Change</button></h2>
+    <div id="floorSetup">
+      <p class="note" style="margin-top:0">Pick an amount your bank balance should never go below. If it gets close, Shift Score switches to <b>Saver mode</b>: a bare-minimum budget until your next paycheck.</p>
+      <div class="floorrow">
+        <div class="field"><label for="floorAmt">Keep my balance above $</label><input id="floorAmt" type="number" min="1" step="10" inputmode="decimal" placeholder="500"></div>
+        <button type="button" class="primary" id="floorOn">Turn on</button>
+      </div>
+    </div>
+    <div id="floorNeedBal" hidden>
+      <p class="note" style="margin-top:0">To watch your floor, Shift Score needs your bank balance. Enter it once and it's kept up to date as you log spending and paychecks.</p>
+      <div class="floorrow">
+        <div class="field"><label for="floorBal">My bank balance right now $</label><input id="floorBal" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 640.00"></div>
+        <button type="button" class="primary" id="floorBalSave">Save</button>
+      </div>
+    </div>
+    <div id="floorStatus" hidden>
+      <div class="floorline"><div><span class="k">Balance now (estimate)</span><b id="floorBalNow">$0.00</b></div><div class="r"><span class="k" id="floorRoomK">Above your floor</span><b id="floorRoom">$0.00</b></div></div>
+      <div class="floorbar" aria-hidden="true"><i id="floorFill"></i><span id="floorMark"></span></div>
+      <div class="verdict" id="floorVerdict"><b id="floorVerdictText">You're safe</b><span class="amt" id="floorVerdictAmt"></span></div>
+      <p class="note" id="floorNote"></p>
+      <div class="btns" id="floorSaverBtns"></div>
+    </div>
+  </section>
+
+  <section class="panel saver" id="saverPanel" hidden>
+    <h2>🛡️ Saver mode <span id="saverUntil"></span></h2>
+    <div class="saverhero">
+      <div><span class="k">Spend at most</span><b id="saverDaily">$0.00</b><span class="k">a day</span></div>
+      <div><span class="k">Left today</span><b id="saverToday">$0.00</b></div>
+      <div><span class="k">Until payday</span><b id="saverTotal">$0.00</b></div>
+    </div>
+    <ul class="saverplan" id="saverPlan"></ul>
+    <h3 class="savertips-h">Easiest ways to spend less</h3>
+    <ul class="insights" id="saverTips"></ul>
+    <p class="note" id="saverNote">Saver limits replace your normal limits until payday or until your balance is back above your floor. Your normal budget is kept and comes back automatically.</p>
   </section>
 
   <section class="panel" id="budSetup" hidden>
@@ -1290,6 +1355,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 
   $("balance").addEventListener("input", function () {
     var b = parseFloat(this.value); state.balance = isNaN(b) ? null : b; state.balanceSetAt = Date.now(); save(); render();
+    if (typeof renderBudget === "function" && typeof CAT_DEFAULTS !== "undefined") renderBudget();
   });
   $("balance").addEventListener("change", function () {
     var b = parseFloat(this.value); if (isNaN(b)) return;
@@ -1844,8 +1910,147 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   }
   function svgEl(tag, attrs) { var el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (var k in attrs) el.setAttribute(k, attrs[k]); return el; }
 
+  // ---- Balance floor and Saver mode ----
+  var ESSENTIAL = { groc: 1, bills: 1, gas: 1 };
+  function floorCfg() { var b = budget(); return b.floor || null; }
+  function balanceNow() { return typeof state.balance === "number" ? state.balance - spentSince(state.balanceSetAt || 0) : null; }
+  function nextPayday(now) { return payPeriod(now).to; }
+  function dailyPace(now) {
+    // recent everyday spending: last 14 days, ignoring one-off purchases of $75+
+    var from = now - 14 * 86400000, sum = 0;
+    state.expenses.forEach(function (e) { if (e.t >= from && e.t <= now && e.amt < 75) sum += e.amt; });
+    return sum / 14;
+  }
+  function catNeed(id, now) {
+    // what an essential category usually costs per day (last 30 days)
+    var from = now - 30 * 86400000, sum = 0;
+    state.expenses.forEach(function (e) { if (e.t >= from && catOf(e).id === id) sum += e.amt; });
+    return sum / 30;
+  }
+  function floorState(now) {
+    var f = floorCfg(); if (!f || !(f.amount > 0)) return { off: true };
+    var bal = balanceNow(); if (bal === null) return { needBal: true, floor: f.amount };
+    var pay = nextPayday(now), days = Math.max(1, Math.ceil((pay - now) / 86400000));
+    var room = bal - f.amount, pace = dailyPace(now), projected = pace * days;
+    var level = room <= 0 ? "below" : projected > room ? "watch" : "safe";
+    var dipAt = level === "watch" && pace > 0 ? now + room / pace * 86400000 : null;
+    var snoozed = f.snoozeUntil && f.snoozeUntil > now;
+    var saver = !snoozed && (f.forceOn || (f.auto !== false && level !== "safe"));
+    return { floor: f.amount, bal: bal, room: room, days: days, pay: pay, pace: pace, projected: projected, level: level, dipAt: dipAt, saver: saver, snoozed: snoozed, forced: !!f.forceOn };
+  }
+  function saverPlan(fs, now) {
+    // The least you can spend and still cover essentials: essentials first, a small food allowance, everything else $0.
+    var allowance = Math.max(0, fs.room), days = fs.days, plan = [], used = 0;
+    var cats = budget().cats;
+    var ess = cats.filter(function (c) { return ESSENTIAL[c.id]; }).map(function (c) {
+      var spentSoFar = 0, p = budRange(now); // spending already logged since this pay period started doesn't count against the plan
+      return { c: c, need: Math.round(catNeed(c.id, now) * days * 100) / 100 };
+    });
+    var essNeed = ess.reduce(function (a, x) { return a + x.need; }, 0);
+    // Already below the floor: essentials can't be skipped, so they keep their usual amount (only what you must pay).
+    var below = fs.room <= 0, scale = !below && essNeed > allowance && essNeed > 0 ? allowance / essNeed : 1;
+    ess.forEach(function (x) { var amt = Math.floor(x.need * scale); plan.push({ c: x.c, amt: amt, why: x.need > 0 ? (below ? "Only what you must pay" : "Essentials only" + (scale < 1 ? " · trimmed to fit" : "")) : "Nothing needed lately" }); used += amt; });
+    var foodCat = catById("food"), left = below ? Math.round(4 * days) : Math.max(0, allowance - used);
+    if (foodCat) { var food = Math.min(left, Math.round((below ? 4 : 6) * days)); plan.push({ c: foodCat, amt: food, why: food > 0 ? "About $" + (below ? 4 : 6) + " a day: cook or eat on campus" : "Use groceries you already have" }); used += food; }
+    cats.forEach(function (c) { if (!ESSENTIAL[c.id] && c.id !== "food") plan.push({ c: c, amt: 0, why: "Paused until payday" }); });
+    var total = used, daily = Math.floor(total / days * 100) / 100;
+    var t0 = dayStart(now), spentToday = state.expenses.filter(function (e) { return e.t >= t0 && e.t <= now; }).reduce(function (a, e) { return a + e.amt; }, 0);
+    return { plan: plan, total: total, daily: daily, leftToday: Math.max(0, daily - spentToday), spentToday: spentToday, byId: plan.reduce(function (m, x) { m[x.c.id] = x.amt; return m; }, {}) };
+  }
+  function saverTips(fs, now) {
+    var from = now - 30 * 86400000, recent = state.expenses.filter(function (e) { return e.t >= from && !ESSENTIAL[catOf(e).id] && catOf(e).id !== "school" && e.amt < 75; });
+    var tips = [], byPlace = {}, byCat = {};
+    recent.forEach(function (e) {
+      var k = whereLabel(e.where) || catOf(e).name; byPlace[k] = byPlace[k] || { n: 0, a: 0, web: e.where && e.where.kind === "web", cat: catOf(e) }; byPlace[k].n++; byPlace[k].a += e.amt;
+      byCat[catOf(e).id] = (byCat[catOf(e).id] || 0) + e.amt;
+    });
+    var places = Object.keys(byPlace).map(function (k) { return { k: k, v: byPlace[k] }; }).sort(function (a, b) { return b.v.a - a.v.a; });
+    places.filter(function (p) { return p.v.n >= 2; }).slice(0, 3).forEach(function (p) {
+      var avg = p.v.a / p.v.n, lbl = p.k;
+      if (/doordash|ubereats|grubhub|uber eats/i.test(lbl)) tips.push(["🍳", "Skip delivery until payday.", p.v.n + " orders on " + lbl + " in the last 30 days cost " + money(p.v.a) + ". Each one you skip saves about " + money(avg) + "."]);
+      else if (/uber|lyft|hitch/i.test(lbl)) tips.push(["🚌", "Swap rides for the bus, a bike or a friend.", money(p.v.a) + " on " + lbl + " in 30 days. Skipping one ride saves about " + money(avg) + "."]);
+      else tips.push([p.v.cat.icon, "Pause " + lbl + " for now.", money(p.v.a) + " across " + p.v.n + (p.v.n === 1 ? " purchase" : " purchases") + " in the last 30 days."]);
+    });
+    if (fs.pace > 0) tips.push(["📉", "Your everyday pace is " + money(fs.pace) + " a day.", "Getting it down to the saver amount keeps you above " + money(fs.floor) + " until payday."]);
+    tips.push(["⏱️", "Pick up an extra shift if you can.", "One 5-hour shift adds about " + money(5 * state.rate * TH()) + " take-home to your next paycheck."]);
+    return tips.slice(0, 4);
+  }
+  var lastFloorLevel = null;
+  function renderFloor() {
+    if (!$("floorPanel")) return;
+    var now = Date.now(), f = floorCfg(), fs = floorState(now);
+    $("floorSetup").hidden = !fs.off; $("floorNeedBal").hidden = !fs.needBal; $("floorStatus").hidden = fs.off || fs.needBal;
+    $("floorEditBtn").hidden = !!fs.off;
+    if (fs.off) { if (f && f.amount && document.activeElement !== $("floorAmt")) $("floorAmt").value = f.amount; $("saverPanel").hidden = true; return; }
+    if (fs.needBal) { $("saverPanel").hidden = true; return; }
+    $("floorBalNow").textContent = money(fs.bal);
+    var rr = $("floorRoom").parentNode; rr.classList.toggle("bad", fs.room < 0);
+    $("floorRoomK").textContent = fs.room >= 0 ? "Above your " + moneyShort(fs.floor) + " floor" : "Below your " + moneyShort(fs.floor) + " floor";
+    $("floorRoom").textContent = money(Math.abs(fs.room));
+    var bar = $("floorBar") || $("floorFill").parentNode, maxv = Math.max(fs.bal, fs.floor) * 1.25 || 1;
+    bar.classList.remove("warn", "bad"); if (fs.level === "below") bar.classList.add("bad"); else if (fs.level === "watch") bar.classList.add("warn");
+    $("floorFill").style.width = Math.max(0, Math.min(100, fs.bal / maxv * 100)) + "%";
+    $("floorMark").style.left = (fs.floor / maxv * 100) + "%";
+    var v = $("floorVerdict"); v.classList.remove("ahead", "over", "warn");
+    var payStr = fmtDay(fs.pay, { weekday: "short", month: "short", day: "numeric" });
+    if (fs.level === "below") { v.classList.add("over"); $("floorVerdictText").textContent = "Below your floor"; $("floorVerdictAmt").textContent = "-" + money(-fs.room); }
+    else if (fs.level === "watch") { v.classList.add("warn"); $("floorVerdictText").textContent = "On pace to dip below by " + fmtDay(fs.dipAt || fs.pay, { weekday: "short", month: "short", day: "numeric" }); $("floorVerdictAmt").textContent = ""; }
+    else { v.classList.add("ahead"); $("floorVerdictText").textContent = "Safe until payday"; $("floorVerdictAmt").textContent = "+" + money(fs.room - fs.projected); }
+    $("floorNote").textContent = "Next paycheck around " + payStr + " (" + fs.days + (fs.days === 1 ? " day" : " days") + "). At your usual " + money(fs.pace) + " a day you'd spend about " + money(fs.projected) + " before then. Balance is your last entry minus spending logged since" + (state.balanceSetAt ? " (" + fmtDay(state.balanceSetAt, { month: "short", day: "numeric" }) + ")" : "") + "; update it on the Money tab when you check your bank.";
+    var btns = $("floorSaverBtns"); btns.innerHTML = "";
+    var mk = function (label, cls, fn) { var b = document.createElement("button"); b.type = "button"; b.textContent = label; if (cls) b.className = cls; b.addEventListener("click", fn); btns.appendChild(b); };
+    if (fs.saver) mk("Turn off Saver mode until payday", "", function () { f.snoozeUntil = fs.pay; f.forceOn = false; save(); renderBudget(); toast("Saver mode off until " + payStr); });
+    else {
+      mk("Turn on Saver mode now", "primary", function () { f.forceOn = true; f.snoozeUntil = 0; save(); renderBudget(); toast("Saver mode on until payday"); });
+      if (fs.snoozed) mk("Resume automatic Saver mode", "", function () { f.snoozeUntil = 0; save(); renderBudget(); });
+    }
+    // saver panel
+    var sp = $("saverPanel"); sp.hidden = !fs.saver;
+    if (fs.saver) {
+      var plan = saverPlan(fs, now);
+      $("saverUntil").textContent = "until " + payStr;
+      $("saverDaily").textContent = money(plan.daily);
+      $("saverToday").textContent = money(plan.leftToday);
+      $("saverTotal").textContent = money(plan.total);
+      var ul = $("saverPlan"); ul.innerHTML = "";
+      plan.plan.forEach(function (x) {
+        var li = document.createElement("li");
+        var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = x.c.icon;
+        var nm = document.createElement("div"); nm.textContent = x.c.name; var sm = document.createElement("small"); sm.textContent = x.why; nm.appendChild(sm);
+        var am = document.createElement("div"); am.className = "amt" + (x.amt <= 0 ? " zero" : ""); am.textContent = x.amt > 0 ? money(x.amt) : "$0";
+        li.appendChild(ic); li.appendChild(nm); li.appendChild(am); ul.appendChild(li);
+      });
+      var tl = $("saverTips"); tl.innerHTML = "";
+      saverTips(fs, now).forEach(function (t) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; i.textContent = t[0]; var d = document.createElement("div"); d.textContent = t[1]; var s2 = document.createElement("small"); s2.textContent = t[2]; d.appendChild(s2); li.appendChild(i); li.appendChild(d); tl.appendChild(li); });
+      $("saverNote").textContent = fs.room <= 0
+        ? "You're already below your floor, so the plan covers essentials only (scaled to what you usually spend on them). Everything else waits until payday."
+        : "Saver limits replace your normal limits until payday or until you're comfortably above your floor again. Your normal budget is kept and comes back automatically.";
+    }
+    // a heads-up the moment the floor is crossed
+    if (lastFloorLevel && lastFloorLevel !== fs.level && fs.level !== "safe") {
+      toast(fs.level === "below" ? "Your balance is below " + money(fs.floor) + ". Saver mode is on." : "Heads up: at this pace you'll dip below " + money(fs.floor) + " before payday.");
+      if (window.ShiftNative) ShiftNative.buzz("tap");
+    }
+    lastFloorLevel = fs.level;
+  }
+  $("floorOn").addEventListener("click", function () {
+    var v = parseFloat($("floorAmt").value); if (!(v > 0)) { toast("Enter an amount, like 500"); $("floorAmt").focus(); return; }
+    var b = budget(); b.floor = { amount: Math.round(v * 100) / 100, auto: true, snoozeUntil: 0, forceOn: false };
+    save(); renderBudget(); toast("Floor set at " + money(v) + ". Saver mode turns on if you get close.");
+  });
+  $("floorEditBtn").addEventListener("click", function () {
+    var b = budget(), cur = b.floor ? b.floor.amount : "";
+    b.floor = null; save(); renderBudget(); $("floorAmt").value = cur; $("floorAmt").focus(); $("floorAmt").select();
+  });
+  $("floorBalSave").addEventListener("click", function () {
+    var v = parseFloat($("floorBal").value); if (isNaN(v)) { toast("Enter your balance"); return; }
+    state.balance = Math.round(v * 100) / 100; state.balanceSetAt = Date.now(); logBalance(state.balance); save(); render(); renderBudget();
+    $("balance").value = state.balance; toast("Balance saved");
+  });
+
   function renderBudget() {
     if (!$("tab-budget")) return;
+    renderFloor();
     var b = budget(), now = Date.now(), r = budRange(now), list = spendIn(r);
     Array.prototype.forEach.call($("budSeg").querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", x.dataset.p === b.period ? "true" : "false"); });
     $("budSub").textContent = (r.kind === "pay" ? "This pay period · " : "") + r.label;
@@ -1918,7 +2123,9 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         });
         li.appendChild(nm); li.appendChild(lim); li.appendChild(del);
       } else {
+        var fsx = floorState(Date.now()), sv = fsx.saver ? saverPlan(fsx, Date.now()) : null;
         var v = byCat[c.id] || 0, L = catLimit(c, r), over = L > 0 && v > L;
+        if (sv) { li.classList.add("saverow"); }
         var cn = document.createElement("div"); cn.className = "cn";
         var nb = document.createElement("b"); nb.textContent = c.name; cn.appendChild(nb);
         var bar = document.createElement("div"); bar.className = "cbar" + (over ? " over" : ""); var fill = document.createElement("i");
@@ -1926,7 +2133,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         bar.appendChild(fill); cn.appendChild(bar);
         var ca = document.createElement("div"); ca.className = "ca" + (over ? " over" : "");
         ca.appendChild(document.createTextNode(money(v)));
-        var sm = document.createElement("small"); sm.textContent = L > 0 ? (over ? money(v - L) + " over" : money(L - v) + " left of " + moneyShort(L)) : "No limit"; ca.appendChild(sm);
+        var sm = document.createElement("small"); sm.textContent = sv ? "Saver: " + (sv.byId[c.id] > 0 ? moneyShort(sv.byId[c.id]) + " until payday" : "paused") : (L > 0 ? (over ? money(v - L) + " over" : money(L - v) + " left of " + moneyShort(L)) : "No limit"); ca.appendChild(sm);
         li.appendChild(cn); li.appendChild(ca);
         li.addEventListener("click", function () { budFilter = budFilter === c.id ? "all" : c.id; renderBudget(); $("budFilter").scrollIntoView({ behavior: "smooth", block: "nearest" }); });
         li.style.cursor = "pointer";
@@ -2075,6 +2282,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("budForm").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var amt = parseFloat($("budAmt").value); if (!(amt > 0)) { toast("Enter an amount above $0"); return; }
+    var prevFloor = floorState(Date.now());
     var what = $("budWhat").value.trim(), cat = $("budCat").value || guessCat(what);
     var d = fromYmd($("budDate").value), now = Date.now(), t = now;
     if (!isNaN(d) && d !== dayStart(now)) { if (d > now) { toast("Pick today or an earlier date"); return; } t = d + 12 * 3600000; }
@@ -2092,7 +2300,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     whereTouched = false; clearLoc(); setWhereKind("place");
     renderSpend(); render(); renderHistory();
     var c = catById(cat), L = c ? catLimit(c, budRange(t)) : 0, v = spendIn(budRange(t)).filter(function (e) { return catOf(e).id === cat; }).reduce(function (a, e) { return a + e.amt; }, 0);
-    toast("Logged " + money(amt) + " · " + (c ? c.icon + " " + c.name : "") + (L > 0 ? (v > L ? " · " + money(v - L) + " over" : " · " + money(L - v) + " left") : ""));
+    var fsy = floorState(Date.now());
+    if (fsy.saver && prevFloor && !prevFloor.saver) { toast(fsy.level === "below" ? "Your balance just dropped below " + money(fsy.floor) + ". Saver mode is on: see your plan above." : "At this pace you'll dip below " + money(fsy.floor) + " before payday. Saver mode is on."); }
+    else if (fsy.saver) { var sv2 = saverPlan(fsy, Date.now()); toast("Logged " + money(amt) + (sv2.byId[cat] === 0 ? " · outside your saver plan" : "") + " · " + money(sv2.leftToday) + " left today"); }
+    else toast("Logged " + money(amt) + " · " + (c ? c.icon + " " + c.name : "") + (L > 0 ? (v > L ? " · " + money(v - L) + " over" : " · " + money(L - v) + " left") : ""));
     if (window.ShiftNative) ShiftNative.buzz("tap");
   });
   $("budEdit").addEventListener("click", function () { budEditing = true; renderBudget(); });
