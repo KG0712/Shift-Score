@@ -305,6 +305,83 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .seg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 999px; background: var(--fill); margin-bottom: 12px; }
 .seg button { min-height: 36px; padding: 6px 0; font-size: .82rem; background: transparent; color: var(--ink); box-shadow: none; }
 .seg button[aria-pressed="true"] { background: var(--glass-strong); color: var(--ink); box-shadow: 0 2px 8px rgba(24, 39, 75, 0.12), inset 0 1px 0 var(--glass-shine); }
+.seg.seg2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.budhero { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 18px; align-items: center; margin-top: 4px; }
+.ring { position: relative; width: 140px; height: 140px; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
+.ringtxt { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+.ringtxt b { font-family: var(--rounded); font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em; line-height: 1.1; }
+.ringtxt span { font-size: .75rem; color: var(--muted); font-weight: 600; }
+.ringtxt.over b { color: var(--bad); }
+.budnums { display: grid; gap: 10px; min-width: 0; }
+.budnums div { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.budnums div:last-child { border-bottom: 0; padding-bottom: 0; }
+.budnums .k { font-size: .82rem; color: var(--muted); font-weight: 500; }
+.budnums b { font-family: var(--rounded); font-weight: 650; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.budform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.budform .span2 { grid-column: span 2; }
+.linkbtn { background: none; border: 0; box-shadow: none; padding: 0; color: var(--tint); font-weight: 600; font-size: .9rem; }
+.budcats { list-style: none; margin: 0; padding: 0; }
+.budcats li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.budcats li:last-child { border-bottom: 0; }
+.budcats .ci { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; font-size: 1.1rem; background: color-mix(in srgb, var(--c) 16%, transparent); }
+.budcats .cn { min-width: 0; }
+.budcats .cn b { display: block; font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.budcats .cn small { color: var(--muted); font-size: .8rem; }
+.budcats .ca { text-align: right; font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; font-size: .95rem; }
+.budcats .ca small { display: block; font-family: var(--body); font-weight: 500; font-size: .76rem; color: var(--muted); }
+.budcats .ca.over small { color: var(--bad); font-weight: 600; }
+.cbar { height: 7px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 6px; }
+.cbar i { display: block; height: 100%; border-radius: 99px; background: var(--c); width: 0; transition: width .5s; }
+.cbar.over i { background: var(--bad); }
+.budcats.editing li { grid-template-columns: 36px minmax(0, 1fr) 92px 34px; }
+.budcats input { min-height: 38px; padding: 6px 10px; font-size: .95rem; width: 100%; }
+.budcats .del { width: 34px; height: 34px; padding: 0; border-radius: 50%; font-size: 1.1rem; line-height: 1; color: var(--bad); }
+.wherefield .wseg { margin: 2px 0 8px; }
+.wherefield .wseg button { font-size: .85rem; }
+.whererow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.locbtn { min-height: 44px; padding: 0 14px; border-radius: 12px; white-space: nowrap; font-size: .9rem; }
+.locbtn.on { background: var(--accent-soft); color: var(--tint); border-color: transparent; }
+.locnote { margin-top: 6px; font-size: .8rem; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.locnote button { background: none; border: 0; box-shadow: none; padding: 0; color: var(--tint); font-size: .8rem; font-weight: 600; }
+.wsplit { margin-bottom: 8px; }
+.wbar { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--fill); }
+.wbar i { display: block; height: 100%; transition: width .5s; }
+.wp { background: #3a8fd9; } .ww { background: #9a5ad6; } .wu { background: var(--fill); }
+.wlegend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: .8rem; color: var(--muted); }
+.wlegend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
+.wlegend b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: 2px; }
+.places { list-style: none; margin: 0; padding: 0; }
+.places li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.places li:last-child { border-bottom: 0; }
+.places .pi { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: .95rem; background: var(--fill); }
+.places .pn { min-width: 0; }
+.places .pn b { display: block; font-weight: 600; font-size: .93rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.places .pn small { color: var(--muted); font-size: .78rem; }
+.places .pa { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.places .pa small { display: block; font-family: var(--body); font-weight: 500; font-size: .74rem; color: var(--muted); }
+.places .pbar { height: 4px; border-radius: 99px; background: var(--fill); margin-top: 5px; overflow: hidden; }
+.places .pbar i { display: block; height: 100%; background: var(--tint); border-radius: 99px; }
+.txlist .wl { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; color: var(--tint); text-decoration: none; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.txlist .tsub { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+.insights { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.insights li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .93rem; }
+.insights .ii { font-size: 1.15rem; line-height: 1.3; text-align: center; }
+.insights small { display: block; color: var(--muted); font-size: .8rem; }
+.fchips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 4px; scrollbar-width: none; }
+.fchips::-webkit-scrollbar { display: none; }
+.fchips button { flex: none; min-height: 32px; padding: 5px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600; background: var(--fill); border: 0; box-shadow: none; color: var(--ink); }
+.fchips button[aria-pressed="true"] { background: var(--tint); color: #fff; }
+.txday { margin-top: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
+.txlist { list-style: none; margin: 4px 0 0; padding: 0; }
+.txlist li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.txlist .ci { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: 1rem; background: color-mix(in srgb, var(--c) 16%, transparent); }
+.txlist .tw { min-width: 0; }
+.txlist .tw b { display: block; font-weight: 600; font-size: .93rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.txlist select { font-size: .78rem; padding: 2px 4px; min-height: 0; border-radius: 8px; background: transparent; border: 0; color: var(--muted); max-width: 100%; margin-left: -4px; }
+.txlist .tr { display: flex; align-items: center; gap: 8px; font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; }
+.txlist .tr button { width: 28px; height: 28px; padding: 0; border-radius: 50%; font-size: 1rem; line-height: 1; color: var(--muted); }
+@media (max-width: 380px) { .budhero { grid-template-columns: 116px minmax(0, 1fr); gap: 12px; } .ring { width: 116px; height: 116px; } .ringtxt b { font-size: 1.15rem; } }
 .paycur { text-align: center; padding: 6px 0 14px; border-bottom: 1px solid var(--line); }
 .paycur .k { font-size: .82rem; color: var(--muted); font-weight: 500; }
 .paybig { font-family: var(--rounded); font-weight: 700; font-size: 2.4rem; letter-spacing: -0.02em; color: var(--accent); }
@@ -364,7 +441,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 }
 
 .tabbar { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  width: min(440px, calc(100% - 28px)); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 6px; border-radius: 999px;
+  width: min(480px, calc(100% - 20px)); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 6px; border-radius: 999px;
   background: var(--glass-strong); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%); }
 .tabbtn { display: grid; justify-items: center; gap: 2px; padding: 7px 0 6px; min-height: 52px; border-radius: 999px; background: transparent; border: none; box-shadow: none;
   color: var(--muted); font-size: .68rem; font-weight: 600; letter-spacing: 0; }
@@ -535,7 +612,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       <button class="primary" type="submit">Add</button>
     </form>
     <ul class="spendlist" id="spendList"></ul>
-    <p class="note">Earned today is take-home pay from today's shifts. Spending also comes off your projected bank balance.</p>
+    <p class="note">Earned today is take-home pay from today's shifts. Spending also comes off your projected bank balance. Purchases are sorted into categories on the Budget tab.</p>
   </section>
   <section class="panel">
     <h2>Bank balance <span>You type it in · private to this device</span></h2>
@@ -570,6 +647,85 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <p class="note">Spent counts what you log in Today's spending, or what your bank balance shows you spent, whichever is higher.</p>
   </section>
 </section>
+<section class="tab" id="tab-budget" aria-label="Budget" hidden>
+  <header class="largetitle"><h1>Budget</h1><div class="sub" id="budSub">This month</div></header>
+  <section class="panel">
+    <div class="seg seg2" id="budSeg" role="group" aria-label="Budget period">
+      <button type="button" data-p="month" aria-pressed="true">Monthly</button>
+      <button type="button" data-p="pay" aria-pressed="false">Each paycheck</button>
+    </div>
+    <div class="budhero">
+      <div class="ring" aria-hidden="true"><svg viewBox="0 0 120 120" id="budRing"></svg>
+        <div class="ringtxt"><b id="budLeft">$0</b><span id="budLeftK">left</span></div></div>
+      <div class="budnums">
+        <div><span class="k">Budget</span><b id="budTotal">$0.00</b></div>
+        <div><span class="k">Spent</span><b id="budSpent">$0.00</b></div>
+        <div><span class="k" id="budDailyK">Per day</span><b id="budDaily">—</b></div>
+      </div>
+    </div>
+    <div class="verdict" id="budPace"><b id="budPaceText">Add a purchase to see your pace</b><span class="amt" id="budPaceAmt"></span></div>
+    <p class="note" id="budEarn"></p>
+  </section>
+
+  <section class="panel" id="budSetup" hidden>
+    <h2>Plan your budget</h2>
+    <p class="note" style="margin-top:0">Set a limit for each category. Shift Score can suggest one from your pay: about 90% of your estimated take-home, so roughly 10% goes to savings.</p>
+    <div class="btns"><button type="button" class="primary" id="budSuggest">Suggest a budget from my pay</button><button type="button" id="budOwn">I'll set my own</button></div>
+  </section>
+
+  <section class="panel">
+    <h2>Add spending <span>Sorted for you as you type</span></h2>
+    <form class="budform" id="budForm">
+      <div class="field"><label for="budAmt">Amount $</label><input id="budAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.50" required></div>
+      <div class="field"><label for="budWhat">What for</label><input id="budWhat" type="text" maxlength="40" placeholder="Chipotle, gas, rent…"></div>
+      <div class="field"><label for="budCat">Category</label><select id="budCat"></select></div>
+      <div class="field"><label for="budDate">Date</label><input id="budDate" type="date"></div>
+      <div class="field span2 wherefield">
+        <label for="budWhere">Where</label>
+        <div class="seg seg2 wseg" id="whereSeg" role="group" aria-label="Where you spent it">
+          <button type="button" data-k="place" aria-pressed="true">📍 In person</button>
+          <button type="button" data-k="web" aria-pressed="false">🌐 Online</button>
+        </div>
+        <div class="whererow">
+          <input id="budWhere" type="text" maxlength="60" list="whereList" placeholder="Store or place, e.g. H-E-B on Texas Ave" autocomplete="off">
+          <button type="button" id="btnLoc" class="locbtn" aria-label="Use my current location">📍 Here</button>
+        </div>
+        <datalist id="whereList"></datalist>
+        <div class="locnote" id="locNote" hidden></div>
+      </div>
+      <button class="primary span2" type="submit">Add</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Categories <button type="button" class="linkbtn" id="budEdit">Edit</button></h2>
+    <ul class="budcats" id="budCats"></ul>
+    <div class="btns" id="budEditBtns" hidden><button type="button" id="budAddCat">Add a category</button><button type="button" class="primary" id="budDone">Done</button></div>
+    <p class="note" id="budCatNote">Limits are per month. On "Each paycheck", they're scaled to the length of your pay period.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Where you spend <span id="whereSub"></span></h2>
+    <div class="wsplit" id="whereSplit" hidden>
+      <div class="wbar"><i class="wp" id="wsPlace"></i><i class="ww" id="wsWeb"></i></div>
+      <div class="wlegend"><span><i class="wp"></i>In person <b id="wsPlaceAmt">$0</b></span><span><i class="ww"></i>Online <b id="wsWebAmt">$0</b></span><span><i class="wu"></i>Not set <b id="wsNoneAmt">$0</b></span></div>
+    </div>
+    <ul class="places" id="wherePlaces"></ul>
+    <p class="note" id="whereNote">Add where you bought something (a store, a place, or a website) and your top spots show up here. Tap one to see every purchase there.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Insights</h2>
+    <ul class="insights" id="budInsights"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Spending <span id="budTxCount"></span></h2>
+    <div class="fchips" id="budFilter"></div>
+    <div id="budTx"></div>
+  </section>
+</section>
+
 <section class="tab" id="tab-settings" aria-label="Settings" hidden>
   <header class="largetitle"><h1>Settings</h1></header>
   <section class="panel install" id="installBox" hidden>
@@ -604,6 +760,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   <button class="tabbtn" type="button" data-tab="today" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>Today</span></button>
   <button class="tabbtn" type="button" data-tab="sheet" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5"/></svg><span>Timesheet</span></button>
   <button class="tabbtn" type="button" data-tab="money" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="3.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.6v.01M18 14.4v.01"/></svg><span>Money</span></button>
+  <button class="tabbtn" type="button" data-tab="budget" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5H12z"/><path d="M15 3.9a8.5 8.5 0 0 1 5.1 5.1H15z"/></svg><span>Budget</span></button>
   <button class="tabbtn" type="button" data-tab="settings" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></svg><span>Settings</span></button>
 </nav>
 
@@ -614,7 +771,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <ul class="obpoints">
       <li>A live counter and levels for every hour you work</li>
       <li>A timesheet that fills itself in, with Excel export</li>
-      <li>Spending, savings and payday tracking</li>
+      <li>A budget that sorts your spending for you</li>
       <li>Private: everything stays on this device</li>
     </ul>
     <div class="field"><label for="obJob">Where do you work?</label><input id="obJob" type="text" maxlength="40" placeholder="Campus library, coffee shop…" required></div>
@@ -1014,14 +1171,27 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     fmtSheet(ws2, 2, log.length, { A: DATE, D: "0.00", E: USD });
     ws2["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 13 }, { wch: 8 }, { wch: 11 }];
     // Sheet 3: every purchase logged in Today's spending.
-    var sp = [["Date", "Time", "What", "Amount"]];
+    var sp = [["Date", "Time", "What", "Category", "Amount", "Where", "In person / Online", "Map or website"]];
     state.expenses.filter(function (e) { return inR(e.t); }).sort(function (a, b) { return a.t - b.t; }).forEach(function (e) {
-      sp.push([xlDate(dayStart(e.t)), fmtTime(e.t), e.what || "Spending", e.amt]);
+      sp.push([xlDate(dayStart(e.t)), fmtTime(e.t), e.what || "Spending", catOf(e).name, e.amt, whereLabel(e.where), e.where ? (e.where.kind === "web" ? "Online" : "In person") : "", whereHref(e.where)]);
     });
-    sp.push([]); sp.push(["Total", "", "", { f: "SUM(D2:D" + Math.max(2, sp.length - 1) + ")" }]);
+    var spLast = sp.length;
+    sp.push([]); sp.push(["Total", "", "", "", { f: "SUM(E2:E" + Math.max(2, spLast) + ")" }]);
     var ws3 = X.utils.aoa_to_sheet(sp);
-    fmtSheet(ws3, 2, sp.length, { A: DATE, D: USD });
-    ws3["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 28 }, { wch: 11 }];
+    fmtSheet(ws3, 2, sp.length, { A: DATE, E: USD });
+    ws3["!cols"] = [{ wch: 12 }, { wch: 10 }, { wch: 28 }, { wch: 20 }, { wch: 11 }, { wch: 26 }, { wch: 17 }, { wch: 40 }];
+    // Sheet: this budget period by category, with formulas pulling from the Spending sheet.
+    var br = budRange(Date.now()), bud = [["Category", "Limit (" + (br.kind === "pay" ? "this pay period" : "this month") + ")", "Spent", "Left"]];
+    budget().cats.forEach(function (c, i) {
+      var r = i + 2, spentIn = spendIn(br).filter(function (e) { return catOf(e).id === c.id; }).reduce(function (a, e) { return a + e.amt; }, 0);
+      bud.push([c.name, catLimit(c, br), Math.round(spentIn * 100) / 100, { f: "B" + r + "-C" + r }]);
+    });
+    var bLast = bud.length;
+    bud.push(["Total", { f: "SUM(B2:B" + bLast + ")" }, { f: "SUM(C2:C" + bLast + ")" }, { f: "B" + (bLast + 1) + "-C" + (bLast + 1) }]);
+    bud.push([]); bud.push(["Period", br.label]);
+    var wsB = X.utils.aoa_to_sheet(bud);
+    fmtSheet(wsB, 2, bLast + 1, { B: USD, C: USD, D: USD });
+    wsB["!cols"] = [{ wch: 22 }, { wch: 22 }, { wch: 12 }, { wch: 12 }];
     // Sheet 4: each bank balance you entered, and what it shows you spent in between.
     var bal = [["Date", "Time", "Balance", "Paychecks marked", "Spent since previous"]];
     state.balanceLog.forEach(function (b, i) {
@@ -1036,6 +1206,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     X.utils.book_append_sheet(wb, ws, "Daily Hours");
     X.utils.book_append_sheet(wb, ws2, "Clock Log");
     X.utils.book_append_sheet(wb, ws3, "Spending");
+    X.utils.book_append_sheet(wb, wsB, "Budget");
     X.utils.book_append_sheet(wb, ws4, "Balance Checks");
     return X.write(wb, { bookType: "xlsx", type: "array" });
   }
@@ -1137,7 +1308,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     state.expenses.filter(function (e) { return e.t >= t0; }).slice().reverse().forEach(function (e) {
       var li = document.createElement("li");
       var what = document.createElement("span"); what.className = "what";
-      what.textContent = e.what || "Spending";
+      what.textContent = (typeof CAT_DEFAULTS !== "undefined" ? catOf(e).icon + " " : "") + (e.what || "Spending");
       var tm = document.createElement("small"); tm.textContent = fmtTime(e.t); what.appendChild(tm);
       var right = document.createElement("span"); right.className = "right";
       right.appendChild(document.createTextNode(money(e.amt)));
@@ -1145,13 +1316,14 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       del.addEventListener("click", function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); });
       right.appendChild(del); li.appendChild(what); li.appendChild(right); list.appendChild(li);
     });
+    if (typeof renderBudget === "function" && typeof CAT_DEFAULTS !== "undefined") renderBudget();
   }
   $("spendForm").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var amt = parseFloat($("spendAmt").value);
     if (!(amt > 0)) { toast("Enter an amount above $0"); return; }
     var what = $("spendWhat").value.trim();
-    state.expenses.push({ id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), t: Date.now(), amt: Math.round(amt * 100) / 100, what: what });
+    state.expenses.push({ id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), t: Date.now(), amt: Math.round(amt * 100) / 100, what: what, cat: guessCat(what) });
     save(); $("spendAmt").value = ""; $("spendWhat").value = ""; renderSpend(); render(); renderHistory();
     toast("Logged " + money(amt) + (what ? " · " + what : ""));
   });
@@ -1225,6 +1397,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     if (typeof state.rate !== "number") state.rate = 12;
     if (typeof state.goal !== "number") state.goal = 60;
     ["history", "expenses", "deposits", "balanceLog"].forEach(function (k) { if (!Array.isArray(state[k])) state[k] = []; });
+    if (typeof budget === "function" && typeof CAT_DEFAULTS !== "undefined") budget();
   }
   function syncSettings() {
     if (typeof applyLevelLook === "function") applyLevelLook();
@@ -1536,7 +1709,379 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   });
   $("payAnchor").addEventListener("change", function () { var t = fromYmd(this.value); if (!isNaN(t)) { state.payAnchor = t; save(); renderPaychecks(); syncReportControls(); } });
 
-  var TABS = ["today", "sheet", "money", "settings"];
+  // ---- Budget: category limits, auto-sorted spending, pace and safe-to-spend ----
+  var CAT_DEFAULTS = [
+    { id: "food", name: "Food & drinks", icon: "🍔", color: "#e07a3f", pct: 0.14 },
+    { id: "groc", name: "Groceries", icon: "🛒", color: "#2b9a8c", pct: 0.14 },
+    { id: "gas", name: "Gas & transport", icon: "⛽", color: "#3a8fd9", pct: 0.10 },
+    { id: "shop", name: "Shopping", icon: "🛍️", color: "#d0567a", pct: 0.10 },
+    { id: "bills", name: "Bills & subscriptions", icon: "🧾", color: "#5856d6", pct: 0.27 },
+    { id: "fun", name: "Fun", icon: "🎉", color: "#9a5ad6", pct: 0.10 },
+    { id: "other", name: "Other", icon: "💡", color: "#7a8296", pct: 0.05 }
+  ];
+  var CAT_EXTRA = [["🎓", "#c08a2b"], ["🐾", "#5f8f4e"], ["💪", "#d05a3c"], ["🎁", "#b5508f"], ["✈️", "#3d7fa8"], ["🏠", "#7a6a55"], ["💊", "#3f9e9e"], ["📚", "#8a6bd1"]];
+  var CAT_WORDS = {
+    food: ["chipotle", "starbucks", "coffee", "mcdonald", "taco", "pizza", "restaurant", "lunch", "dinner", "breakfast", "cafe", "chick", "whataburger", "doordash", "uber eats", "ubereats", "grubhub", "boba", "sonic", "subway", "panda", "cane", "wingstop", "dutch bros", "food", "drink", "snack", "burger", "wings", "sushi", "dessert", "ice cream", "smoothie", "tea", "latte", "jack in the box", "wendy", "popeyes", "five guys", "panera", "dominos", "domino"],
+    groc: ["h-e-b", "heb", "kroger", "aldi", "costco", "grocery", "groceries", "trader joe", "whole foods", "sam's club", "sams club", "market", "walmart grocery", "safeway", "publix", "sprouts"],
+    gas: ["gas", "shell", "exxon", "chevron", "buc-ee", "bucee", "valero", "fuel", "uber", "lyft", "parking", "toll", "bus", "car wash", "oil change", "texaco", "mobil", "murphy", "qt", "quiktrip", "tire", "metro", "train", "flight"],
+    shop: ["amazon", "target", "walmart", "clothes", "shoes", "mall", "nike", "best buy", "shein", "shopping", "apple store", "ulta", "sephora", "zara", "h&m", "ross", "tj maxx", "marshalls", "etsy", "temu", "ikea", "home depot", "lowe"],
+    bills: ["rent", "phone", "spotify", "netflix", "hulu", "apple music", "icloud", "insurance", "electric", "internet", "wifi", "wi-fi", "subscription", "bill", "tuition", "gym", "youtube", "disney", "max", "utilities", "water bill", "loan", "chatgpt", "claude", "adobe", "prime"],
+    fun: ["movie", "cinema", "concert", "game", "bar", "club", "ticket", "steam", "playstation", "xbox", "nintendo", "bowling", "event", "party", "golf", "museum", "festival", "drinks", "date"]
+  };
+  var budEditing = false, budFilter = "all", budCatTouched = false;
+  // Where: an in-person place (optionally with GPS) or a website
+  var ONLINE = { amazon: "amazon.com", shein: "shein.com", temu: "temu.com", etsy: "etsy.com", ebay: "ebay.com", doordash: "doordash.com", "uber eats": "ubereats.com", ubereats: "ubereats.com", grubhub: "grubhub.com", instacart: "instacart.com",
+    netflix: "netflix.com", spotify: "spotify.com", hulu: "hulu.com", "disney+": "disneyplus.com", youtube: "youtube.com", "apple music": "apple.com", icloud: "apple.com", steam: "steampowered.com", playstation: "playstation.com", xbox: "xbox.com",
+    nintendo: "nintendo.com", chatgpt: "openai.com", claude: "claude.ai", adobe: "adobe.com", stockx: "stockx.com", "best buy online": "bestbuy.com", walmart: "", target: "", nike: "" };
+  var whereKind = "place", whereTouched = false, pendingLoc = null;
+  function siteFrom(v) {
+    var m = String(v || "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split(/[\/?#\s]/)[0];
+    return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(m) ? m : "";
+  }
+  function onlineGuess(what) {
+    var w = String(what || "").toLowerCase();
+    if (siteFrom(w)) return siteFrom(w);
+    for (var k in ONLINE) if (ONLINE[k] && w.indexOf(k) >= 0) return ONLINE[k];
+    return "";
+  }
+  function whereLabel(wh) { return wh ? (wh.kind === "web" ? (wh.site || wh.name) : wh.name || (wh.lat != null ? "Pinned location" : "")) : ""; }
+  function whereKey(wh) { var l = whereLabel(wh); return l ? (wh.kind === "web" ? "web:" : "place:") + l.toLowerCase() : ""; }
+  function whereHref(wh) {
+    if (!wh) return "";
+    if (wh.kind === "web") { var st = siteFrom(wh.site || wh.name); return st ? "https://" + st : ""; }
+    if (wh.lat != null && wh.lng != null) return "https://maps.apple.com/?ll=" + wh.lat.toFixed(5) + "," + wh.lng.toFixed(5) + "&q=" + encodeURIComponent(wh.name || "Purchase");
+    return wh.name ? "https://maps.apple.com/?q=" + encodeURIComponent(wh.name) : "";
+  }
+  function setWhereKind(k) {
+    whereKind = k;
+    Array.prototype.forEach.call($("whereSeg").querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", x.dataset.k === k ? "true" : "false"); });
+    $("budWhere").placeholder = k === "web" ? "Website, e.g. amazon.com" : "Store or place, e.g. H-E-B on Texas Ave";
+    $("budWhere").inputMode = k === "web" ? "url" : "text";
+    $("btnLoc").hidden = k === "web";
+    if (k === "web") clearLoc();
+    fillWhereList();
+  }
+  function clearLoc() { pendingLoc = null; $("btnLoc").classList.remove("on"); $("btnLoc").textContent = "📍 Here"; $("locNote").hidden = true; }
+  function fillWhereList() {
+    var seen = {}, dl = $("whereList"); dl.innerHTML = "";
+    state.expenses.slice().sort(function (a, b) { return b.t - a.t; }).forEach(function (e) {
+      if (!e.where || e.where.kind !== whereKind) return;
+      var l = whereLabel(e.where); if (!l || seen[l.toLowerCase()]) return; seen[l.toLowerCase()] = 1;
+      var o = document.createElement("option"); o.value = l; dl.appendChild(o);
+    });
+  }
+  function lastLocFor(name) {
+    var n = String(name || "").toLowerCase(), hit = null;
+    state.expenses.forEach(function (e) { if (e.where && e.where.kind === "place" && e.where.lat != null && (e.where.name || "").toLowerCase() === n && (!hit || e.t > hit.t)) hit = e; });
+    return hit ? { lat: hit.where.lat, lng: hit.where.lng, acc: hit.where.acc } : null;
+  }
+  function budget() {
+    if (!state.budget || !Array.isArray(state.budget.cats)) state.budget = { period: "month", cats: CAT_DEFAULTS.map(function (c) { return { id: c.id, name: c.name, icon: c.icon, color: c.color, limit: 0 }; }) };
+    return state.budget;
+  }
+  function catById(id) { var cs = budget().cats; for (var i = 0; i < cs.length; i++) if (cs[i].id === id) return cs[i]; return null; }
+  function fallbackCat() { return catById("other") || budget().cats[budget().cats.length - 1] || { id: "other", name: "Other", icon: "💡", color: "#7a8296", limit: 0 }; }
+  function guessCat(what) {
+    var w = " " + String(what || "").toLowerCase() + " ";
+    if (w.trim()) {
+      var cs = budget().cats;
+      for (var i = 0; i < cs.length; i++) { if (cs[i].name && w.indexOf(cs[i].name.toLowerCase()) >= 0) return cs[i].id; }
+      for (var id in CAT_WORDS) { if (!catById(id)) continue; var ws = CAT_WORDS[id]; for (var j = 0; j < ws.length; j++) { var k = ws[j]; if (k.length <= 3 ? new RegExp("[^a-z]" + k.replace(/[^a-z]/g, "") + "[^a-z]").test(w) : w.indexOf(k) >= 0) return id; } }
+    }
+    return fallbackCat().id;
+  }
+  function catOf(e) { return catById(e.cat) || catById(guessCat(e.what)) || fallbackCat(); }
+  function budRange(t) {
+    if (budget().period === "pay") { var p = payPeriod(t); return { from: p.from, to: p.to, label: p.label, kind: "pay" }; }
+    var d = new Date(t), from = new Date(d.getFullYear(), d.getMonth(), 1).getTime(), to = new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime();
+    return { from: from, to: to, label: new Date(from).toLocaleDateString([], { month: "long", year: "numeric" }), kind: "month" };
+  }
+  function budScale(r) { return r.kind === "pay" ? ((r.to - r.from) / 86400000) / (365.25 / 12) : 1; }
+  function catLimit(c, r) { return Math.round((c.limit || 0) * budScale(r) * 100) / 100; }
+  function spendIn(r) { return state.expenses.filter(function (e) { return e.t >= r.from && e.t < r.to; }); }
+  function takeHomeIn(r) { var g = 0; daySheet().segs.forEach(function (x) { if (x.in >= r.from && x.in < r.to) g += x.earned; }); return g * TH(); }
+  function moneyShort(n) { var a = Math.abs(n); return (n < 0 ? "-" : "") + "$" + (a >= 1000 ? Math.round(a).toLocaleString() : a.toFixed(a >= 100 ? 0 : 2)); }
+  function fillCatSelect(sel, chosen) {
+    sel.innerHTML = "";
+    budget().cats.forEach(function (c) { var o = document.createElement("option"); o.value = c.id; o.textContent = c.icon + " " + c.name; sel.appendChild(o); });
+    sel.value = chosen && catById(chosen) ? chosen : fallbackCat().id;
+  }
+  function svgEl(tag, attrs) { var el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (var k in attrs) el.setAttribute(k, attrs[k]); return el; }
+
+  function renderBudget() {
+    if (!$("tab-budget")) return;
+    var b = budget(), now = Date.now(), r = budRange(now), list = spendIn(r);
+    Array.prototype.forEach.call($("budSeg").querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", x.dataset.p === b.period ? "true" : "false"); });
+    $("budSub").textContent = (r.kind === "pay" ? "This pay period · " : "") + r.label;
+    var byCat = {}; list.forEach(function (e) { var c = catOf(e); byCat[c.id] = (byCat[c.id] || 0) + e.amt; });
+    var total = 0; b.cats.forEach(function (c) { total += catLimit(c, r); });
+    var spent = list.reduce(function (a, e) { return a + e.amt; }, 0), left = total - spent;
+    var daysLeft = Math.max(1, Math.ceil((r.to - now) / 86400000));
+    // ring: one arc per category, sized against the budget (or spending, if over)
+    var ring = $("budRing"); ring.innerHTML = "";
+    var R = 50, C = 2 * Math.PI * R, base = Math.max(total, spent, 0.01), off = 0;
+    ring.appendChild(svgEl("circle", { cx: 60, cy: 60, r: R, fill: "none", stroke: "var(--fill)", "stroke-width": 14 }));
+    b.cats.forEach(function (c) {
+      var v = byCat[c.id] || 0; if (v <= 0) return;
+      var len = Math.max(0, v / base * C - 1.5);
+      ring.appendChild(svgEl("circle", { cx: 60, cy: 60, r: R, fill: "none", stroke: c.color, "stroke-width": 14, "stroke-dasharray": len + " " + (C - len), "stroke-dashoffset": -off, "stroke-linecap": "butt" }));
+      off += v / base * C;
+    });
+    var rt = ring.parentNode.querySelector(".ringtxt");
+    if (total > 0) { rt.classList.toggle("over", left < 0); $("budLeft").textContent = moneyShort(Math.abs(left)); $("budLeftK").textContent = left < 0 ? "over budget" : "left to spend"; }
+    else { rt.classList.remove("over"); $("budLeft").textContent = moneyShort(spent); $("budLeftK").textContent = "spent"; }
+    $("budTotal").textContent = total > 0 ? money(total) : "Not set";
+    $("budSpent").textContent = money(spent);
+    $("budDaily").textContent = total > 0 ? (left > 0 ? money(left / daysLeft) : "$0.00") : "—";
+    $("budDailyK").textContent = total > 0 ? "Per day · " + daysLeft + (daysLeft === 1 ? " day" : " days") + " left" : "Per day";
+    // pace: where spending lands at the end of the period if it keeps going like this
+    var frac = Math.min(1, Math.max(0, (now - r.from) / (r.to - r.from))), pace = $("budPace");
+    pace.classList.remove("ahead", "over");
+    if (!list.length) { $("budPaceText").textContent = total > 0 ? "No spending logged yet this period" : "Set limits to see how you're pacing"; $("budPaceAmt").textContent = ""; }
+    else if (total <= 0) { $("budPaceText").textContent = "Spent so far"; $("budPaceAmt").textContent = money(spent); }
+    else if (frac < 0.12) { $("budPaceText").textContent = "Early in the period · " + Math.round(spent / total * 100) + "% used"; $("budPaceAmt").textContent = money(spent); }
+    else {
+      var proj = spent / frac;
+      if (proj > total * 1.02) { pace.classList.add("over"); $("budPaceText").textContent = "On pace to go over by"; $("budPaceAmt").textContent = money(proj - total); }
+      else { pace.classList.add("ahead"); $("budPaceText").textContent = "On track to finish under by"; $("budPaceAmt").textContent = money(total - proj); }
+    }
+    var earned = takeHomeIn(r);
+    $("budEarn").textContent = "Take-home earned this period: " + money(earned) + " · spent " + money(spent) + " · " + (earned - spent >= 0 ? "kept " + money(earned - spent) : "spent " + money(spent - earned) + " more than you earned") + ".";
+    $("budSetup").hidden = total > 0 || budEditing;
+    // add form
+    if (document.activeElement !== $("budCat")) fillCatSelect($("budCat"), $("budCat").value || (budCatTouched ? null : guessCat($("budWhat").value)));
+    if (!$("budDate").value) $("budDate").value = ymd(now);
+    if (document.activeElement !== $("budWhere")) fillWhereList();
+    renderBudCats(r, byCat);
+    renderWhere(r, list, spent);
+    renderInsights(r, list, byCat, total, spent);
+    renderTx(r, list);
+  }
+
+  function renderBudCats(r, byCat) {
+    var ul = $("budCats");
+    if (budEditing && ul.contains(document.activeElement)) return;     // don't yank the field you're typing in
+    ul.innerHTML = ""; ul.classList.toggle("editing", budEditing);
+    $("budEdit").hidden = budEditing; $("budEditBtns").hidden = !budEditing;
+    $("budCatNote").textContent = budEditing ? "Limits are monthly amounts. Spending in a deleted category moves to Other."
+      : (budget().period === "pay" ? "Limits are set per month and scaled to this " + Math.round((r.to - r.from) / 86400000) + "-day pay period." : "Limits are per month. Tap Edit to change them.");
+    budget().cats.forEach(function (c) {
+      var li = document.createElement("li"); li.style.setProperty("--c", c.color);
+      var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = c.icon; li.appendChild(ic);
+      if (budEditing) {
+        var nm = document.createElement("input"); nm.type = "text"; nm.maxLength = 28; nm.value = c.name; nm.setAttribute("aria-label", "Category name");
+        nm.addEventListener("change", function () { c.name = this.value.trim() || c.name; save(); renderBudget(); });
+        var lim = document.createElement("input"); lim.type = "number"; lim.min = "0"; lim.step = "1"; lim.inputMode = "decimal"; lim.placeholder = "$/mo"; lim.value = c.limit ? c.limit : ""; lim.setAttribute("aria-label", c.name + " monthly limit");
+        lim.addEventListener("change", function () { var v = parseFloat(this.value); c.limit = v > 0 ? Math.round(v * 100) / 100 : 0; save(); renderBudget(); });
+        var del = document.createElement("button"); del.type = "button"; del.className = "del"; del.textContent = "×"; del.setAttribute("aria-label", "Delete " + c.name);
+        if (c.id === "other") del.style.visibility = "hidden";
+        del.addEventListener("click", function () {
+          budget().cats = budget().cats.filter(function (x) { return x.id !== c.id; });
+          state.expenses.forEach(function (e) { if (e.cat === c.id) e.cat = "other"; });
+          save(); document.activeElement && document.activeElement.blur(); renderBudget(); renderSpend();
+        });
+        li.appendChild(nm); li.appendChild(lim); li.appendChild(del);
+      } else {
+        var v = byCat[c.id] || 0, L = catLimit(c, r), over = L > 0 && v > L;
+        var cn = document.createElement("div"); cn.className = "cn";
+        var nb = document.createElement("b"); nb.textContent = c.name; cn.appendChild(nb);
+        var bar = document.createElement("div"); bar.className = "cbar" + (over ? " over" : ""); var fill = document.createElement("i");
+        fill.style.width = (L > 0 ? Math.min(100, v / L * 100) : (v > 0 ? 100 : 0)) + "%"; if (!L && v > 0) fill.style.opacity = ".35";
+        bar.appendChild(fill); cn.appendChild(bar);
+        var ca = document.createElement("div"); ca.className = "ca" + (over ? " over" : "");
+        ca.appendChild(document.createTextNode(money(v)));
+        var sm = document.createElement("small"); sm.textContent = L > 0 ? (over ? money(v - L) + " over" : money(L - v) + " left of " + moneyShort(L)) : "No limit"; ca.appendChild(sm);
+        li.appendChild(cn); li.appendChild(ca);
+        li.addEventListener("click", function () { budFilter = budFilter === c.id ? "all" : c.id; renderBudget(); $("budFilter").scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+        li.style.cursor = "pointer";
+      }
+      ul.appendChild(li);
+    });
+  }
+
+  function renderWhere(r, list, spent) {
+    var places = {}, inP = 0, onW = 0, none = 0;
+    list.forEach(function (e) {
+      var k = whereKey(e.where);
+      if (!k) { none += e.amt; return; }
+      if (e.where.kind === "web") onW += e.amt; else inP += e.amt;
+      var p = places[k] || (places[k] = { key: k, label: whereLabel(e.where), kind: e.where.kind, amt: 0, n: 0, last: 0, href: "" });
+      p.amt += e.amt; p.n++; if (e.t > p.last) { p.last = e.t; p.href = whereHref(e.where); }
+    });
+    var arr = Object.keys(places).map(function (k) { return places[k]; }).sort(function (a, b) { return b.amt - a.amt; });
+    $("whereSplit").hidden = !arr.length;
+    $("whereNote").hidden = arr.length > 0;
+    $("whereSub").textContent = arr.length ? arr.length + (arr.length === 1 ? " spot" : " spots") : "";
+    var tot = inP + onW + none || 1;
+    $("wsPlace").style.width = (inP / tot * 100) + "%"; $("wsWeb").style.width = (onW / tot * 100) + "%";
+    $("wsPlaceAmt").textContent = moneyShort(inP); $("wsWebAmt").textContent = moneyShort(onW); $("wsNoneAmt").textContent = moneyShort(none);
+    $("wsNoneAmt").parentNode.hidden = none <= 0;
+    var ul = $("wherePlaces"); ul.innerHTML = "";
+    var max = arr.length ? arr[0].amt : 1;
+    arr.slice(0, 8).forEach(function (p) {
+      var li = document.createElement("li");
+      var pi = document.createElement("span"); pi.className = "pi"; pi.textContent = p.kind === "web" ? "🌐" : "📍";
+      var pn = document.createElement("div"); pn.className = "pn";
+      var b = document.createElement("b"); b.textContent = p.label; pn.appendChild(b);
+      var sm = document.createElement("small"); sm.textContent = p.n + (p.n === 1 ? " purchase" : " purchases") + " · last " + fmtDay(p.last, { month: "short", day: "numeric" }) + (p.kind === "web" ? " · online" : ""); pn.appendChild(sm);
+      var bar = document.createElement("div"); bar.className = "pbar"; var fi = document.createElement("i"); fi.style.width = (p.amt / max * 100) + "%"; bar.appendChild(fi); pn.appendChild(bar);
+      var pa = document.createElement("div"); pa.className = "pa"; pa.appendChild(document.createTextNode(money(p.amt)));
+      var ps = document.createElement("small"); ps.textContent = Math.round(p.amt / (spent || 1) * 100) + "% of spending"; pa.appendChild(ps);
+      li.appendChild(pi); li.appendChild(pn); li.appendChild(pa);
+      li.addEventListener("click", function () { budFilter = budFilter === p.key ? "all" : p.key; renderBudget(); $("budFilter").scrollIntoView({ behavior: "smooth", block: "nearest" }); });
+      ul.appendChild(li);
+    });
+  }
+
+  function renderInsights(r, list, byCat, total, spent) {
+    var ul = $("budInsights"); ul.innerHTML = "";
+    var add = function (icon, text, sub) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; i.textContent = icon; var d = document.createElement("div"); d.textContent = text; if (sub) { var s2 = document.createElement("small"); s2.textContent = sub; d.appendChild(s2); } li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
+    if (!list.length) { add("✨", "Log a few purchases and insights show up here.", "Try the Add spending form above, or Today's spending on the Money tab."); return; }
+    var top = null; budget().cats.forEach(function (c) { if ((byCat[c.id] || 0) > 0 && (!top || byCat[c.id] > byCat[top.id])) top = c; });
+    if (top) add(top.icon, "Most of your spending went to " + top.name + ": " + money(byCat[top.id]) + ".", Math.round(byCat[top.id] / spent * 100) + "% of everything you spent this period.");
+    var prev = budRange(r.from - 1), prevSpent = spendIn(prev).reduce(function (a, e) { return a + e.amt; }, 0);
+    var frac = Math.min(1, Math.max(0.0001, (Date.now() - r.from) / (r.to - r.from))), prevSoFar = spendIn({ from: prev.from, to: prev.from + (prev.to - prev.from) * frac }).reduce(function (a, e) { return a + e.amt; }, 0);
+    if (prevSpent > 0) { var dlt = spent - prevSoFar; add(dlt > 0 ? "📈" : "📉", (dlt > 0 ? money(dlt) + " more" : money(-dlt) + " less") + " than at this point last " + (r.kind === "pay" ? "pay period" : "month") + ".", "Last " + (r.kind === "pay" ? "pay period" : "month") + " you spent " + money(prevSpent) + " in total."); }
+    var spots = {}; list.forEach(function (e) { var k = whereKey(e.where); if (k) { spots[k] = spots[k] || { l: whereLabel(e.where), web: e.where.kind === "web", a: 0, n: 0 }; spots[k].a += e.amt; spots[k].n++; } });
+    var topSpot = Object.keys(spots).map(function (k) { return spots[k]; }).sort(function (a, b) { return b.a - a.a; })[0];
+    if (topSpot && topSpot.n > 1) add(topSpot.web ? "🌐" : "📍", "You've spent " + money(topSpot.a) + " at " + topSpot.l + " across " + topSpot.n + " purchases.", "Your top spot this period.");
+    var big = list.reduce(function (m, e) { return !m || e.amt > m.amt ? e : m; }, null);
+    if (big) add("🧾", "Biggest purchase: " + money(big.amt) + (big.what ? " on " + big.what : "") + ".", fmtDay(big.t) + " · " + catOf(big).name + (whereLabel(big.where) ? " · " + whereLabel(big.where) : ""));
+    var overs = budget().cats.filter(function (c) { var L = catLimit(c, r); return L > 0 && (byCat[c.id] || 0) > L; });
+    if (overs.length) add("⚠️", "Over the limit in " + overs.map(function (c) { return c.name; }).join(", ") + ".", "Raise the limit under Edit, or ease up for the rest of the period.");
+    var hrs = state.rate > 0 ? spent / (state.rate * TH()) : 0;
+    if (hrs > 0) add("⏱️", "This period's spending took " + (hrs < 1 ? Math.round(hrs * 60) + " minutes" : hrs.toFixed(1) + " hours") + " of work to earn.", "At " + money(state.rate) + "/hr after estimated taxes.");
+  }
+
+  function renderTx(r, list) {
+    var box = $("budTx"), chips = $("budFilter"); box.innerHTML = ""; chips.innerHTML = "";
+    var used = {}; list.forEach(function (e) { used[catOf(e).id] = true; });
+    if (budFilter !== "all" && budFilter.indexOf(":") < 0 && !used[budFilter]) budFilter = "all";
+    var mkPlaceChip = function (e) { if (!e) return; var bt = document.createElement("button"); bt.type = "button"; bt.setAttribute("aria-pressed", "true"); bt.textContent = (e.where.kind === "web" ? "🌐 " : "📍 ") + whereLabel(e.where) + "  ×"; bt.addEventListener("click", function () { budFilter = "all"; renderBudget(); }); chips.insertBefore(bt, chips.children[1] || null); };
+    var mk = function (id, label) { var bt = document.createElement("button"); bt.type = "button"; bt.textContent = label; bt.setAttribute("aria-pressed", budFilter === id ? "true" : "false"); bt.addEventListener("click", function () { budFilter = id; renderBudget(); }); chips.appendChild(bt); };
+    mk("all", "All");
+    budget().cats.forEach(function (c) { if (used[c.id]) mk(c.id, c.icon + " " + c.name); });
+    chips.hidden = list.length === 0;
+    var isPlace = budFilter.indexOf("place:") === 0 || budFilter.indexOf("web:") === 0;
+    if (isPlace && !list.some(function (e) { return whereKey(e.where) === budFilter; })) { budFilter = "all"; isPlace = false; }
+    if (isPlace) { var pl = list.filter(function (e) { return whereKey(e.where) === budFilter; })[0]; mkPlaceChip(pl); }
+    var shown = list.filter(function (e) { return budFilter === "all" || (isPlace ? whereKey(e.where) === budFilter : catOf(e).id === budFilter); }).sort(function (a, b) { return b.t - a.t; });
+    $("budTxCount").textContent = shown.length ? shown.length + (shown.length === 1 ? " purchase" : " purchases") + " · " + money(shown.reduce(function (a, e) { return a + e.amt; }, 0)) : "";
+    if (!shown.length) { var p = document.createElement("p"); p.className = "note"; p.textContent = "Nothing logged yet this period."; box.appendChild(p); return; }
+    var day = null, ul = null, dayTotal = 0, head = null;
+    shown.forEach(function (e) {
+      var d0 = dayStart(e.t);
+      if (d0 !== day) {
+        day = d0; dayTotal = 0;
+        head = document.createElement("div"); head.className = "txday"; head.innerHTML = "<span></span><span></span>";
+        head.firstChild.textContent = d0 === dayStart(Date.now()) ? "Today" : fmtDay(d0); box.appendChild(head);
+        ul = document.createElement("ul"); ul.className = "txlist"; box.appendChild(ul);
+      }
+      dayTotal += e.amt; head.lastChild.textContent = money(dayTotal);
+      var c = catOf(e), li = document.createElement("li"); li.style.setProperty("--c", c.color);
+      var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = c.icon;
+      var tw = document.createElement("div"); tw.className = "tw";
+      var nb = document.createElement("b"); nb.textContent = e.what || "Spending"; tw.appendChild(nb);
+      var sel = document.createElement("select"); sel.setAttribute("aria-label", "Category for " + (e.what || "this purchase")); fillCatSelect(sel, c.id);
+      sel.addEventListener("change", function () { e.cat = this.value; save(); renderBudget(); });
+      var sub = document.createElement("div"); sub.className = "tsub"; sub.appendChild(sel);
+      var wl = whereLabel(e.where);
+      if (wl) {
+        var href = whereHref(e.where), a = document.createElement(href ? "a" : "span"); a.className = "wl";
+        a.textContent = (e.where.kind === "web" ? "🌐 " : "📍 ") + wl;
+        if (href) { a.href = href; a.target = "_blank"; a.rel = "noopener"; a.title = e.where.kind === "web" ? "Open website" : "Open in Maps"; }
+        sub.appendChild(a);
+      }
+      tw.appendChild(sub);
+      var tr = document.createElement("div"); tr.className = "tr"; tr.appendChild(document.createTextNode(money(e.amt)));
+      var del = document.createElement("button"); del.type = "button"; del.textContent = "×"; del.setAttribute("aria-label", "Remove " + (e.what || "purchase"));
+      del.addEventListener("click", function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); toast("Removed " + money(e.amt)); });
+      tr.appendChild(del);
+      li.appendChild(ic); li.appendChild(tw); li.appendChild(tr); ul.appendChild(li);
+    });
+  }
+
+  Array.prototype.forEach.call($("budSeg").querySelectorAll("button"), function (x) {
+    x.addEventListener("click", function () { budget().period = x.dataset.p; save(); renderBudget(); });
+  });
+  $("budWhat").addEventListener("input", function () {
+    if (!budCatTouched) $("budCat").value = guessCat(this.value);
+    if (!whereTouched) {
+      var site = onlineGuess(this.value);
+      if (site) { setWhereKind("web"); $("budWhere").value = site; }
+      else if (whereKind === "web" && !$("budWhere").value.trim()) setWhereKind("place");
+      else if (whereKind === "web" && $("budWhere").dataset.auto === "1") { $("budWhere").value = ""; setWhereKind("place"); }
+      $("budWhere").dataset.auto = site ? "1" : "";
+    }
+  });
+  Array.prototype.forEach.call($("whereSeg").querySelectorAll("button"), function (x) { x.addEventListener("click", function () { whereTouched = true; setWhereKind(x.dataset.k); }); });
+  $("budWhere").addEventListener("input", function () {
+    whereTouched = true; this.dataset.auto = "";
+    if (whereKind === "place" && siteFrom(this.value) && /\.(com|net|org|io|co|shop|store|app|ai|us)$/.test(siteFrom(this.value))) setWhereKind("web");
+  });
+  $("btnLoc").addEventListener("click", function () {
+    if (pendingLoc) { clearLoc(); return; }
+    if (!navigator.geolocation) { toast("Location isn't available on this device"); return; }
+    var btn = this; btn.textContent = "Locating…";
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      pendingLoc = { lat: Math.round(pos.coords.latitude * 1e5) / 1e5, lng: Math.round(pos.coords.longitude * 1e5) / 1e5, acc: Math.round(pos.coords.accuracy || 0) };
+      btn.classList.add("on"); btn.textContent = "📍 Pinned";
+      var n = $("locNote"); n.hidden = false; n.innerHTML = "";
+      n.appendChild(document.createTextNode("Location pinned" + (pendingLoc.acc ? " (within about " + pendingLoc.acc + " m)" : "") + ". Saved only on this device. "));
+      var x = document.createElement("button"); x.type = "button"; x.textContent = "Remove"; x.addEventListener("click", clearLoc); n.appendChild(x);
+      if (!$("budWhere").value.trim()) $("budWhere").focus();
+    }, function (err) {
+      btn.textContent = "📍 Here";
+      toast(err && err.code === 1 ? "Location permission is off. You can still type the place." : "Couldn't get your location. Type the place instead.");
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+  });
+  $("budCat").addEventListener("change", function () { budCatTouched = true; });
+  $("budForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var amt = parseFloat($("budAmt").value); if (!(amt > 0)) { toast("Enter an amount above $0"); return; }
+    var what = $("budWhat").value.trim(), cat = $("budCat").value || guessCat(what);
+    var d = fromYmd($("budDate").value), now = Date.now(), t = now;
+    if (!isNaN(d) && d !== dayStart(now)) { if (d > now) { toast("Pick today or an earlier date"); return; } t = d + 12 * 3600000; }
+    var wv = $("budWhere").value.trim(), where = null;
+    if (whereKind === "web" && wv) { var st = siteFrom(wv); where = { kind: "web", site: st || wv.toLowerCase(), name: st ? "" : wv }; }
+    else if (whereKind === "place" && (wv || pendingLoc)) {
+      where = { kind: "place", name: wv };
+      var loc = pendingLoc || (wv ? lastLocFor(wv) : null);
+      if (loc) { where.lat = loc.lat; where.lng = loc.lng; if (loc.acc) where.acc = loc.acc; }
+    }
+    var rec = { id: now + "-" + Math.random().toString(36).slice(2, 7), t: t, amt: Math.round(amt * 100) / 100, what: what, cat: cat };
+    if (where) rec.where = where;
+    state.expenses.push(rec);
+    save(); $("budAmt").value = ""; $("budWhat").value = ""; $("budWhere").value = ""; $("budWhere").dataset.auto = ""; $("budDate").value = ymd(now); budCatTouched = false;
+    whereTouched = false; clearLoc(); setWhereKind("place");
+    renderSpend(); render(); renderHistory();
+    var c = catById(cat), L = c ? catLimit(c, budRange(t)) : 0, v = spendIn(budRange(t)).filter(function (e) { return catOf(e).id === cat; }).reduce(function (a, e) { return a + e.amt; }, 0);
+    toast("Logged " + money(amt) + " · " + (c ? c.icon + " " + c.name : "") + (L > 0 ? (v > L ? " · " + money(v - L) + " over" : " · " + money(L - v) + " left") : ""));
+    if (window.ShiftNative) ShiftNative.buzz("tap");
+  });
+  $("budEdit").addEventListener("click", function () { budEditing = true; renderBudget(); });
+  $("budDone").addEventListener("click", function () { if (document.activeElement) document.activeElement.blur(); budEditing = false; renderBudget(); toast("Budget saved"); });
+  $("budOwn").addEventListener("click", function () { budEditing = true; renderBudget(); var f = $("budCats").querySelector('input[type="number"]'); if (f) f.focus(); });
+  $("budAddCat").addEventListener("click", function () {
+    var cs = budget().cats, ex = CAT_EXTRA[cs.length % CAT_EXTRA.length], id = "c" + Date.now().toString(36);
+    var at = cs.findIndex(function (c) { return c.id === "other"; });
+    var nc = { id: id, name: "New category", icon: ex[0], color: ex[1], limit: 0 };
+    if (at >= 0) cs.splice(at, 0, nc); else cs.push(nc);
+    save(); if (document.activeElement) document.activeElement.blur(); renderBudget();
+    var inputs = $("budCats").querySelectorAll('input[type="text"]'), inp = inputs[at >= 0 ? at : inputs.length - 1]; if (inp) { inp.focus(); inp.select(); }
+  });
+  $("budSuggest").addEventListener("click", function () {
+    var monthly = annualPay().annual * TH() / 12, spendable = monthly * 0.9;
+    if (!(spendable > 0)) { toast("Set your hourly rate first"); return; }
+    budget().cats.forEach(function (c) {
+      var d = CAT_DEFAULTS.filter(function (x) { return x.id === c.id; })[0];
+      c.limit = d ? Math.max(5, Math.round(spendable * d.pct / 5) * 5) : 0;
+    });
+    save(); budEditing = true; renderBudget();
+    toast("Suggested from about " + money(monthly) + "/month take-home. Adjust any limit, then tap Done.");
+  });
+
+  var TABS = ["today", "sheet", "money", "budget", "settings"];
   function showTab(t) {
     TABS.forEach(function (n) {
       $("tab-" + n).hidden = n !== t;
@@ -1545,6 +2090,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     try { localStorage.setItem("shiftscore.tab", t); } catch (e) {}
     window.scrollTo(0, 0);
     if (t === "sheet") { renderHistory(); syncReportControls(); }
+    if (t === "budget") renderBudget();
   }
   Array.prototype.forEach.call(document.querySelectorAll(".tabbtn"), function (b) { b.addEventListener("click", function () { showTab(b.dataset.tab); }); });
   var startTab = "today";

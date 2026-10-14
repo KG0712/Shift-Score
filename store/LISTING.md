@@ -24,7 +24,7 @@ Watch your pay add up, live
 Clock in and watch every minute turn into money. Your timesheet, paycheck estimate and spending fill themselves in. No account, no ads, and your data stays on your phone.
 
 **Keywords** (100 max, commas, no spaces after commas)
-hours,timesheet,time clock,shift,wage,paycheck,take home,work log,hourly,earnings,budget,job tracker
+hours,timesheet,time clock,shift,wage,paycheck,take home,budget,spending,expense,hourly,earnings
 
 **Primary category:** Finance
 **Secondary category:** Productivity
@@ -58,8 +58,16 @@ REPORTS READY TO HAND IN
 • Includes breaks, totals, the math behind them and signature lines
 • Share as a Word document or Excel file
 
-SPENDING AND SAVINGS
-• Log what you spend and see it next to what you earned that day
+A BUDGET THAT SORTS ITSELF
+• Set monthly or per-paycheck limits for food, groceries, gas, bills, fun and your own categories
+• Purchases are sorted into categories automatically as you type
+• See what's left, how much you can spend per day, and whether you're on pace to go over
+• Get a budget suggested from your actual pay
+
+SEE WHERE YOUR MONEY GOES
+• Note where you bought something, in person or online
+• Pin a store's location with one tap, or save the website
+• See your top spots and how much goes online versus in person
 • Track your balance and paydays
 
 PRIVATE BY DESIGN
@@ -75,7 +83,7 @@ Pay and tax figures are estimates, not tax advice. Your employer's records and p
 Welcome to Shift Score! Clock in, watch your pay add up live, and get a timesheet that fills itself in.
 
 **App Review notes** (App Store Connect → App Review Information)
-No login is required. To test: enter any job name and hourly rate on the welcome screen, tap Clock In on the Today tab and watch the live counter. Tap Clock Out to save the shift, then see it on the Timesheet tab. Native features: on-device reminder notifications while clocked in (permission is requested at first clock-in), haptic feedback on clock in and out, and the share sheet for exporting Excel and Word reports and backups. All data is stored on the device. The app makes no network requests for user data.
+No login is required. To test: enter any job name and hourly rate on the welcome screen, tap Clock In on the Today tab and watch the live counter. Tap Clock Out to save the shift, then see it on the Timesheet tab. Location is optional: it's requested only if you tap "Here" when logging a purchase, and is stored on the device. Native features: on-device reminder notifications while clocked in (permission is requested at first clock-in), haptic feedback on clock in and out, and the share sheet for exporting Excel and Word reports and backups. All data is stored on the device. The app makes no network requests for user data.
 
 **App Privacy** (App Store Connect → App Privacy)
 Choose **"No, we do not collect data from this app."** Result: "Data Not Collected."
