@@ -365,6 +365,33 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .txlist .wl { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; color: var(--tint); text-decoration: none; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .txlist .tsub { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
 .importrow { margin-top: 12px; }
+.wfpre { margin-bottom: 10px; }
+.wfform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.wfform .span2 { grid-column: span 2; }
+.wfform label small { font-weight: 500; color: var(--muted); }
+.stepper { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; background: var(--fill); border-radius: 12px; min-height: 44px; }
+.stepper button { background: none; border: 0; box-shadow: none; font-size: 1.3rem; padding: 0; min-height: 44px; color: var(--tint); }
+.stepper output { text-align: center; font-family: var(--rounded); font-weight: 700; font-size: 1.1rem; }
+.wfres { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.wfbig { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.wfbig b { font-family: var(--rounded); font-weight: 750; font-size: 2.2rem; letter-spacing: -0.02em; color: var(--tint); line-height: 1.1; }
+.wfbig span { color: var(--muted); font-weight: 600; }
+.wfsub { margin: 4px 0 10px; color: var(--muted); font-size: .9rem; }
+.wflist { list-style: none; margin: 0 0 4px; padding: 0; display: grid; gap: 8px; }
+.wflist li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; font-size: .92rem; align-items: start; }
+.wflist li.bad { color: var(--bad); }
+.wflist li.good div b { color: var(--good); }
+.wfgoals { list-style: none; margin: 0; padding: 0; }
+.wfgoals li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.wfgoals li:last-child { border-bottom: 0; }
+.wfgoals .gt { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.wfgoals .gt b { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wfgoals .gt span { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wfgoals .gs { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: .8rem; color: var(--muted); margin-top: 4px; }
+.wfgoals .gs button { min-height: 30px; padding: 4px 10px; font-size: .8rem; border-radius: 999px; }
+.wfgoals .gbar { height: 8px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 6px; }
+.wfgoals .gbar i { display: block; height: 100%; background: var(--tint); border-radius: 99px; transition: width .5s; }
+.wfgoals li.done .gbar i { background: var(--good); }
 .floorrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
 .floorrow .primary { min-height: 44px; }
 .floorline { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
@@ -693,6 +720,33 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     </div>
     <div class="verdict" id="budPace"><b id="budPaceText">Add a purchase to see your pace</b><span class="amt" id="budPaceAmt"></span></div>
     <p class="note" id="budEarn"></p>
+  </section>
+
+  <section class="panel" id="wfPanel">
+    <h2>Can I afford it? <span>How long you'd work for it</span></h2>
+    <div class="fchips wfpre" id="wfPresets">
+      <button type="button" data-w="Movie for 2" data-p="15" data-n="2" data-x="12">🎬 Movie for 2</button>
+      <button type="button" data-w="Dinner date" data-p="28" data-n="2" data-x="0">🍽️ Dinner date</button>
+      <button type="button" data-w="Concert ticket" data-p="75" data-n="1" data-x="15">🎟️ Concert</button>
+      <button type="button" data-w="New sneakers" data-p="120" data-n="1" data-x="0">👟 Sneakers</button>
+      <button type="button" data-w="Coffee" data-p="6" data-n="1" data-x="0">☕ Coffee</button>
+    </div>
+    <form class="wfform" id="wfForm" autocomplete="off">
+      <div class="field span2"><label for="wfWhat">What is it?</label><input id="wfWhat" type="text" maxlength="50" placeholder="e.g. Jailer 2 at Cinemark"></div>
+      <div class="field"><label for="wfPrice">Price each $</label><input id="wfPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="15.00"></div>
+      <div class="field"><label>How many</label><div class="stepper"><button type="button" id="wfMinus" aria-label="One fewer">−</button><output id="wfQty">1</output><button type="button" id="wfPlus" aria-label="One more">+</button></div></div>
+      <div class="field span2"><label for="wfExtra">Extras $ <small>(snacks, fees, tip, gas, optional)</small></label><input id="wfExtra" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
+    </form>
+    <div class="wfres" id="wfRes" hidden>
+      <div class="wfbig"><b id="wfHours">0 hrs</b><span>of work</span></div>
+      <p class="wfsub" id="wfSub"></p>
+      <ul class="wflist" id="wfList"></ul>
+      <div class="btns"><button type="button" class="primary" id="wfSave">Save as a goal</button><button type="button" id="wfBought">I bought it</button></div>
+    </div>
+    <div id="wfGoalsWrap" hidden>
+      <h3 class="savertips-h">Saving up for</h3>
+      <ul class="wfgoals" id="wfGoals"></ul>
+    </div>
   </section>
 
   <section class="panel floorpanel" id="floorPanel">
@@ -2048,9 +2102,110 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     $("balance").value = state.balance; toast("Balance saved");
   });
 
+  // ---- Can I afford it? ----
+  var wfQty = 1;
+  function hm(hours) { var m = Math.max(0, Math.round(hours * 60)), h = Math.floor(m / 60), mm = m % 60; return h ? h + (h === 1 ? " hr" : " hrs") + (mm ? " " + mm + " min" : "") : mm + " min"; }
+  function netRate() { return (state.rate || 0) * TH(); }
+  function typicalShift() {
+    var byDay = {}; daySheet().segs.forEach(function (x) { if (!x.live) { var d = dayStart(x.in); byDay[d] = (byDay[d] || 0) + x.hours; } });
+    var v = Object.keys(byDay).map(function (k) { return byDay[k]; }).sort(function (a, b) { return a - b; });
+    return v.length ? v[Math.floor(v.length / 2)] : 5;
+  }
+  function netEarnedSince(t) { var g = 0; daySheet().segs.forEach(function (x) { if (x.in >= t) g += x.earned; }); return g * TH(); }
+  function wfTotal() {
+    var p = parseFloat($("wfPrice").value) || 0, x = parseFloat($("wfExtra").value) || 0;
+    return Math.round((p * wfQty + x) * 100) / 100;
+  }
+  function renderWorkFor() {
+    if (!$("wfPanel")) return;
+    $("wfQty").textContent = wfQty;
+    var total = wfTotal(), res = $("wfRes"), rate = netRate();
+    res.hidden = !(total > 0);
+    if (total > 0) {
+      var hrs = rate > 0 ? total / rate : 0, what = $("wfWhat").value.trim();
+      $("wfHours").textContent = rate > 0 ? hm(hrs) : "Set your pay rate";
+      $("wfSub").textContent = money(total) + " total" + (wfQty > 1 ? " (" + wfQty + " × " + money(parseFloat($("wfPrice").value) || 0) + (parseFloat($("wfExtra").value) > 0 ? " + " + money(parseFloat($("wfExtra").value)) + " extras" : "") + ")" : "") + " · you keep about " + money(rate) + " of every hour at " + money(state.rate || 0) + "/hr after estimated taxes";
+      var ul = $("wfList"); ul.innerHTML = "";
+      var add = function (icon, html, cls) { var li = document.createElement("li"); if (cls) li.className = cls; var i = document.createElement("span"); i.textContent = icon; var d = document.createElement("div"); d.innerHTML = html; li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
+      var shift = typicalShift();
+      var sl = (Math.round(shift * 10) / 10) + "-hour";
+      add("🗓️", "That's <b>" + (hrs / shift >= 0.95 ? (Math.round(hrs / shift * 10) / 10) + " of your usual " + sl + " shifts" : Math.round(hrs / shift * 100) + "% of one usual " + sl + " shift") + "</b>.");
+      var now = Date.now(), running = state.clockIn && !state.clockOut;
+      if (running) {
+        var today = netEarnedSince(dayStart(now)), need = total - today;
+        if (need <= 0) add("✅", "<b>Today's work already covers it.</b> You've earned " + money(today) + " take-home today.", "good");
+        else add("⏱️", "Keep working and it's covered at <b>" + fmtTime(now + need / rate * 3600000) + "</b> today.");
+      }
+      var cat = catById(guessCat(what)) || fallbackCat(), r = budRange(now), L = catLimit(cat, r);
+      if (L > 0) {
+        var spentCat = spendIn(r).filter(function (e) { return catOf(e).id === cat.id; }).reduce(function (a, e) { return a + e.amt; }, 0), leftCat = L - spentCat;
+        add(cat.icon, leftCat - total >= 0 ? cat.name + ": <b>" + money(leftCat) + "</b> left, <b>" + money(leftCat - total) + "</b> after this." : cat.name + ": only " + money(Math.max(0, leftCat)) + " left, so this goes <b>" + money(total - Math.max(0, leftCat)) + " over</b>.", leftCat - total >= 0 ? "" : "bad");
+      }
+      var fs = floorState(now);
+      if (!fs.off && !fs.needBal) {
+        var after = fs.bal - total;
+        if (fs.saver) add("🛡️", "<b>Saver mode is on.</b> This isn't in your plan until payday (" + fmtDay(fs.pay, { month: "short", day: "numeric" }) + ").", "bad");
+        else if (after < fs.floor) add("⚠️", "This would put your balance at " + money(after) + ", <b>below your " + money(fs.floor) + " floor</b>.", "bad");
+        else add("🏦", "Your balance stays " + money(after - fs.floor) + " above your floor.");
+      }
+      var daily = dailyPace(now);
+      if (daily > 0 && total >= daily * 0.75) add("💡", "It's about " + (Math.round(total / daily * 10) / 10) + " days of your usual spending.");
+      $("wfSave").disabled = !(rate > 0);
+    }
+    // goals
+    var goals = state.goals || [], gl = $("wfGoals");
+    $("wfGoalsWrap").hidden = !goals.length; gl.innerHTML = "";
+    goals.forEach(function (g) {
+      var earned = netEarnedSince(g.created), pct = Math.min(1, earned / g.total), done = pct >= 1, li = document.createElement("li"); if (done) li.className = "done";
+      var gt = document.createElement("div"); gt.className = "gt"; var b = document.createElement("b"); b.textContent = g.what; var sp = document.createElement("span"); sp.textContent = money(g.total); gt.appendChild(b); gt.appendChild(sp);
+      var bar = document.createElement("div"); bar.className = "gbar"; var fi = document.createElement("i"); fi.style.width = (pct * 100) + "%"; bar.appendChild(fi);
+      var gs = document.createElement("div"); gs.className = "gs"; var tx = document.createElement("span");
+      tx.textContent = done ? "Earned! You've made it since " + fmtDay(g.created, { month: "short", day: "numeric" }) + "." : money(earned) + " earned · " + (netRate() > 0 ? hm((g.total - earned) / netRate()) + " of work to go" : "");
+      var acts = document.createElement("span");
+      var bt = document.createElement("button"); bt.type = "button"; bt.textContent = "Bought it";
+      bt.addEventListener("click", function () { logGoal(g); });
+      var rm = document.createElement("button"); rm.type = "button"; rm.textContent = "×"; rm.setAttribute("aria-label", "Remove " + g.what);
+      rm.addEventListener("click", function () { state.goals = state.goals.filter(function (x) { return x.id !== g.id; }); save(); renderWorkFor(); });
+      acts.appendChild(bt); acts.appendChild(document.createTextNode(" ")); acts.appendChild(rm);
+      gs.appendChild(tx); gs.appendChild(acts);
+      li.appendChild(gt); li.appendChild(bar); li.appendChild(gs); gl.appendChild(li);
+    });
+  }
+  function logGoal(g) {
+    var now = Date.now();
+    state.expenses.push({ id: now + "-" + Math.random().toString(36).slice(2, 7), t: now, amt: g.total, what: g.what, cat: g.cat || guessCat(g.what) });
+    state.goals = (state.goals || []).filter(function (x) { return x.id !== g.id; });
+    save(); renderSpend(); render(); renderHistory();
+    toast("Logged " + money(g.total) + " · " + g.what);
+  }
+  ["wfWhat", "wfPrice", "wfExtra"].forEach(function (id) { $(id).addEventListener("input", renderWorkFor); });
+  $("wfMinus").addEventListener("click", function () { wfQty = Math.max(1, wfQty - 1); renderWorkFor(); });
+  $("wfPlus").addEventListener("click", function () { wfQty = Math.min(20, wfQty + 1); renderWorkFor(); });
+  $("wfForm").addEventListener("submit", function (e) { e.preventDefault(); });
+  Array.prototype.forEach.call($("wfPresets").querySelectorAll("button"), function (b) {
+    b.addEventListener("click", function () {
+      $("wfWhat").value = b.dataset.w; $("wfPrice").value = b.dataset.p; wfQty = +b.dataset.n || 1; $("wfExtra").value = +b.dataset.x ? b.dataset.x : "";
+      renderWorkFor(); $("wfPrice").focus(); $("wfPrice").select();
+    });
+  });
+  $("wfSave").addEventListener("click", function () {
+    var total = wfTotal(); if (!(total > 0)) return;
+    var what = $("wfWhat").value.trim() || "Something special";
+    state.goals = state.goals || [];
+    state.goals.push({ id: "g" + Date.now().toString(36), what: what, total: total, cat: guessCat(what), created: Date.now() });
+    save(); $("wfWhat").value = ""; $("wfPrice").value = ""; $("wfExtra").value = ""; wfQty = 1; renderWorkFor();
+    toast("Saved. It fills up as you work.");
+  });
+  $("wfBought").addEventListener("click", function () {
+    var total = wfTotal(); if (!(total > 0)) return;
+    logGoal({ id: "", what: $("wfWhat").value.trim() || "Purchase", total: total, cat: guessCat($("wfWhat").value) });
+    $("wfWhat").value = ""; $("wfPrice").value = ""; $("wfExtra").value = ""; wfQty = 1; renderWorkFor();
+  });
+
   function renderBudget() {
     if (!$("tab-budget")) return;
     renderFloor();
+    renderWorkFor();
     var b = budget(), now = Date.now(), r = budRange(now), list = spendIn(r);
     Array.prototype.forEach.call($("budSeg").querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", x.dataset.p === b.period ? "true" : "false"); });
     $("budSub").textContent = (r.kind === "pay" ? "This pay period · " : "") + r.label;
