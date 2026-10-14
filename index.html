@@ -364,6 +364,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 .places .pbar i { display: block; height: 100%; background: var(--tint); border-radius: 99px; }
 .txlist .wl { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; color: var(--tint); text-decoration: none; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .txlist .tsub { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+.importrow { margin-top: 12px; }
 .insights { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .insights li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .93rem; }
 .insights .ii { font-size: 1.15rem; line-height: 1.3; text-align: center; }
@@ -695,6 +696,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       </div>
       <button class="primary span2" type="submit">Add</button>
     </form>
+    <div class="btns importrow">
+      <label class="filebtn">Import from a file (CSV)<input id="fileCsv" type="file" accept=".csv,text/csv,text/plain" hidden></label>
+    </div>
+    <p class="note">Import a spending export from your bank (Capital One, Chase, Discover and others let you download one as CSV) or any sheet with Date, Description and Amount columns. Duplicates are skipped automatically.</p>
   </section>
 
   <section class="panel">
@@ -1721,12 +1726,12 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   ];
   var CAT_EXTRA = [["🎓", "#c08a2b"], ["🐾", "#5f8f4e"], ["💪", "#d05a3c"], ["🎁", "#b5508f"], ["✈️", "#3d7fa8"], ["🏠", "#7a6a55"], ["💊", "#3f9e9e"], ["📚", "#8a6bd1"]];
   var CAT_WORDS = {
-    food: ["chipotle", "starbucks", "coffee", "mcdonald", "taco", "pizza", "restaurant", "lunch", "dinner", "breakfast", "cafe", "chick", "whataburger", "doordash", "uber eats", "ubereats", "grubhub", "boba", "sonic", "subway", "panda", "cane", "wingstop", "dutch bros", "food", "drink", "snack", "burger", "wings", "sushi", "dessert", "ice cream", "smoothie", "tea", "latte", "jack in the box", "wendy", "popeyes", "five guys", "panera", "dominos", "domino"],
-    groc: ["h-e-b", "heb", "kroger", "aldi", "costco", "grocery", "groceries", "trader joe", "whole foods", "sam's club", "sams club", "market", "walmart grocery", "safeway", "publix", "sprouts"],
-    gas: ["gas", "shell", "exxon", "chevron", "buc-ee", "bucee", "valero", "fuel", "uber", "lyft", "parking", "toll", "bus", "car wash", "oil change", "texaco", "mobil", "murphy", "qt", "quiktrip", "tire", "metro", "train", "flight"],
-    shop: ["amazon", "target", "walmart", "clothes", "shoes", "mall", "nike", "best buy", "shein", "shopping", "apple store", "ulta", "sephora", "zara", "h&m", "ross", "tj maxx", "marshalls", "etsy", "temu", "ikea", "home depot", "lowe"],
+    food: ["dining", "chipotle", "starbucks", "coffee", "mcdonald", "taco", "pizza", "restaurant", "lunch", "dinner", "breakfast", "cafe", "chick", "whataburger", "doordash", "uber eats", "ubereats", "grubhub", "boba", "sonic", "subway", "panda", "cane", "wingstop", "dutch bros", "food", "drink", "snack", "burger", "wings", "sushi", "dessert", "ice cream", "smoothie", "tea", "latte", "jack in the box", "wendy", "popeyes", "five guys", "panera", "dominos", "domino"],
+    groc: ["supermarket", "h-e-b", "heb", "kroger", "aldi", "costco", "grocery", "groceries", "trader joe", "whole foods", "sam's club", "sams club", "market", "walmart grocery", "safeway", "publix", "sprouts"],
+    gas: ["travel", "automotive", "hitch", "airline", "gas", "shell", "exxon", "chevron", "buc-ee", "bucee", "valero", "fuel", "uber", "lyft", "parking", "toll", "bus", "car wash", "oil change", "texaco", "mobil", "murphy", "qt", "quiktrip", "tire", "metro", "train", "flight"],
+    shop: ["merchandise", "amazon", "target", "walmart", "clothes", "shoes", "mall", "nike", "best buy", "shein", "shopping", "apple store", "ulta", "sephora", "zara", "h&m", "ross", "tj maxx", "marshalls", "etsy", "temu", "ikea", "home depot", "lowe"],
     bills: ["rent", "phone", "spotify", "netflix", "hulu", "apple music", "icloud", "insurance", "electric", "internet", "wifi", "wi-fi", "subscription", "bill", "tuition", "gym", "youtube", "disney", "max", "utilities", "water bill", "loan", "chatgpt", "claude", "adobe", "prime"],
-    fun: ["movie", "cinema", "concert", "game", "bar", "club", "ticket", "steam", "playstation", "xbox", "nintendo", "bowling", "event", "party", "golf", "museum", "festival", "drinks", "date"]
+    fun: ["entertainment", "movie", "cinema", "concert", "game", "bar", "club", "ticket", "steam", "playstation", "xbox", "nintendo", "bowling", "event", "party", "golf", "museum", "festival", "drinks", "date"]
   };
   var budEditing = false, budFilter = "all", budCatTouched = false;
   // Where: an in-person place (optionally with GPS) or a website
@@ -2079,6 +2084,80 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     });
     save(); budEditing = true; renderBudget();
     toast("Suggested from about " + money(monthly) + "/month take-home. Adjust any limit, then tap Done.");
+  });
+
+  // ---- Import spending from a CSV (bank export or a sheet) ----
+  function parseCsv(text) {
+    var rows = [], row = [], cur = "", q = false;
+    text = text.replace(/^﻿/, "");
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ",") { row.push(cur); cur = ""; }
+      else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cur); cur = ""; if (row.some(function (c) { return c.trim() !== ""; })) rows.push(row); row = []; }
+      else cur += ch;
+    }
+    row.push(cur); if (row.some(function (c) { return c.trim() !== ""; })) rows.push(row);
+    return rows;
+  }
+  function csvDate(v, tm) {
+    v = String(v || "").trim(); var y, m, d, mt;
+    if ((mt = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { y = +mt[1]; m = +mt[2]; d = +mt[3]; }
+    else if ((mt = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/))) { m = +mt[1]; d = +mt[2]; y = +mt[3]; if (y < 100) y += 2000; }
+    else { var t = Date.parse(v); if (isNaN(t)) return NaN; var dt = new Date(t); y = dt.getFullYear(); m = dt.getMonth() + 1; d = dt.getDate(); }
+    var hh = 12, mm = 0, tmm = String(tm || "").trim().match(/^(\d{1,2}):(\d{2})\s*([AaPp][Mm])?/);
+    if (tmm) { hh = +tmm[1]; mm = +tmm[2]; if (tmm[3]) { var pm = /p/i.test(tmm[3]); if (hh === 12) hh = pm ? 12 : 0; else if (pm) hh += 12; } }
+    return new Date(y, m - 1, d, hh, mm).getTime();
+  }
+  function csvMoney(v) { var t = String(v || "").replace(/[$,\s]/g, ""); if (/^\(.*\)$/.test(t)) t = "-" + t.slice(1, -1); var n = parseFloat(t); return isNaN(n) ? null : n; }
+  function dupKey(t, amt, what) { return ymd(t) + "|" + Math.abs(amt).toFixed(2) + "|" + String(what || "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10); }
+  function importCsv(text) {
+    var rows = parseCsv(text); if (rows.length < 2) return { added: 0, skipped: 0, error: "That file doesn't have any rows to import." };
+    var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    var col = function (names) { for (var i = 0; i < names.length; i++) { var j = head.indexOf(names[i]); if (j >= 0) return j; } for (var k = 0; k < head.length; k++) for (var n = 0; n < names.length; n++) if (head[k].indexOf(names[n]) >= 0) return k; return -1; };
+    var cD = col(["transaction date", "date", "trans. date", "posted date", "post date"]), cT = col(["time"]),
+      cW = col(["what", "description", "merchant", "name", "payee", "details", "memo"]),
+      cA = col(["amount", "amt"]), cDeb = col(["debit", "withdrawal"]), cCred = col(["credit", "deposit"]),
+      cC = col(["category", "type"]), cWh = col(["where", "location", "website", "store"]), cK = col(["in person / online", "kind"]);
+    if (cD < 0 || (cA < 0 && cDeb < 0)) return { added: 0, skipped: 0, error: "Couldn't find Date and Amount columns in that file." };
+    var amts = [];
+    if (cDeb < 0) rows.slice(1).forEach(function (r) { var a = csvMoney(r[cA]); if (a) amts.push(a); });
+    var negIsSpend = cDeb < 0 && amts.filter(function (a) { return a < 0; }).length > amts.length / 2;
+    var seen = {}; state.expenses.forEach(function (e) { seen[dupKey(e.t, e.amt, e.what)] = 1; });
+    // the same purchase from two sources (an email receipt and the bank) has the same amount within a few days and shares a word
+    var words = function (w) { return String(w || "").toLowerCase().split(/[^a-z0-9]+/).filter(function (x) { return x.length >= 3 && !/^(the|and|ride|order|store|payment|purchase|doordash|com)$/.test(x); }); };
+    var nearDup = function (t, amt, what) { var ws = words(what); return state.expenses.some(function (e) { if (Math.abs(e.amt - amt) > 0.005 || Math.abs(e.t - t) > 3 * 86400000) return false; var ew = words(e.what + " " + whereLabel(e.where)); return ws.some(function (x) { return ew.some(function (y) { return y.indexOf(x) === 0 || x.indexOf(y) === 0; }); }); }); };
+    var added = 0, skipped = 0, credits = 0, bad = 0;
+    rows.slice(1).forEach(function (r) {
+      var t = csvDate(r[cD], cT >= 0 ? r[cT] : ""); if (isNaN(t)) { bad++; return; }
+      var amt;
+      if (cDeb >= 0) { amt = csvMoney(r[cDeb]); if (!amt) { if (cCred >= 0 && csvMoney(r[cCred])) credits++; return; } amt = Math.abs(amt); }
+      else { amt = csvMoney(r[cA]); if (amt == null || amt === 0) { bad++; return; } if (negIsSpend ? amt > 0 : amt < 0) { credits++; return; } amt = Math.abs(amt); }
+      var what = cW >= 0 ? String(r[cW] || "").trim().slice(0, 60) : "";
+      var k = dupKey(t, amt, what); if (seen[k] || nearDup(t, amt, what)) { skipped++; return; } seen[k] = 1;
+      var catTxt = cC >= 0 ? String(r[cC] || "").trim() : "", cat = null;
+      if (catTxt) { var cs = budget().cats; for (var i = 0; i < cs.length; i++) if (cs[i].name.toLowerCase() === catTxt.toLowerCase()) cat = cs[i].id; }
+      if (!cat) cat = guessCat(what + " " + catTxt);
+      var rec = { id: Date.now() + "-" + Math.random().toString(36).slice(2, 7), t: t, amt: Math.round(amt * 100) / 100, what: what, cat: cat };
+      var wv = cWh >= 0 ? String(r[cWh] || "").trim() : "";
+      if (wv) { var site = siteFrom(wv), kind = cK >= 0 && /online/i.test(r[cK] || "") ? "web" : (site ? "web" : "place"); rec.where = kind === "web" ? { kind: "web", site: site || wv.toLowerCase(), name: site ? "" : wv } : { kind: "place", name: wv }; }
+      else { var og = onlineGuess(what); if (og) rec.where = { kind: "web", site: og, name: "" }; }
+      state.expenses.push(rec); added++;
+    });
+    state.expenses.sort(function (a, b) { return a.t - b.t; });
+    return { added: added, skipped: skipped, credits: credits, bad: bad };
+  }
+  $("fileCsv").addEventListener("change", function () {
+    var f = this.files && this.files[0], inp = this; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var res = importCsv(String(rd.result || "")); inp.value = "";
+      if (res.error) { toast(res.error); return; }
+      save(); renderSpend(); render(); renderHistory();
+      toast("Imported " + res.added + (res.added === 1 ? " purchase" : " purchases") + (res.skipped ? " · skipped " + res.skipped + " already logged" : "") + (res.credits ? " · ignored " + res.credits + " deposits/refunds" : ""));
+    };
+    rd.readAsText(f);
   });
 
   var TABS = ["today", "sheet", "money", "budget", "settings"];
