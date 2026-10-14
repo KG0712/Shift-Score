@@ -750,6 +750,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <div class="btns">
       <button id="btnBackup" type="button">Back up my data</button>
       <label class="filebtn">Restore a backup<input id="fileRestore" type="file" accept="application/json,.json" hidden></label>
+      <label class="filebtn">Import purchases<input id="fileImport" type="file" accept="application/json,.json" hidden></label>
       <button id="btnReset" type="button" class="danger">Erase all data</button>
     </div>
     <div class="verdict" id="thBreak"><b>Take-home estimate</b><span class="amt"></span></div>
@@ -1454,13 +1455,43 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     saveFile("shift-score-backup-" + stamp() + ".json", JSON.stringify({ app: "shift-score", v: 1, exported: new Date().toISOString(), state: state }, null, 2), "application/json");
     toast("Backup downloaded");
   });
+  // Purchases file: adds spending to what's already here (never replaces your hours or settings).
+  function importPurchases(data) {
+    var b = budget(), added = 0, skipped = 0, have = {};
+    state.expenses.forEach(function (e) { have[e.id] = true; });
+    (data.addCats || []).forEach(function (c) { if (c && c.id && !catById(c.id)) { var at = b.cats.findIndex(function (x) { return x.id === "other"; }); var nc = { id: c.id, name: c.name || "New category", icon: c.icon || "🏷️", color: c.color || "#7a8296", limit: +c.limit || 0 }; if (at >= 0) b.cats.splice(at, 0, nc); else b.cats.push(nc); } });
+    (data.expenses || []).forEach(function (e) {
+      if (!e || !(e.amt > 0) || !(e.t > 0)) return;
+      var id = e.id || ("imp-" + e.t + "-" + e.amt);
+      if (have[id]) { skipped++; return; }
+      var rec = { id: id, t: e.t, amt: Math.round(e.amt * 100) / 100, what: String(e.what || "").slice(0, 60), cat: catById(e.cat) ? e.cat : guessCat(e.what) };
+      if (e.where && (e.where.kind === "web" || e.where.kind === "place")) rec.where = e.where;
+      state.expenses.push(rec); have[id] = true; added++;
+    });
+    state.expenses.sort(function (a, b2) { return a.t - b2.t; });
+    var total = b.cats.reduce(function (a, c) { return a + (c.limit || 0); }, 0), suggested = false;
+    if (data.suggestBudget && total <= 0) {
+      var spendable = annualPay().annual * TH() / 12 * 0.9;
+      if (spendable > 0) { b.cats.forEach(function (c) { var d = CAT_DEFAULTS.filter(function (x) { return x.id === c.id; })[0]; if (d) c.limit = Math.max(5, Math.round(spendable * d.pct / 5) * 5); }); suggested = true; }
+    }
+    save(); renderAll(); renderBudget();
+    toast("Imported " + added + (added === 1 ? " purchase" : " purchases") + (skipped ? " · " + skipped + " already here" : "") + (suggested ? " · starter budget set" : ""));
+  }
+  $("fileImport").addEventListener("change", function () {
+    var f = this.files && this.files[0]; this.value = ""; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () { try { var d = JSON.parse(r.result); if (!d || !Array.isArray(d.expenses)) throw 0; importPurchases(d); } catch (e) { toast("That file doesn't have purchases in it"); } };
+    r.readAsText(f);
+  });
   $("fileRestore").addEventListener("change", function () {
     var f = this.files && this.files[0]; this.value = "";
     if (!f) return;
     var r = new FileReader();
     r.onload = function () {
       try {
-        var data = JSON.parse(r.result), next = data && data.state ? data.state : data;
+        var data = JSON.parse(r.result);
+        if (data && data.kind === "purchases" && Array.isArray(data.expenses)) { importPurchases(data); return; }
+        var next = data && data.state ? data.state : data;
         if (!next || !Array.isArray(next.history)) throw new Error("not a backup");
         state = next; state.setup = true; normalize(); save(); $("onboard").hidden = true; lastLevel = -1; lastBadge = -1;
         syncSettings(); renderAll(); toast("Backup restored");
