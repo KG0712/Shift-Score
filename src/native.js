@@ -57,6 +57,8 @@ async function saveFile(name, data) {
 function buzz(kind) {
   if (kind === "in") return Haptics.notification({ type: NotificationType.Success }).catch(() => {});
   if (kind === "out") return Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+  if (kind === "win") return Haptics.notification({ type: NotificationType.Success }).catch(() => {});
+  if (kind === "warn") return Haptics.notification({ type: NotificationType.Warning }).catch(() => {});
   return Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
 }
 
@@ -82,6 +84,21 @@ async function clockedOut() {
   try { await LocalNotifications.cancel({ notifications: [{ id: REMIND_ID }] }); } catch (e) {}
 }
 
+// 5) Balance floor alerts: a notification the moment the balance drops below the floor.
+const ALERT_ID = 4202;
+async function askAlerts() {
+  let p = await LocalNotifications.checkPermissions();
+  if (p.display === "prompt" || p.display === "prompt-with-rationale") p = await LocalNotifications.requestPermissions();
+  return p.display === "granted";
+}
+async function alertNow(title, body) {
+  try {
+    if (!(await askAlerts())) return;
+    await LocalNotifications.schedule({ notifications: [{ id: ALERT_ID, title, body, schedule: { at: new Date(Date.now() + 1000), allowWhileIdle: true } }] });
+  } catch (e) {}
+}
+function setDark(dark) { StatusBar.setStyle({ style: dark ? Style.Dark : Style.Light }).catch(() => {}); }
+
 if (isNative()) {
   document.documentElement.classList.add("native", "native-" + Capacitor.getPlatform());
   restoreIfNeeded().catch(() => {});
@@ -89,6 +106,6 @@ if (isNative()) {
   // this just redraws it the moment you come back.
   App.addListener("resume", () => document.dispatchEvent(new Event("visibilitychange")));
   App.addListener("pause", flush);
-  StatusBar.setStyle({ style: window.matchMedia("(prefers-color-scheme: dark)").matches ? Style.Dark : Style.Light }).catch(() => {});
-  window.ShiftNative = { platform: Capacitor.getPlatform(), persist, saveFile, buzz, clockedIn, clockedOut };
+  setDark(document.documentElement.getAttribute("data-theme") !== "light");
+  window.ShiftNative = { platform: Capacitor.getPlatform(), persist, saveFile, buzz, clockedIn, clockedOut, askAlerts, alertNow, setDark };
 }

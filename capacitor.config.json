@@ -2,19 +2,19 @@
   "appId": "io.github.kg0712.shiftscore",
   "appName": "Shift Score",
   "webDir": "www",
-  "backgroundColor": "#F4F3FD",
+  "backgroundColor": "#0B0F0E",
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#F4F3FD"
+    "backgroundColor": "#0B0F0E"
   },
   "android": {
-    "backgroundColor": "#F4F3FD"
+    "backgroundColor": "#0B0F0E"
   },
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 600,
       "launchAutoHide": true,
-      "backgroundColor": "#F4F3FD",
+      "backgroundColor": "#0B0F0E",
       "showSpinner": false
     },
     "LocalNotifications": {

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shift Score · watch your pay add up</title>
 <meta name="description" content="A free hourly pay tracker that turns every shift into a game. Live earnings, a timesheet, spending and savings. Private: your data stays on your device.">
-<meta name="theme-color" content="#f1f2f8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0b0f0e" id="themeColor">
+<script>(function(){var t="dark";try{t=localStorage.getItem("shiftscore.theme")||"dark"}catch(e){}document.documentElement.setAttribute("data-theme",t);})();</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon-48.png" type="image/png" sizes="48x48">
 <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
@@ -14,451 +14,560 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Shift Score">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:title" content="Shift Score">
 <meta property="og:description" content="Watch your pay add up, shift by shift. Free and private.">
 <meta property="og:image" content="icons/icon-512.png">
 <style>
 
-/* Liquid Glass: frosted, translucent layers floating over a soft color field. System (SF) type. */
+/* Shift Score — native-feeling grouped layout.
+   Brand: the navy pay coin and indigo motion stripes from the app icon. One bold surface (the pay card); everything else is quiet, flat and evenly spaced on an 8pt grid. */
+/* Dark-first: near-black with a green cast, money green for earnings, gold for progress. Light mode is opt-in. */
 :root {
-  --bg: #f1f2f8;
-  --glass: rgba(255, 255, 255, 0.58);
-  --glass-strong: rgba(255, 255, 255, 0.74);
-  --glass-edge: rgba(255, 255, 255, 0.75);
-  --glass-shine: rgba(255, 255, 255, 0.85);
-  --shadow: 0 10px 30px rgba(24, 39, 75, 0.10), 0 2px 6px rgba(24, 39, 75, 0.05);
-  --panel: var(--glass);
-  --ink: #1c1c1e;
-  --muted: #55555c;
-  --line: rgba(60, 60, 67, 0.16);
-  --fill: rgba(118, 118, 128, 0.12);
-  --accent: #5856d6;
-  --accent-soft: rgba(88, 86, 214, 0.13);
-  --tint: #5856d6;
-  --bone: rgba(118, 118, 128, 0.16);
-  --lit: #8e8cf5;
-  --good: #2b7a8c;
-  --bad: #c0392b;
-  --blob1: rgba(160, 150, 255, 0.42); --blob2: rgba(130, 190, 255, 0.40); --blob3: rgba(245, 170, 205, 0.28); --blob4: rgba(255, 200, 170, 0.32);
+  --bg: #0b0f0e;
+  --cell: #131a18;
+  --cell2: #1a2320;
+  --raise: #222c29;
+  --ink: #f2f5f3;
+  --muted: #8a9b94;
+  --faint: #5b6b65;
+  --line: rgba(242, 245, 243, 0.07);
+  --fill: rgba(138, 155, 148, 0.13);
+  --money: #00d26a;
+  --money-soft: rgba(0, 210, 106, 0.13);
+  --on-money: #03140b;
+  --gold: #f5b942;
+  --gold-soft: rgba(245, 185, 66, 0.14);
+  --tint: var(--money);
+  --accent: var(--money);
+  --tint-soft: var(--money-soft);
+  --accent-soft: var(--money-soft);
+  --good: var(--money);
+  --good-soft: var(--money-soft);
+  --warn: var(--gold);
+  --warn-soft: var(--gold-soft);
+  --bad: #ff6b6b;
+  --bad-soft: rgba(255, 107, 107, 0.13);
+  --bone: rgba(138, 155, 148, 0.16);
+  --lit: var(--gold);
+  --radius: 18px;
+  --shadow: none;
   --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rounded: var(--display);
   --mono: var(--body);
-  --rounded: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
-    --accent: #a5a3ff; --accent-soft: rgba(125, 122, 255, 0.20); --tint: #8e8cff; --bone: rgba(255, 255, 255, 0.12); --lit: #7d7aff; --good: #6cc7d6; --bad: #ff6b6b;
-    --blob1: rgba(94, 92, 230, 0.26); --blob2: rgba(10, 132, 255, 0.18); --blob3: rgba(191, 90, 242, 0.16); --blob4: rgba(255, 140, 120, 0.08);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0b0c10; --glass: rgba(36, 36, 42, 0.55); --glass-strong: rgba(44, 44, 50, 0.72); --glass-edge: rgba(255, 255, 255, 0.12); --glass-shine: rgba(255, 255, 255, 0.16);
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45); --ink: #f5f5f7; --muted: #aeaeb2; --line: rgba(255, 255, 255, 0.12); --fill: rgba(118, 118, 128, 0.24);
-  --accent: #a5a3ff; --accent-soft: rgba(125, 122, 255, 0.20); --tint: #8e8cff; --bone: rgba(255, 255, 255, 0.12); --lit: #7d7aff; --good: #6cc7d6; --bad: #ff6b6b;
-  --blob1: rgba(94, 92, 230, 0.26); --blob2: rgba(10, 132, 255, 0.18); --blob3: rgba(191, 90, 242, 0.16); --blob4: rgba(255, 140, 120, 0.08);
+  --glass: var(--cell); --glass-strong: var(--cell); --glass-edge: var(--line); --glass-shine: transparent;
   color-scheme: dark;
 }
+:root[data-theme="light"] {
+  --bg: #f3f5f4; --cell: #ffffff; --cell2: #f3f6f5; --raise: #e9eeec; --ink: #0b0f0e; --muted: #5d6e67; --faint: #95a39d; --line: rgba(11, 15, 14, 0.08); --fill: rgba(93, 110, 103, 0.11);
+  --money: #00a653; --money-soft: rgba(0, 166, 83, 0.11); --on-money: #ffffff; --gold: #c78a0c; --gold-soft: rgba(199, 138, 12, 0.13); --bad: #e04848; --bad-soft: rgba(224, 72, 72, 0.10);
+  --bone: rgba(93, 110, 103, 0.14); --shadow: 0 1px 2px rgba(11, 15, 14, 0.04); color-scheme: light;
+}
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    --bg: #f3f5f4; --cell: #ffffff; --cell2: #f3f6f5; --raise: #e9eeec; --ink: #0b0f0e; --muted: #5d6e67; --faint: #95a39d; --line: rgba(11, 15, 14, 0.08); --fill: rgba(93, 110, 103, 0.11);
+    --money: #00a653; --money-soft: rgba(0, 166, 83, 0.11); --on-money: #ffffff; --gold: #c78a0c; --gold-soft: rgba(199, 138, 12, 0.13); --bad: #e04848; --bad-soft: rgba(224, 72, 72, 0.10);
+    --bone: rgba(93, 110, 103, 0.14); --shadow: 0 1px 2px rgba(11, 15, 14, 0.04); color-scheme: light;
+  }
+}
+
+/* ---------- Base ---------- */
 * { box-sizing: border-box; }
-.verdict { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); }
-.verdict b { font-family: var(--display); font-size: 1.05rem; }
-.verdict .amt { font-family: var(--mono); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
-.verdict.ahead { border-color: var(--good); color: var(--good); }
-.verdict.over { border-color: var(--bad); color: var(--bad); }
-.spendform { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; gap: 8px; align-items: end; margin-top: 14px; }
-.spendlist { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 0; }
-.spendlist li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
-.spendlist .what { min-width: 0; overflow-wrap: anywhere; }
-.spendlist .what small { color: var(--muted); font-family: var(--mono); margin-left: 6px; }
-.spendlist .right { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
-.spendlist button { padding: 2px 9px; border-radius: 8px; font-weight: 500; }
-@media (max-width: 460px) { .spendform { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .spendform button { grid-column: 1 / -1; } }
-body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 600px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 18px; }
-.wrap > * { min-width: 0; }
-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.brand { font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
-.brand small { font-family: var(--body); font-weight: 500; color: var(--muted); font-size: .8rem; margin-left: 6px; letter-spacing: 0; }
-.status { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
-.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
-.live .dot { background: var(--good); box-shadow: 0 0 0 0 var(--good); animation: pulse 1.6s infinite; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 60%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
-
-.score { text-align: center; padding-block: 8px 4px; }
-.score .label { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-.money { font-family: var(--display); font-weight: 800; font-size: clamp(3.4rem, 15vw, 5.6rem); line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; margin-top: 6px; }
-.money .cur { color: var(--accent); font-size: .55em; vertical-align: .55em; margin-right: 2px; }
-.money .tick { font-family: var(--mono); font-weight: 400; font-size: .22em; color: var(--muted); letter-spacing: 0; vertical-align: .2em; margin-left: 4px; }
-.rate-line { font-family: var(--mono); font-size: .82rem; color: var(--muted); margin-top: 8px; }
-
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
-.panel h2 { font-family: var(--display); font-weight: 800; font-size: 1rem; margin: 0 0 12px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: baseline; text-wrap: balance; }
-.panel h2 span { font-family: var(--body); font-weight: 500; font-size: .8rem; color: var(--muted); }
-
-/* Spine: one vertebra per hour */
-.spine { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: end; }
-.vert { display: grid; justify-items: center; gap: 6px; min-width: 0; }
-.bone { position: relative; width: 70%; aspect-ratio: 1 / .78; max-width: 100%; border-radius: 40% 40% 34% 34%; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); transition: background .4s; }
-.bone::before, .bone::after { content: ""; position: absolute; top: 30%; width: 28%; height: 26%; background: var(--bone); border-radius: 6px; }
-.bone::before { left: -24%; }
-.bone::after { right: -24%; }
-.vert.done .bone::before, .vert.done .bone::after { background: var(--lit); }
-.vert .lv { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
-.vert.now .lv { color: var(--accent); font-weight: 500; }
-.level-name { margin-top: 12px; font-size: .92rem; }
-.level-name b { font-family: var(--display); }
-.next { color: var(--muted); font-family: var(--mono); font-size: .82rem; }
-
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.stat { min-width: 0; }
-.stat .k { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-.stat .v { font-family: var(--mono); font-size: 1.15rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.goalbar { height: 10px; border-radius: 99px; background: var(--accent-soft); overflow: hidden; margin-top: 14px; }
-.goalbar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width .5s; }
-.goaltext { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); margin-top: 6px; font-family: var(--mono); gap: 8px; flex-wrap: wrap; }
-
-.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-.badge { border: 1px dashed var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 2px; opacity: .55; min-width: 0; }
-.badge.on { opacity: 1; border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
-.badge b { font-family: var(--display); font-size: .92rem; }
-.badge small { color: var(--muted); font-family: var(--mono); font-size: .74rem; }
-
-.controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.stale { border: 1px solid var(--bad); color: var(--bad); border-radius: 10px; padding: 10px 14px; font-weight: 600; text-align: center; }
-.field { display: grid; gap: 4px; min-width: 0; }
-.field label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-input { font: inherit; font-family: var(--mono); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
-.btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-button { font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-button:hover { filter: brightness(1.05); }
-
-.hist { width: 100%; border-collapse: collapse; font-size: .85rem; }
-.hist th { text-align: left; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 6px 4px; border-bottom: 1px solid var(--line); }
-.hist td { padding: 7px 4px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-variant-numeric: tabular-nums; }
-.hist td:last-child, .hist th:last-child { text-align: right; }
-.tablewrap { overflow-x: auto; }
-.sheet { min-width: 560px; }
-.sheet td.neg { color: var(--bad); font-weight: 500; }
-.sheet td.pos { color: var(--good); font-weight: 500; }
-.sheet td, .sheet th { text-align: right; white-space: nowrap; }
-.sheet td:first-child, .sheet th:first-child { text-align: left; }
-.sheet tr.wk td { font-family: var(--body); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-top: 14px; background: transparent; }
-.sheet tr.live td { color: var(--accent); }
-.sheet tfoot td { font-weight: 600; border-top: 2px solid var(--ink); border-bottom: none; }
-.empty { color: var(--muted); font-size: .85rem; }
-.note { font-size: .78rem; color: var(--muted); }
-
-/* Sync line */
-.sync { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .76rem; color: var(--muted); margin-top: -10px; }
-.sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
-.sync[data-mode=synced] .sdot { background: var(--good); }
-.sync[data-mode=syncing] .sdot { background: var(--accent); }
-.sync[data-mode=offline] .sdot { background: var(--bad); }
-.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(140%); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 12px; font-weight: 600; max-width: calc(100% - 32px); text-align: center; transition: transform .35s; z-index: 5; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-@media (max-width: 460px) { .stats, .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
-/* Website additions */
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; min-height: 100vh; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
-.obmark { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 0 18px; }
-@media (prefers-color-scheme: dark) { .obmark { background: #F4F3FD; padding: 12px 16px; border-radius: 18px; box-sizing: border-box; } }
-.onboard { position: fixed; inset: 0; z-index: 10; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
-.obcard { width: 100%; max-width: 440px; display: grid; gap: 16px; margin: auto; min-width: 0; }
-.obcard > * { min-width: 0; }
-.obcard h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 9vw, 2.6rem); line-height: 1.02; letter-spacing: -0.03em; margin: 4px 0 0; }
-.obcard h1 em { font-style: normal; color: var(--accent); }
-.obcard p { margin: 0; color: var(--muted); }
-.obcard .primary { padding: 14px 18px; font-size: 1.05rem; }
-.obpoints { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .92rem; }
-.obpoints li::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; }
-.filebtn { font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; display: inline-block; }
-.filebtn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
-button.danger { color: var(--bad); border-color: var(--bad); }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.35; letter-spacing: -0.012em;
+  -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; padding-top: env(safe-area-inset-top, 0px); }
+a { color: var(--tint); }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 16px calc(104px + env(safe-area-inset-bottom, 0px)); }
+.wrap > * { min-width: 0; }
+.tab { display: grid; gap: 20px; }
+.tab > * { min-width: 0; }
+
+/* Large title */
+.largetitle { padding: 14px 4px 0; display: grid; gap: 4px; }
+.largetitle h1 { font-family: var(--display); font-weight: 700; font-size: 34px; line-height: 1.1; letter-spacing: -0.025em; margin: 0; }
+.largetitle .sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 15px; }
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); padding: 3px 10px 3px 8px; border-radius: 999px; background: var(--fill); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.live.status { color: var(--money); background: var(--money-soft); }
+.live .dot { background: var(--good); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 55%, transparent); } 100% { box-shadow: 0 0 0 7px transparent; } }
+
+/* ---------- Cards (grouped sections) ---------- */
+.panel { background: var(--cell); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); min-width: 0; }
+.panel h2 { font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 14px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.panel h2 > span { font-family: var(--body); font-weight: 400; font-size: 15px; letter-spacing: -0.01em; color: var(--muted); }
+.panel h3, .savertips-h { font-family: var(--display); font-size: 17px; font-weight: 600; margin: 20px 0 6px; letter-spacing: -0.015em; }
+.note, .empty { font-size: 13px; line-height: 1.4; color: var(--muted); margin: 12px 0 0; }
+.note b { color: var(--ink); font-weight: 600; }
+.hint { margin: -6px 0 12px; }
+.panel > .note:first-child { margin-top: 0; }
+
+/* Stat rows: label over value, hairline dividers */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.stat { min-width: 0; padding: 0 12px; border-left: 1px solid var(--line); }
+.stat:first-child { padding-left: 0; border-left: 0; }
+.stat .k { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 4px; letter-spacing: -0.005em; }
+.stat .v { font-family: var(--display); font-weight: 600; font-size: 22px; letter-spacing: -0.02em; line-height: 1.15; overflow-wrap: anywhere; }
+@media (max-width: 400px) { .stat .v { font-size: 19px; } .stat { padding: 0 8px; } }
+
+/* Progress */
+.goalbar { height: 6px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 18px; }
+.goalbar i { display: block; height: 100%; width: 0; background: var(--gold); border-radius: 99px; transition: width .5s; }
+.goaltext { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+/* Verdict / callout rows */
+.verdict { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--cell2); color: var(--ink); font-size: 15px; }
+.verdict b { font-weight: 600; font-family: var(--body); letter-spacing: -0.01em; }
+.verdict .amt { font-family: var(--display); font-weight: 600; font-size: 17px; }
+.verdict.ahead { background: var(--good-soft); color: var(--good); }
+.verdict.over { background: var(--bad-soft); color: var(--bad); }
+.verdict.warn { background: var(--warn-soft); color: var(--warn); }
+.stale { padding: 12px 14px; border-radius: 12px; background: var(--bad-soft); color: var(--bad); font-weight: 600; font-size: 15px; }
+
+/* ---------- Buttons ---------- */
+button, .filebtn { font: inherit; font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  min-height: 44px; padding: 11px 18px; border-radius: 12px; border: 0; background: var(--fill); color: var(--tint); transition: opacity .15s, transform .15s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-align: center; }
+button:active, .filebtn:active { opacity: .7; }
+button.primary { background: var(--money); color: var(--on-money); }
+button.danger { background: var(--bad-soft); color: var(--bad); }
 button.danger.armed { background: var(--bad); color: #fff; }
-.install { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.install p { margin: 0; font-size: .9rem; }
-.foot { text-align: center; font-size: .78rem; color: var(--muted); padding: 8px 16px 32px; }
-.span2 { grid-column: span 2; }
-@media (min-width: 461px) { .controls .span2 { grid-column: span 2; } }
+button:focus-visible, input:focus-visible, select:focus-visible, .tabbtn:focus-visible, summary:focus-visible, .filebtn:focus-within { outline: 3px solid color-mix(in srgb, var(--tint) 50%, transparent); outline-offset: 2px; }
+.btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.btns > button, .btns > .filebtn { flex: 1 1 auto; }
+.linkbtn { background: none; padding: 0; min-height: 0; font-size: 17px; font-weight: 400; color: var(--tint); }
+.filebtn input { display: none; }
 
-/* ===== Liquid Glass overrides ===== */
-body { font-family: var(--body); font-size: 17px; line-height: 1.4; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; background: var(--bg); }
-body::before { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(40vmax 40vmax at 15% 10%, var(--blob1), transparent 60%),
-    radial-gradient(45vmax 45vmax at 90% 20%, var(--blob2), transparent 60%),
-    radial-gradient(40vmax 40vmax at 80% 85%, var(--blob3), transparent 60%),
-    radial-gradient(35vmax 35vmax at 10% 80%, var(--blob4), transparent 60%);
-  filter: blur(20px); }
-.wrap { gap: 14px; padding-block: 8px calc(120px + env(safe-area-inset-bottom, 0px)); }
-.glass, .panel, .score, .tabbar, .toast, .obcard {
-  background: var(--glass); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid var(--glass-edge); box-shadow: var(--shadow), inset 0 1px 0 var(--glass-shine); }
-.panel { border-radius: 22px; padding: 16px 16px 18px; }
-.panel h2 { font-family: var(--display); font-weight: 600; font-size: 1.06rem; letter-spacing: -0.01em; margin-bottom: 12px; }
-.panel h2 span { font-family: var(--body); font-size: .8rem; font-weight: 400; }
+/* ---------- Form rows (label left, value right) ---------- */
+.controls, .budform, .wfform, .spendform { display: block; margin: 0; }
+.field { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 6px 0; border-top: 1px solid var(--line); min-width: 0; }
+.panel h2 + .field, .panel h2 + .controls .field:first-child, .panel h2 + form .field:first-child, .hint + .controls .field:first-child { border-top: 0; }
+.controls + .controls .field:first-child { border-top: 1px solid var(--line); }
+.field label { flex: 1 1 auto; font-size: 17px; color: var(--ink); font-weight: 400; letter-spacing: -0.012em; min-width: 0; }
+.field label small { color: var(--muted); font-size: 13px; }
+input, select { font: inherit; font-family: var(--body); font-size: 17px; color: var(--ink); background: transparent; border: 0; border-radius: 8px; padding: 8px 0; min-width: 0; letter-spacing: -0.012em; }
+.field > input, .field > select { flex: 0 1 58%; text-align: right; color: var(--muted); }
+.field > input:focus { color: var(--ink); outline: none; }
+.field > input::placeholder { color: var(--faint); }
+select { -webkit-appearance: none; appearance: none; padding-right: 18px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='14' viewBox='0 0 10 14'%3E%3Cpath d='M2 5l3-3 3 3M2 9l3 3 3-3' fill='none' stroke='%239a9aab' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0 center; text-align-last: right; }
+input[type="date"], input[type="time"] { -webkit-appearance: none; appearance: none; text-align: right; min-height: 36px; }
+input[type="date"]::-webkit-date-and-time-value, input[type="time"]::-webkit-date-and-time-value { text-align: right; }
+.field > input[type="date"], .field > input[type="time"] { flex: 0 0 auto; background: var(--fill); color: var(--ink); padding: 6px 10px; border-radius: 8px; }
+form > button.primary, .controls > button.primary, .budform > button.primary { width: 100%; margin-top: 12px; }
+.span2 { grid-column: auto; }
+.check { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-top: 1px solid var(--line); font-size: 17px; }
+.check input { width: 22px; height: 22px; accent-color: var(--tint); flex: none; order: 2; }
 
-.largetitle { padding: 18px 4px 2px; display: grid; gap: 6px; }
-.largetitle h1 { font-family: var(--display); font-weight: 700; font-size: 2.1rem; letter-spacing: -0.025em; line-height: 1.05; margin: 0; }
-.largetitle .sub { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: .95rem; }
-.status { font-size: .78rem; letter-spacing: 0; text-transform: none; font-weight: 600; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--fill); color: var(--muted); }
-.live.status { background: var(--accent-soft); color: var(--accent); }
-.dot { width: 8px; height: 8px; }
-.live .dot { background: var(--lit); }
+/* Disclosure rows */
+details.addpast, details.lvlpick, details.sheetform { margin-top: 14px; border-top: 1px solid var(--line); }
+details > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 48px; color: var(--tint); font-weight: 400; font-size: 17px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(-45deg); margin-right: 4px; transition: transform .2s; }
+details[open] > summary::after { transform: rotate(45deg); }
+details.addpast form, details.sheetform form { margin-top: 0; }
+details.sheetform.solo { margin-top: 0; border-top: 0; }
 
-.score { border-radius: 28px; padding: 22px 16px 16px; text-align: center; }
-.score .label { font-size: .85rem; letter-spacing: 0; text-transform: none; font-weight: 500; }
-.money { font-family: var(--rounded); font-weight: 700; letter-spacing: -0.03em; font-size: clamp(3.6rem, 19vw, 5.6rem); }
-.money .cur { color: var(--accent); }
-.money .tick { font-family: var(--rounded); }
-.rate-line { font-family: var(--body); font-size: .85rem; }
+/* Segmented control */
+.seg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 2px; border-radius: 9px; background: var(--fill); margin-bottom: 14px; }
+.seg.seg2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.seg button { min-height: 32px; padding: 4px 0; font-size: 13px; font-weight: 500; border-radius: 7px; background: transparent; color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--raise); font-weight: 600; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); }
+:root[data-theme="light"] .seg button[aria-pressed="true"] { background: #fff; }
+
+/* Chips */
+.chips, .fchips { display: flex; gap: 8px; }
+.chips { flex-wrap: wrap; }
+.fchips { overflow-x: auto; scrollbar-width: none; margin: 0 -16px 4px; padding: 0 16px 4px; }
+.fchips::-webkit-scrollbar { display: none; }
+.chips button, .fchips button { flex: none; min-height: 32px; padding: 6px 13px; border-radius: 999px; font-size: 15px; font-weight: 500; background: var(--fill); color: var(--ink); }
+.chips button[aria-pressed="true"], .fchips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+.swatches button { width: 30px; height: 30px; min-height: 30px; padding: 0; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1); }
+.swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--cell), 0 0 0 4px var(--ink); }
+.pickrow { display: grid; gap: 8px; padding: 4px 0 14px; }
+.picklabel { font-size: 13px; color: var(--muted); }
+
+/* ---------- Today: the hero number inside a glowing goal ring ---------- */
+.score { position: relative; text-align: center; padding: 6px 0 0; }
+.ringwrap { position: relative; width: min(300px, 82vw); aspect-ratio: 1; margin: 0 auto; }
+.ringwrap::before { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--money) 16%, transparent), transparent 70%); filter: blur(18px); opacity: .7; }
+.goalring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.goalring circle { fill: none; stroke-width: 15; }
+.gr-track { stroke: var(--gold-soft); }
+.gr-fill { stroke: var(--gold); stroke-linecap: round; stroke-dasharray: 0 100; transition: stroke-dasharray .8s cubic-bezier(.3, .8, .3, 1); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 70%, transparent)); }
+.score.goaldone .gr-fill { stroke: var(--money); filter: drop-shadow(0 0 8px color-mix(in srgb, var(--money) 70%, transparent)); }
+.ringcore { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 4px; }
+.score .label { font-size: 15px; font-weight: 500; color: var(--muted); }
+.money { font-family: var(--display); font-weight: 700; font-size: clamp(44px, 14.5vw, 58px); line-height: 1; letter-spacing: -0.045em; color: var(--money); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.money .cur { font-size: .55em; font-weight: 600; vertical-align: .55em; margin-right: 2px; letter-spacing: 0; opacity: .8; }
+.money .tick { font-size: .3em; font-weight: 600; color: var(--muted); vertical-align: .16em; margin-left: 3px; letter-spacing: 0; }
+.goalmini { font-size: 13px; color: var(--muted); }
+.goalmini b { color: var(--gold); font-weight: 600; }
+.rate-line { font-size: 15px; color: var(--muted); margin-top: 6px; }
 .clockbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
 .clockbtns #btnUndo, .clockbtns #btnIn { grid-column: 1 / -1; }
-#btnBreak { background: var(--accent-soft); color: var(--accent); min-height: 50px; }
-#btnBreak.onbreak { background: var(--accent); color: #fff; }
+.clockbtns button { min-height: 56px; border-radius: 16px; font-size: 17px; }
+#btnIn { background: var(--money); color: var(--on-money); font-weight: 700; box-shadow: 0 8px 24px color-mix(in srgb, var(--money) 30%, transparent); }
+#btnOut, #btnBreak, #btnUndo { background: var(--cell); color: var(--ink); }
+#btnBreak.onbreak { background: var(--gold); color: #1b1300; }
+.score.payout .money { animation: payout 1.1s cubic-bezier(.2, .9, .3, 1.2); }
+@keyframes payout { 0% { transform: scale(1); } 18% { transform: scale(1.12) translateY(-4px); text-shadow: 0 0 28px color-mix(in srgb, var(--money) 80%, transparent); } 40% { transform: scale(.97); } 60% { transform: scale(1.04); } 100% { transform: scale(1); text-shadow: none; } }
+.payoutcard { position: fixed; z-index: 25; left: 50%; top: calc(24px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 18px; background: var(--raise); box-shadow: 0 16px 40px rgba(0, 0, 0, .35), inset 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent); transition: transform .5s cubic-bezier(.2, 1.2, .3, 1), opacity .3s, visibility .5s; max-width: calc(100% - 32px); opacity: 0; visibility: hidden; }
+.payoutcard.show { transform: translate(-50%, 0); opacity: 1; visibility: visible; }
+.payoutcard .coin { width: 42px; height: 42px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe08a, var(--gold) 55%, #b9831f); display: grid; place-items: center; color: #3b2600; font-weight: 800; font-size: 20px; flex: none; }
+.payoutcard.show .coin { animation: coinspin 1s ease-out; }
+@keyframes coinspin { 0% { transform: rotateY(0) scale(.6); } 60% { transform: rotateY(540deg) scale(1.1); } 100% { transform: rotateY(720deg) scale(1); } }
+.payoutcard b { display: block; font-size: 17px; color: var(--gold); letter-spacing: -0.01em; }
+.payoutcard small { display: block; font-size: 13px; color: var(--muted); }
+.payoutcard .pamt { margin-left: 6px; font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--money); white-space: nowrap; }
 
-button, .filebtn { font-family: var(--body); font-weight: 600; font-size: 1rem; border-radius: 999px; padding: 12px 20px; min-height: 46px;
-  background: var(--fill); border: 1px solid transparent; color: var(--tint); -webkit-tap-highlight-color: transparent; transition: transform .15s, filter .15s; }
-button:active, .filebtn:active { transform: scale(0.97); }
-button:hover { filter: brightness(1.04); }
-button.primary { background: var(--tint); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(88, 86, 214, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
-#btnIn { color: #fff; background: linear-gradient(180deg, #7c7af2, #5856d6); box-shadow: 0 8px 20px rgba(88, 86, 214, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.4); min-height: 54px; font-size: 1.06rem; }
-#btnOut { background: rgba(192, 57, 43, 0.09); color: var(--bad); min-height: 54px; font-size: 1.06rem; }
-button.danger { background: rgba(215, 0, 21, 0.10); color: var(--bad); border-color: transparent; }
-button.danger.armed { background: var(--bad); color: #fff; }
-button:focus-visible, input:focus-visible, .tabbtn:focus-visible { outline: 3px solid color-mix(in srgb, var(--tint) 45%, transparent); outline-offset: 2px; }
-
-.field label, .stat .k { font-size: .8rem; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--muted); }
-select { font-family: var(--body); font-size: 1.06rem; background: var(--fill); border: 1px solid transparent; border-radius: 12px; padding: 11px 13px; color: var(--ink); width: 100%; min-width: 0; -webkit-appearance: none; appearance: none; }
-input { font-family: var(--body); font-size: 1.06rem; background: var(--fill); border: 1px solid transparent; border-radius: 12px; padding: 11px 13px; color: var(--ink); }
-input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, var(--tint) 40%, transparent); }
-.stat .v { font-family: var(--rounded); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; }
-
-.goalbar { height: 8px; background: var(--fill); }
-.goalbar i { background: linear-gradient(90deg, #8e8cf5, #7fb2e5); }
-.goaltext { font-family: var(--body); font-size: .82rem; }
-.spine { gap: 6px; }
-.bone { width: 100%; aspect-ratio: auto; height: 34px; border-radius: 10px; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); }
-.bone::before, .bone::after { display: none; }
-.spine.style-spine .bone { width: 70%; height: auto; aspect-ratio: 1 / .78; border-radius: 40% 40% 34% 34%; position: relative; }
-.spine.style-spine .bone::before, .spine.style-spine .bone::after { display: block; content: ""; position: absolute; top: 30%; width: 28%; height: 26%; background: var(--bone); border-radius: 6px; }
+/* Level blocks */
+.spine { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; align-items: end; }
+.vert { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+.bone { position: relative; width: 100%; height: 30px; border-radius: 7px; background: linear-gradient(to top, var(--lit) var(--fill, 0%), var(--bone) var(--fill, 0%)); transition: background .4s; }
+.vert .lv { font-size: 12px; color: var(--faint); font-weight: 500; }
+.vert.now .lv { color: var(--tint); font-weight: 600; }
+.spine.style-spine .bone { width: 70%; height: auto; aspect-ratio: 1 / .78; border-radius: 40% 40% 34% 34%; }
+.spine.style-spine .bone::before, .spine.style-spine .bone::after { content: ""; position: absolute; top: 30%; width: 28%; height: 26%; background: var(--bone); border-radius: 6px; }
 .spine.style-spine .bone::before { left: -24%; } .spine.style-spine .bone::after { right: -24%; }
 .spine.style-spine .vert.done .bone::before, .spine.style-spine .vert.done .bone::after { background: var(--lit); }
-.spine.style-coffee .bone { width: 62%; height: 34px; border-radius: 4px 4px 12px 12px; position: relative; margin-right: 16%; }
-.spine.style-coffee .bone::after { display: block; content: ""; position: absolute; right: -38%; top: 20%; width: 34%; height: 48%; border: 3px solid var(--bone); border-left: none; border-radius: 0 10px 10px 0; }
+.spine.style-coffee .bone { width: 62%; height: 30px; border-radius: 4px 4px 11px 11px; margin-right: 16%; }
+.spine.style-coffee .bone::after { content: ""; position: absolute; right: -38%; top: 20%; width: 34%; height: 48%; border: 3px solid var(--bone); border-left: none; border-radius: 0 10px 10px 0; }
 .spine.style-coffee .vert.done .bone::after { border-color: var(--lit); }
-.spine.style-battery .bone { width: 60%; height: 36px; border-radius: 6px; position: relative; margin-top: 5px; }
-.spine.style-battery .bone::before { display: block; content: ""; position: absolute; top: -5px; left: 32%; width: 36%; height: 5px; border-radius: 2px 2px 0 0; background: var(--bone); }
+.spine.style-battery .bone { width: 60%; height: 32px; border-radius: 6px; margin-top: 5px; }
+.spine.style-battery .bone::before { content: ""; position: absolute; top: -5px; left: 32%; width: 36%; height: 5px; border-radius: 2px 2px 0 0; background: var(--bone); }
 .spine.style-battery .vert.done .bone::before { background: var(--lit); }
-.spine.style-dots .bone { width: 80%; height: auto; aspect-ratio: 1; border-radius: 50%; }
-.lvlpick { margin-top: 12px; }
-.lvlpick summary { cursor: pointer; color: var(--tint); font-weight: 600; font-size: .9rem; list-style: none; }
-.lvlpick summary::-webkit-details-marker { display: none; }
-.pickrow { display: grid; gap: 8px; margin-top: 12px; }
-.picklabel { font-size: .8rem; color: var(--muted); font-weight: 500; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chips button { min-height: 36px; padding: 6px 14px; font-size: .88rem; color: var(--ink); }
-.chips button[aria-pressed="true"] { background: var(--tint); color: #fff; }
-.swatches { display: flex; gap: 10px; flex-wrap: wrap; }
-.swatches button { width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 50%; background: var(--sw); border: 3px solid transparent; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
-.swatches button[aria-pressed="true"] { border-color: var(--ink); }
-.vert .lv { font-family: var(--body); font-size: .72rem; }
-.level-name b { font-family: var(--display); font-weight: 600; }
-.next { font-family: var(--body); }
+.spine.style-dots .bone { width: 78%; height: auto; aspect-ratio: 1; border-radius: 50%; }
+.level-name { margin-top: 14px; font-size: 15px; color: var(--muted); }
+.level-name b { color: var(--ink); font-weight: 600; }
+.next { color: var(--muted); font-size: 15px; }
 
-.badge { border: none; background: var(--fill); border-radius: 16px; opacity: .6; }
-.badge.on { background: var(--accent-soft); opacity: 1; }
-.badge b { font-family: var(--display); font-weight: 600; font-size: .95rem; }
-.badge small { font-family: var(--body); }
+/* Milestones: one quiet row */
+.badges { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 2px; }
+.badges::-webkit-scrollbar { display: none; }
+.badge { flex: none; display: grid; gap: 1px; padding: 10px 14px; border-radius: 12px; background: var(--cell2); color: var(--faint); min-width: 0; }
+.badge b { font-weight: 600; font-size: 15px; letter-spacing: -0.01em; white-space: nowrap; }
+.badge small { font-size: 12px; white-space: nowrap; }
+.badge.on { background: var(--gold-soft); color: var(--gold); }
+.badge.pop { animation: pop .6s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes pop { 0% { transform: scale(.8); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.badge.on small { color: var(--muted); }
 
-.verdict { border: none; border-radius: 14px; background: var(--fill); }
-.verdict b { font-family: var(--display); font-weight: 600; }
-.verdict .amt { font-family: var(--rounded); font-weight: 600; }
-.verdict.ahead { background: var(--accent-soft); color: var(--accent); }
-.verdict.over { background: rgba(215, 0, 21, 0.10); color: var(--bad); }
-.spendlist li { border-bottom: 1px solid var(--line); }
-.spendlist .right { font-family: var(--rounded); }
-.spendlist button { min-height: 32px; padding: 4px 12px; font-size: .85rem; color: var(--bad); background: rgba(215, 0, 21, 0.08); }
-.hist { font-size: .9rem; }
-.hist th { font-size: .72rem; letter-spacing: 0; text-transform: none; font-weight: 600; border-bottom: 1px solid var(--line); }
-.hist td { font-family: var(--body); border-bottom: 1px solid var(--line); }
-.sheet tr.wk td { font-size: .74rem; letter-spacing: 0; text-transform: none; color: var(--muted); }
-.sheet tfoot td { border-top: 1px solid var(--ink); }
-.note, .empty { font-size: .8rem; }
-.sync { margin: 0; font-family: var(--body); font-size: .82rem; justify-content: center; }
-.foot { padding: 4px 16px 0; }
-.hint { margin: -4px 0 12px; }
-.addpast { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
-.addpast summary { cursor: pointer; color: var(--tint); font-weight: 600; font-size: .95rem; list-style: none; }
-.addpast summary::-webkit-details-marker { display: none; }
-.addpast summary::before { content: "+ "; }
-.addpast[open] summary::before { content: "− "; }
-.addpast form { margin-top: 12px; }
-#timeRow { margin-bottom: 10px; }
-.seg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 999px; background: var(--fill); margin-bottom: 12px; }
-.seg button { min-height: 36px; padding: 6px 0; font-size: .82rem; background: transparent; color: var(--ink); box-shadow: none; }
-.seg button[aria-pressed="true"] { background: var(--glass-strong); color: var(--ink); box-shadow: 0 2px 8px rgba(24, 39, 75, 0.12), inset 0 1px 0 var(--glass-shine); }
-.seg.seg2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.budhero { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 18px; align-items: center; margin-top: 4px; }
-.ring { position: relative; width: 140px; height: 140px; }
+/* ---------- Lists ---------- */
+.spendlist, .paylist, .budcats, .places, .txlist, .saverplan, .wfgoals, .insights, .wflist, .cutlist { list-style: none; margin: 0; padding: 0; }
+.spendlist li, .paylist li, .budcats li, .places li, .txlist li, .saverplan li, .wfgoals li, .cutlist li { border-top: 1px solid var(--line); }
+.spendlist li:first-child, .paylist li:first-child, .budcats li:first-child, .places li:first-child, .txlist li:first-child, .saverplan li:first-child, .wfgoals li:first-child, .cutlist li:first-child { border-top: 0; }
+
+.spendlist { margin-top: 10px; }
+.spendlist li { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 52px; padding: 8px 0; }
+.spendlist .what { min-width: 0; overflow-wrap: anywhere; font-size: 17px; }
+.spendlist .what small { display: block; color: var(--muted); font-size: 13px; margin: 2px 0 0; }
+.spendlist .right { display: flex; align-items: center; gap: 12px; font-family: var(--display); font-weight: 500; }
+.spendlist button { min-height: 30px; padding: 4px 10px; font-size: 13px; font-weight: 500; color: var(--bad); background: var(--bad-soft); border-radius: 8px; }
+
+/* Timesheet: a list on phones, a table on wide screens */
+.hist { width: 100%; border-collapse: collapse; font-size: 15px; }
+.hist th { text-align: left; font-size: 13px; font-weight: 500; color: var(--muted); padding: 0 6px 8px; border-bottom: 1px solid var(--line); }
+.hist td { padding: 11px 6px; border-bottom: 1px solid var(--line); }
+.tablewrap { margin: 0 -16px; padding: 0 16px; overflow-x: auto; }
+.sheet td, .sheet th { text-align: right; white-space: nowrap; }
+.sheet td:first-child, .sheet th:first-child { text-align: left; }
+.sheet td.neg { color: var(--bad); } .sheet td.pos { color: var(--good); }
+.sheet tr.wk td { font-size: 13px; font-weight: 600; color: var(--muted); padding-top: 18px; border-bottom: 1px solid var(--line); }
+.sheet tr.live td { color: var(--tint); }
+.sheet tfoot td { font-weight: 600; border-bottom: 0; }
+@media (max-width: 699px) {
+  .sheet, .sheet tbody, .sheet tfoot { display: block; min-width: 0; }
+  .sheet thead { display: none; }
+  .sheet tr { display: grid; grid-template-columns: auto auto auto minmax(0, 1fr); grid-template-areas: "d d d p" "i o h s"; column-gap: 0; row-gap: 2px; padding: 11px 0; border-top: 1px solid var(--line); }
+  .sheet tbody tr:first-child { border-top: 0; }
+  .sheet td { display: block; padding: 0; border: 0; text-align: left; white-space: nowrap; }
+  .sheet td:nth-child(1) { grid-area: d; font-size: 17px; overflow: hidden; text-overflow: ellipsis; }
+  .sheet td:nth-child(2) { grid-area: i; font-size: 15px; color: var(--muted); }
+  .sheet td:nth-child(3) { grid-area: o; font-size: 15px; color: var(--muted); }
+  .sheet td:nth-child(3):not(:empty)::before { content: "–"; margin: 0 4px; }
+  .sheet td:nth-child(4) { grid-area: h; font-size: 15px; color: var(--muted); }
+  .sheet td:nth-child(4)::before { content: "·"; margin: 0 6px; }
+  .sheet td:nth-child(4)::after { content: " hrs"; }
+  .sheet td.sp { grid-area: s; display: block; text-align: right; font-size: 15px; color: var(--muted); }
+  .sheet td.sp::before { content: "Spent "; }
+  .sheet td.sp.none { visibility: hidden; }
+  .sheet td:nth-child(5) { grid-area: p; text-align: right; font-size: 17px; font-weight: 600; font-family: var(--display); }
+  .sheet td:nth-child(7) { display: none; }
+  .sheet tr.wk { padding: 20px 0 6px; border-top: 0; }
+  .sheet tr.wk td:nth-child(6), .sheet tfoot td:nth-child(6) { grid-area: s; text-align: right; }
+  .sheet tr.wk td:nth-child(6)::before, .sheet tfoot td:nth-child(6)::before { content: "Spent "; }
+  .sheet tr.wk td:nth-child(2), .sheet tr.wk td:nth-child(3), .sheet tfoot td:nth-child(2), .sheet tfoot td:nth-child(3) { display: none; }
+  .sheet tr.wk td:nth-child(4), .sheet tfoot td:nth-child(4) { grid-area: i; }
+  .sheet tr.wk td:nth-child(4)::before, .sheet tfoot td:nth-child(4)::before { content: none; }
+  .sheet tr.wk td { padding: 0; border: 0; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .sheet tr.wk td:nth-child(5) { font-size: 13px; font-family: var(--body); }
+  .sheet tr.wk + tr { border-top: 0; }
+  .sheet tr.live td:nth-child(1), .sheet tr.live td:nth-child(5) { color: var(--tint); }
+  .sheet tfoot tr { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 14px; }
+  .sheet tfoot td { font-weight: 600; }
+}
+
+/* Paychecks */
+.paycur { padding: 2px 0 16px; }
+.paycur .k { font-size: 15px; color: var(--muted); }
+.paybig { font-family: var(--display); font-weight: 600; font-size: 40px; letter-spacing: -0.035em; line-height: 1.1; margin-top: 4px; color: var(--ink); }
+.paycur .note { margin-top: 4px; }
+.paylist { border-top: 1px solid var(--line); }
+.paylist li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 8px 0; }
+.paylist li:first-child { border-top: 0; }
+.paylist .pl { min-width: 0; }
+.paylist .pl b { display: block; font-weight: 400; font-size: 17px; }
+.paylist .pl small { color: var(--muted); font-size: 13px; }
+.paylist .pr { display: flex; align-items: center; gap: 12px; font-family: var(--display); font-weight: 600; }
+.paylist button { min-height: 32px; padding: 5px 12px; font-size: 15px; border-radius: 8px; }
+.paylist .now b::after { content: " · now"; color: var(--tint); font-weight: 600; }
+
+/* ---------- Budget ---------- */
+.budhero { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 20px; align-items: center; }
+.ring { position: relative; width: 132px; height: 132px; }
 .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
 .ringtxt { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-.ringtxt b { font-family: var(--rounded); font-weight: 700; font-size: 1.45rem; letter-spacing: -0.02em; line-height: 1.1; }
-.ringtxt span { font-size: .75rem; color: var(--muted); font-weight: 600; }
+.ringtxt b { font-family: var(--display); font-weight: 600; font-size: 24px; letter-spacing: -0.03em; line-height: 1.1; }
+.ringtxt span { font-size: 12px; color: var(--muted); font-weight: 500; }
 .ringtxt.over b { color: var(--bad); }
-.budnums { display: grid; gap: 10px; min-width: 0; }
-.budnums div { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
-.budnums div:last-child { border-bottom: 0; padding-bottom: 0; }
-.budnums .k { font-size: .82rem; color: var(--muted); font-weight: 500; }
-.budnums b { font-family: var(--rounded); font-weight: 650; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
-.budform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.budform .span2 { grid-column: span 2; }
-.linkbtn { background: none; border: 0; box-shadow: none; padding: 0; color: var(--tint); font-weight: 600; font-size: .9rem; }
-.budcats { list-style: none; margin: 0; padding: 0; }
-.budcats li { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
-.budcats li:last-child { border-bottom: 0; }
-.budcats .ci { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; font-size: 1.1rem; background: color-mix(in srgb, var(--c) 16%, transparent); }
+.budnums { display: grid; min-width: 0; }
+.budnums div { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); }
+.budnums div:first-child { border-top: 0; padding-top: 0; }
+.budnums div:last-child { padding-bottom: 0; }
+.budnums .k { font-size: 15px; color: var(--muted); }
+.budnums b { font-family: var(--display); font-weight: 600; font-size: 17px; }
+@media (max-width: 380px) { .budhero { grid-template-columns: 112px minmax(0, 1fr); gap: 14px; } .ring { width: 112px; height: 112px; } .ringtxt b { font-size: 19px; } }
+
+.budcats li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 58px; padding: 9px 0; }
+.ci { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: 17px; background: color-mix(in srgb, var(--c, #888) 15%, transparent); flex: none; }
 .budcats .cn { min-width: 0; }
-.budcats .cn b { display: block; font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.budcats .cn small { color: var(--muted); font-size: .8rem; }
-.budcats .ca { text-align: right; font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; font-size: .95rem; }
-.budcats .ca small { display: block; font-family: var(--body); font-weight: 500; font-size: .76rem; color: var(--muted); }
-.budcats .ca.over small { color: var(--bad); font-weight: 600; }
-.cbar { height: 7px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 6px; }
+.budcats .cn b { display: block; font-weight: 400; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.budcats .ca { text-align: right; font-family: var(--display); font-weight: 600; font-size: 17px; }
+.budcats .ca small { display: block; font-family: var(--body); font-weight: 400; font-size: 13px; color: var(--muted); }
+.budcats .ca.over small { color: var(--bad); font-weight: 500; }
+.budcats li.saverow .ca small { color: var(--tint); font-weight: 500; }
+.cbar { height: 4px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 7px; }
 .cbar i { display: block; height: 100%; border-radius: 99px; background: var(--c); width: 0; transition: width .5s; }
 .cbar.over i { background: var(--bad); }
-.budcats.editing li { grid-template-columns: 36px minmax(0, 1fr) 92px 34px; }
-.budcats input { min-height: 38px; padding: 6px 10px; font-size: .95rem; width: 100%; }
-.budcats .del { width: 34px; height: 34px; padding: 0; border-radius: 50%; font-size: 1.1rem; line-height: 1; color: var(--bad); }
-.wherefield .wseg { margin: 2px 0 8px; }
-.wherefield .wseg button { font-size: .85rem; }
-.whererow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
-.locbtn { min-height: 44px; padding: 0 14px; border-radius: 12px; white-space: nowrap; font-size: .9rem; }
-.locbtn.on { background: var(--accent-soft); color: var(--tint); border-color: transparent; }
-.locnote { margin-top: 6px; font-size: .8rem; color: var(--muted); display: flex; gap: 8px; align-items: center; }
-.locnote button { background: none; border: 0; box-shadow: none; padding: 0; color: var(--tint); font-size: .8rem; font-weight: 600; }
-.wsplit { margin-bottom: 8px; }
-.wbar { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--fill); }
+.budcats.editing li { grid-template-columns: 34px minmax(0, 1fr) 88px 32px; }
+.budcats input { min-height: 36px; padding: 6px 10px; font-size: 16px; width: 100%; background: var(--fill); border-radius: 8px; }
+.budcats .del { width: 32px; height: 32px; min-height: 32px; padding: 0; border-radius: 50%; font-size: 18px; color: var(--bad); background: var(--bad-soft); }
+
+/* Spending list */
+.txday { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--muted); margin: 20px 0 2px; }
+#budTx .txday:first-child { margin-top: 6px; }
+.txlist li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 58px; padding: 8px 0; }
+.txlist .tw { min-width: 0; }
+.txlist .tw b { display: block; font-weight: 400; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.txlist .tsub { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.txlist select { font-size: 13px; padding: 0 14px 0 0; min-height: 0; color: var(--muted); max-width: 100%; text-align-last: left; background-size: 7px 10px; }
+.txlist .wl { font-size: 13px; color: var(--tint); text-decoration: none; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.txlist .tr { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; font-size: 17px; }
+.txlist .tr button { width: 26px; height: 26px; min-height: 26px; padding: 0; border-radius: 50%; font-size: 15px; color: var(--faint); background: var(--fill); }
+
+/* Where you spend */
+.wsplit { margin-bottom: 10px; }
+.wbar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: var(--fill); }
 .wbar i { display: block; height: 100%; transition: width .5s; }
-.wp { background: #3a8fd9; } .ww { background: #9a5ad6; } .wu { background: var(--fill); }
-.wlegend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: .8rem; color: var(--muted); }
-.wlegend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
-.wlegend b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; margin-left: 2px; }
-.places { list-style: none; margin: 0; padding: 0; }
-.places li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
-.places li:last-child { border-bottom: 0; }
-.places .pi { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: .95rem; background: var(--fill); }
+.wp { background: #3a8fd9; } .ww { background: #8f5bd6; } .wu { background: var(--fill); }
+.wlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.wlegend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.wlegend b { color: var(--ink); font-weight: 600; margin-left: 2px; }
+.places li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 56px; padding: 8px 0; cursor: pointer; }
+.places .pi { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: 15px; background: var(--fill); }
 .places .pn { min-width: 0; }
-.places .pn b { display: block; font-weight: 600; font-size: .93rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.places .pn small { color: var(--muted); font-size: .78rem; }
-.places .pa { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
-.places .pa small { display: block; font-family: var(--body); font-weight: 500; font-size: .74rem; color: var(--muted); }
-.places .pbar { height: 4px; border-radius: 99px; background: var(--fill); margin-top: 5px; overflow: hidden; }
+.places .pn b { display: block; font-weight: 400; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.places .pn small { color: var(--muted); font-size: 13px; }
+.places .pa { text-align: right; font-family: var(--display); font-weight: 600; }
+.places .pa small { display: block; font-family: var(--body); font-weight: 400; font-size: 13px; color: var(--muted); }
+.places .pbar { height: 3px; border-radius: 99px; background: var(--fill); margin-top: 6px; overflow: hidden; }
 .places .pbar i { display: block; height: 100%; background: var(--tint); border-radius: 99px; }
-.txlist .wl { display: inline-flex; align-items: center; gap: 3px; font-size: .78rem; color: var(--tint); text-decoration: none; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.txlist .tsub { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
-.importrow { margin-top: 12px; }
-.wfpre { margin-bottom: 10px; }
-.wfform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.wfform .span2 { grid-column: span 2; }
-.wfform label small { font-weight: 500; color: var(--muted); }
-.stepper { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; background: var(--fill); border-radius: 12px; min-height: 44px; }
-.stepper button { background: none; border: 0; box-shadow: none; font-size: 1.3rem; padding: 0; min-height: 44px; color: var(--tint); }
-.stepper output { text-align: center; font-family: var(--rounded); font-weight: 700; font-size: 1.1rem; }
-.wfres { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+
+/* Where-to-buy field */
+.wherefield { display: block; padding: 10px 0; }
+.wherefield > label { display: block; margin-bottom: 8px; }
+.wherefield .wseg { margin: 0 0 8px; }
+.whererow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.whererow input { background: var(--fill); padding: 9px 12px; border-radius: 10px; text-align: left; }
+.locbtn { min-height: 40px; padding: 0 14px; border-radius: 10px; font-size: 15px; white-space: nowrap; }
+.locbtn.on { background: var(--tint-soft); }
+.locnote { margin-top: 8px; font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.locnote button { background: none; padding: 0; min-height: 0; color: var(--tint); font-size: 13px; }
+.importrow { margin-top: 10px; }
+
+/* Insights & tips */
+.insights { display: grid; gap: 0; }
+.insights li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; align-items: start; padding: 11px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.insights li:first-child { border-top: 0; padding-top: 0; }
+.insights .ii { font-size: 17px; line-height: 1.3; text-align: center; }
+.insights small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+/* Where to cut back */
+.cuthead { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin: -4px 0 14px; }
+.cuthead b { font-family: var(--display); font-weight: 600; font-size: 34px; letter-spacing: -0.035em; color: var(--good); line-height: 1.05; }
+.cuthead span { font-size: 15px; color: var(--muted); }
+.cutlist li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; padding: 13px 0; align-items: start; }
+.cutlist .ct { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.cutlist .cd { grid-column: 1; font-size: 15px; color: var(--muted); line-height: 1.4; }
+.cutlist .cs { grid-row: 1 / span 2; grid-column: 2; text-align: right; font-family: var(--display); font-weight: 600; font-size: 17px; color: var(--good); white-space: nowrap; }
+.cutlist .cs small { display: block; font-family: var(--body); font-weight: 400; font-size: 13px; color: var(--muted); }
+.cutlist .ca2 { grid-column: 1 / -1; margin-top: 8px; }
+.cutlist .ca2 button { min-height: 34px; padding: 6px 12px; font-size: 15px; border-radius: 9px; }
+.cutlist .ca2 button.on { background: var(--good-soft); color: var(--good); }
+
+/* Can I afford it */
+.wfpre { margin-bottom: 6px; }
+.stepper { display: grid; grid-template-columns: 36px 36px 36px; align-items: center; background: var(--fill); border-radius: 9px; }
+.stepper button { min-height: 32px; padding: 0; background: none; font-size: 20px; font-weight: 400; color: var(--tint); }
+.stepper output { text-align: center; font-weight: 600; font-size: 17px; }
+.wfres { margin-top: 12px; padding-top: 16px; border-top: 1px solid var(--line); }
 .wfbig { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.wfbig b { font-family: var(--rounded); font-weight: 750; font-size: 2.2rem; letter-spacing: -0.02em; color: var(--tint); line-height: 1.1; }
-.wfbig span { color: var(--muted); font-weight: 600; }
-.wfsub { margin: 4px 0 10px; color: var(--muted); font-size: .9rem; }
-.wflist { list-style: none; margin: 0 0 4px; padding: 0; display: grid; gap: 8px; }
-.wflist li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; font-size: .92rem; align-items: start; }
+.wfbig b { font-family: var(--display); font-weight: 600; font-size: 34px; letter-spacing: -0.035em; color: var(--ink); line-height: 1.1; }
+.wfbig span { color: var(--muted); font-size: 17px; }
+.wfsub { margin: 4px 0 12px; color: var(--muted); font-size: 15px; }
+.wflist { display: grid; gap: 10px; }
+.wflist li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; font-size: 15px; align-items: start; }
 .wflist li.bad { color: var(--bad); }
 .wflist li.good div b { color: var(--good); }
-.wfgoals { list-style: none; margin: 0; padding: 0; }
-.wfgoals li { padding: 10px 0; border-bottom: 1px solid var(--line); }
-.wfgoals li:last-child { border-bottom: 0; }
+.wfgoals li { padding: 12px 0; }
 .wfgoals .gt { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
-.wfgoals .gt b { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.wfgoals .gt span { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.wfgoals .gs { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: .8rem; color: var(--muted); margin-top: 4px; }
-.wfgoals .gs button { min-height: 30px; padding: 4px 10px; font-size: .8rem; border-radius: 999px; }
-.wfgoals .gbar { height: 8px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 6px; }
+.wfgoals .gt b { font-weight: 400; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wfgoals .gt span { font-family: var(--display); font-weight: 600; white-space: nowrap; }
+.wfgoals .gs { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.wfgoals .gs button { min-height: 30px; padding: 4px 10px; font-size: 13px; border-radius: 8px; }
+.wfgoals .gbar { height: 4px; border-radius: 99px; background: var(--fill); overflow: hidden; margin-top: 8px; }
 .wfgoals .gbar i { display: block; height: 100%; background: var(--tint); border-radius: 99px; transition: width .5s; }
 .wfgoals li.done .gbar i { background: var(--good); }
-.floorrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
-.floorrow .primary { min-height: 44px; }
-.floorline { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
-.floorline .k { display: block; font-size: .8rem; color: var(--muted); font-weight: 500; }
-.floorline b { font-family: var(--rounded); font-weight: 700; font-size: 1.35rem; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* Balance floor & Saver mode */
+.floorrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; border-top: 1px solid var(--line); margin-top: 12px; }
+.floorrow .field { border-top: 0; }
+.floorrow .primary { min-height: 40px; padding: 8px 16px; font-size: 15px; border-radius: 10px; }
+.floorline { display: flex; justify-content: space-between; gap: 12px; align-items: flex-end; }
+.floorline .k { display: block; font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+.floorline b { font-family: var(--display); font-weight: 600; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; }
 .floorline .r { text-align: right; }
+.floorline .r b { font-size: 20px; }
 .floorline .r.bad b { color: var(--bad); }
-.floorbar { position: relative; height: 10px; border-radius: 99px; background: var(--fill); margin: 12px 0 2px; overflow: visible; }
+.floorbar { position: relative; height: 8px; border-radius: 99px; background: var(--fill); margin: 16px 0 2px; }
 .floorbar i { display: block; height: 100%; border-radius: 99px; background: var(--good); transition: width .5s; max-width: 100%; }
-.floorbar.warn i { background: #d99a2b; } .floorbar.bad i { background: var(--bad); }
-.floorbar span { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 2px; opacity: .55; }
-.verdict.warn { border-color: #d99a2b; color: #b87a14; }
-.saver { border-color: color-mix(in srgb, var(--tint) 45%, transparent); background: color-mix(in srgb, var(--tint) 8%, var(--panel)); }
-.saverhero { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; text-align: center; padding: 4px 0 12px; border-bottom: 1px solid var(--line); }
-.saverhero .k { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; }
-.saverhero b { display: block; font-family: var(--rounded); font-weight: 700; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
-.saverhero div:first-child b { font-size: 1.7rem; color: var(--tint); }
-.saverplan { list-style: none; margin: 8px 0 0; padding: 0; }
-.saverplan li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .93rem; }
-.saverplan li:last-child { border-bottom: 0; }
-.saverplan .ci { font-size: 1.05rem; text-align: center; }
-.saverplan small { display: block; color: var(--muted); font-size: .78rem; }
-.saverplan .amt { font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
-.saverplan .amt.zero { color: var(--bad); }
-.savertips-h { font-family: var(--display); font-size: .95rem; margin: 16px 0 8px; }
-.budcats li.saverow .ca small { color: var(--tint); font-weight: 600; }
-@media (max-width: 380px) { .saverhero b { font-size: 1.05rem; } .saverhero div:first-child b { font-size: 1.35rem; } }
-.insights { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.insights li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; font-size: .93rem; }
-.insights .ii { font-size: 1.15rem; line-height: 1.3; text-align: center; }
-.insights small { display: block; color: var(--muted); font-size: .8rem; }
-.fchips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 4px; scrollbar-width: none; }
-.fchips::-webkit-scrollbar { display: none; }
-.fchips button { flex: none; min-height: 32px; padding: 5px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600; background: var(--fill); border: 0; box-shadow: none; color: var(--ink); }
-.fchips button[aria-pressed="true"] { background: var(--tint); color: #fff; }
-.txday { margin-top: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
-.txlist { list-style: none; margin: 4px 0 0; padding: 0; }
-.txlist li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
-.txlist .ci { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: 1rem; background: color-mix(in srgb, var(--c) 16%, transparent); }
-.txlist .tw { min-width: 0; }
-.txlist .tw b { display: block; font-weight: 600; font-size: .93rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.txlist select { font-size: .78rem; padding: 2px 4px; min-height: 0; border-radius: 8px; background: transparent; border: 0; color: var(--muted); max-width: 100%; margin-left: -4px; }
-.txlist .tr { display: flex; align-items: center; gap: 8px; font-family: var(--rounded); font-weight: 600; font-variant-numeric: tabular-nums; }
-.txlist .tr button { width: 28px; height: 28px; padding: 0; border-radius: 50%; font-size: 1rem; line-height: 1; color: var(--muted); }
-@media (max-width: 380px) { .budhero { grid-template-columns: 116px minmax(0, 1fr); gap: 12px; } .ring { width: 116px; height: 116px; } .ringtxt b { font-size: 1.15rem; } }
-.paycur { text-align: center; padding: 6px 0 14px; border-bottom: 1px solid var(--line); }
-.paycur .k { font-size: .82rem; color: var(--muted); font-weight: 500; }
-.paybig { font-family: var(--rounded); font-weight: 700; font-size: 2.4rem; letter-spacing: -0.02em; color: var(--accent); }
-.paylist { list-style: none; margin: 0; padding: 0; }
-.paylist li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
-.paylist li:last-child { border-bottom: none; }
-.paylist .pl { min-width: 0; }
-.paylist .pl b { display: block; font-weight: 600; font-size: .95rem; }
-.paylist .pl small { color: var(--muted); font-size: .8rem; }
-.paylist .pr { display: flex; align-items: center; gap: 10px; font-family: var(--rounded); font-weight: 600; }
-.paylist button { min-height: 34px; padding: 6px 12px; font-size: .82rem; }
-.paylist .now b::after { content: " · now"; color: var(--accent); font-weight: 600; }
-.check { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: .95rem; }
-.check input { width: 22px; height: 22px; accent-color: var(--tint); }
-#repPreview { margin-top: 14px; }
-.reportview { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: rgba(0, 0, 0, 0.35); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(24px + env(safe-area-inset-bottom, 0px)); }
-.reportbar { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center; max-width: 820px; margin: 0 auto 12px; padding: 6px;
-  border-radius: 999px; background: var(--glass-strong); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%);
-  border: 1px solid var(--glass-edge); box-shadow: var(--shadow); }
+.floorbar.warn i { background: var(--warn); } .floorbar.bad i { background: var(--bad); }
+.floorbar span { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--ink); border-radius: 2px; opacity: .6; }
+#floorSaverBtns:empty { display: none; }
+.alertrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; border-top: 1px solid var(--line); margin-top: 14px; }
+.alertrow span { font-size: 17px; }
+.alertrow small { display: block; font-size: 13px; color: var(--muted); }
+.alertrow button { min-height: 34px; padding: 6px 14px; font-size: 15px; border-radius: 9px; flex: none; }
+.alertrow button.on { background: var(--good-soft); color: var(--good); }
+.saver { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--gold) 60%, transparent); }
+.saverhero { display: grid; grid-template-columns: 1.3fr 1fr 1fr; padding: 0 0 14px; border-bottom: 1px solid var(--line); }
+.saverhero > div { padding: 0 10px; border-left: 1px solid var(--line); }
+.saverhero > div:first-child { padding-left: 0; border-left: 0; }
+.saverhero .k { display: block; font-size: 13px; color: var(--muted); }
+.saverhero b { display: block; font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: -0.02em; }
+.saverhero div:first-child b { font-size: 28px; color: var(--money); }
+.saverplan li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 52px; padding: 8px 0; font-size: 17px; }
+.saverplan .ci { background: var(--fill); }
+.saverplan small { display: block; color: var(--muted); font-size: 13px; }
+.saverplan .amt { font-family: var(--display); font-weight: 600; text-align: right; }
+.saverplan .amt.zero { color: var(--faint); }
+@media (max-width: 380px) { .saverhero b { font-size: 17px; } .saverhero div:first-child b { font-size: 22px; } }
+
+/* Floor alert banner (every tab) and alert sheet */
+.floorbanner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--bad) 16%, var(--cell)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bad) 45%, transparent); color: var(--ink); margin-top: 12px; }
+.floorbanner b { color: var(--bad); }
+.floorbanner b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.floorbanner small { display: block; font-size: 13px; color: var(--muted); }
+.floorbanner button { flex: none; min-height: 34px; padding: 6px 12px; font-size: 15px; border-radius: 9px; background: var(--bad); color: #1a0505; }
+.sheetback { position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, 0.4); display: flex; align-items: flex-end; justify-content: center; padding: 16px 12px calc(12px + env(safe-area-inset-bottom, 0px)); animation: fadein .2s ease-out; }
+.sheet-card { width: 100%; max-width: 440px; background: var(--cell); border-radius: 22px; padding: 22px 20px 16px; text-align: center; animation: sheetup .28s cubic-bezier(.2, .9, .3, 1); }
+.sheet-card .sic { width: 52px; height: 52px; margin: 0 auto 12px; border-radius: 50%; display: grid; place-items: center; background: var(--bad-soft); color: var(--bad); }
+.sheet-card .sic svg { width: 28px; height: 28px; }
+.sheet-card h2 { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 8px; justify-content: center; }
+.sheet-card p { margin: 0 0 6px; color: var(--muted); font-size: 15px; line-height: 1.45; }
+.sheet-card .sbig { font-family: var(--display); font-weight: 600; font-size: 34px; letter-spacing: -0.035em; color: var(--bad); margin: 6px 0 4px; }
+.sheet-card .btns { flex-direction: column; margin-top: 18px; gap: 8px; }
+.sheet-card .btns button { width: 100%; min-height: 50px; }
+.sheet-card .btns button.plain { background: none; }
+@keyframes sheetup { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Tab bar (docked, like iOS) ---------- */
+.tabbar { position: fixed; z-index: 6; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--bg) 82%, transparent); -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--line); }
+.tabbtn { display: grid; justify-items: center; align-content: center; gap: 3px; min-height: 48px; padding: 2px 0; border-radius: 10px; background: transparent; color: var(--faint); font-size: 10px; font-weight: 500; letter-spacing: 0; }
+.tabbtn svg { width: 25px; height: 25px; }
+.tabbtn[aria-selected="true"] { color: var(--tint); }
+@media (min-width: 700px) { .tabbar { left: 50%; right: auto; transform: translateX(-50%); width: 560px; bottom: 16px; border-radius: 18px; border: 1px solid var(--line); padding: 6px; box-shadow: 0 8px 30px rgba(0, 0, 0, .08); } .tabbtn { font-size: 11px; } }
+
+/* Toast */
+.toast { position: fixed; z-index: 7; left: 50%; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none; width: max-content; max-width: calc(100% - 32px);
+  background: var(--raise); color: var(--ink); padding: 12px 18px; border-radius: 14px; font-size: 15px; font-weight: 500; text-align: center; transition: transform .3s, opacity .3s; box-shadow: 0 10px 30px rgba(0, 0, 0, .18); }
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+/* Settings rows */
+.setrows { margin-top: 0; }
+.rowbtns { display: grid; margin-top: 16px; border-top: 1px solid var(--line); }
+.rowbtns > button, .rowbtns > .filebtn { justify-content: flex-start; background: none; border-radius: 0; padding: 0; min-height: 48px; font-weight: 400; border-bottom: 1px solid var(--line); }
+.rowbtns > :last-child { border-bottom: 0; }
+.rowbtns > button.danger { color: var(--bad); background: none; }
+.rowbtns > button.danger.armed { color: var(--bad); font-weight: 600; }
+.install { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.install p { margin: 0; font-size: 15px; }
+.sync { display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 13px; color: var(--muted); margin: 0; }
+.sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); flex: none; }
+.foot { text-align: center; font-size: 13px; color: var(--muted); padding: 0 16px; line-height: 1.6; }
+
+/* ---------- First run ---------- */
+.onboard { position: fixed; inset: 0; z-index: 10; background: var(--bg); overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.obcard { width: 100%; max-width: 440px; display: grid; gap: 14px; margin: auto; min-width: 0; background: var(--cell); border-radius: 22px; padding: 26px 20px 20px; }
+.obcard > * { min-width: 0; }
+.obmark { display: block; width: 100%; max-width: 240px; height: auto; margin: 0 0 6px; }
+@media (prefers-color-scheme: dark) { .obmark { background: #f4f3fd; padding: 10px 14px; border-radius: 14px; } }
+.obcard h1 { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; margin: 0; }
+.obcard h1 em { font-style: normal; color: var(--tint); }
+.obcard p { margin: 0; color: var(--muted); }
+.obpoints { list-style: none; padding: 0; margin: 0 0 4px; display: grid; gap: 8px; font-size: 15px; color: var(--muted); }
+.obpoints li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; }
+.obpoints li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tint); margin-top: 7px; }
+.obcard .field:first-of-type { border-top: 1px solid var(--line); }
+.obcard .primary { min-height: 52px; margin-top: 6px; }
+.obcard .note { text-align: center; margin-top: 0; }
+
+/* Report sheet */
+.reportview { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: rgba(0, 0, 0, 0.4); padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(24px + env(safe-area-inset-bottom, 0px)); }
+.reportbar { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center; max-width: 820px; margin: 0 auto 12px; padding: 6px; border-radius: 16px; background: var(--cell); box-shadow: 0 8px 24px rgba(0, 0, 0, .15); }
 .reportbar .grow { flex: 1; }
-.reportbar button { min-height: 40px; padding: 8px 14px; font-size: .9rem; }
+.reportbar button { min-height: 38px; padding: 7px 14px; font-size: 15px; border-radius: 10px; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+/* Money hero */
+.moneyhero { text-align: center; padding: 18px 0 6px; }
+.moneyhero .label { font-size: 15px; color: var(--muted); font-weight: 500; }
+.moneyhero .bignum { font-family: var(--display); font-weight: 700; font-size: clamp(48px, 15vw, 64px); letter-spacing: -0.045em; line-height: 1.05; margin-top: 6px; color: var(--ink); }
+.moneyhero .bignum.safe { color: var(--money); }
+.moneyhero .bignum.low { color: var(--bad); }
+.moneyhero .sub { font-size: 15px; color: var(--muted); margin-top: 6px; }
+.flabel { flex: 1 1 auto; font-size: 17px; }
+.fval { font-family: var(--display); font-weight: 600; font-size: 17px; color: var(--ink); }
+.seg.seg3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 0; }
+/* Sheet form (record unlogged spending) */
+.sheet-card form { text-align: left; margin-top: 10px; }
+.sheet-card .field { min-height: 46px; }
+.sheet-card .sic.warn { background: var(--gold-soft); color: var(--gold); }
+.sheet-card .left { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+@media (max-width: 699px) { .sheet tr.off td:nth-child(4) { display: none; } }
+.sheet tr.off td:nth-child(5), .sheet tr.off td:nth-child(4) { color: var(--faint); font-weight: 500; }
+.sheet tr.off td:nth-child(2) { color: var(--faint); }
+@media (min-width: 900px) { .wrap { max-width: 760px; } }
+.cutlist .cs { min-width: 76px; }
+
 .paper { max-width: 820px; margin: 0 auto; background: #fff; color: #1c1c1e; border-radius: 14px; padding: 40px 36px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; font-size: 13px; line-height: 1.45; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .paper h1 { font-size: 22px; margin: 0 0 2px; letter-spacing: -0.01em; }
@@ -495,115 +604,105 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   .paper tr { break-inside: avoid; }
 }
 
-.tabbar { position: fixed; z-index: 6; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  width: min(480px, calc(100% - 20px)); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 6px; border-radius: 999px;
-  background: var(--glass-strong); -webkit-backdrop-filter: blur(30px) saturate(200%); backdrop-filter: blur(30px) saturate(200%); }
-.tabbtn { display: grid; justify-items: center; gap: 2px; padding: 7px 0 6px; min-height: 52px; border-radius: 999px; background: transparent; border: none; box-shadow: none;
-  color: var(--muted); font-size: .68rem; font-weight: 600; letter-spacing: 0; }
-.tabbtn svg { width: 24px; height: 24px; }
-.tabbtn[aria-selected="true"] { color: var(--tint); background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--glass-shine), 0 2px 8px rgba(24, 39, 75, 0.10); }
-.toast { width: max-content; max-width: calc(100% - 32px); color: var(--ink); background: var(--glass-strong); border-radius: 999px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); font-weight: 600; }
-
-.onboard { background: transparent; }
-.onboard::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--bg); }
-.obcard { border-radius: 30px; padding: 26px 20px 22px; }
-.obcard .brand { font-family: var(--display); font-weight: 600; color: var(--muted); font-size: .95rem; }
-.obcard h1 { font-family: var(--display); font-weight: 700; letter-spacing: -0.03em; }
-.obcard h1 em { color: var(--accent); }
-.obpoints li::before { background: var(--lit); }
-.obcard .primary { min-height: 54px; font-size: 1.06rem; }
-.stale { border: none; border-radius: 16px; background: rgba(215, 0, 21, 0.10); }
-@media (prefers-reduced-transparency: reduce) {
-  .glass, .panel, .score, .tabbar, .toast, .obcard { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--glass-strong); }
-}
 </style>
 
 <main class="wrap">
+<div class="floorbanner" id="floorBanner" role="alert" hidden><div><b id="floorBannerText">Below your floor</b><small id="floorBannerSub"></small></div><button type="button" id="floorBannerBtn">See plan</button></div>
+
 <section class="tab" id="tab-today" aria-label="Today">
   <header class="largetitle"><h1>Today</h1><div class="sub"><span id="jobName">My job</span><span class="status" id="status"><span class="dot"></span><span id="statusText">Not clocked in</span></span></div></header>
   <div class="stale" id="stale" hidden></div>
-  <section class="score" aria-live="off">
-    <div class="label">Earned today</div>
-    <div class="money" id="money"><span class="cur">$</span><span id="dollars">0.00</span><span class="tick" id="tick">00</span></div>
-    <div class="rate-line" id="rateLine">+$0.20 every minute · +$3.00 every 15 min</div>
+  <section class="score" id="scoreCard" aria-live="off">
+    <div class="ringwrap">
+      <svg class="goalring" viewBox="0 0 200 200" aria-hidden="true"><circle class="gr-track" cx="100" cy="100" r="90"/><circle class="gr-fill" id="goalRing" cx="100" cy="100" r="90" pathLength="100"/></svg>
+      <div class="ringcore">
+        <div class="label">Earned today</div>
+        <div class="money" id="money"><span class="cur">$</span><span id="dollars">0.00</span><span class="tick" id="tick">00</span></div>
+        <div class="goalmini" id="goalLeft">Daily goal</div>
+      </div>
+    </div>
+    <div class="rate-line" id="rateLine">+$0.20 every minute</div>
     <div class="clockbtns">
       <button id="btnIn" type="button">Clock In</button>
       <button id="btnBreak" type="button" hidden>Start Break</button>
       <button id="btnOut" type="button" hidden>Clock Out</button>
-      <button id="btnUndo" type="button" hidden>Undo clock-out</button>
+      <button id="btnUndo" type="button" hidden>Undo Clock Out</button>
     </div>
   </section>
+
+  <section class="panel">
+    <h2>This shift <span id="shiftDate"></span></h2>
+    <div class="stats">
+      <div class="stat"><div class="k">Time</div><div class="v" id="worked">0:00:00</div></div>
+      <div class="stat"><div class="k">Take-home</div><div class="v" id="net">$0.00</div></div>
+      <div class="stat"><div class="k">This week</div><div class="v" id="week">$0.00</div></div>
+    </div>
+    <div hidden><i id="goalFill"></i><span id="goalPct">0%</span></div>
+  </section>
+
   <section class="panel">
     <h2>Level <span id="nextText">Next level in --:--</span></h2>
     <div class="spine" id="spine" aria-label="Hours completed, one block per hour"></div>
     <div class="level-name" id="levelName"></div>
     <details class="lvlpick">
-      <summary>Customize bar</summary>
+      <summary>Customize</summary>
       <div class="pickrow"><span class="picklabel">Style</span>
         <div class="chips" id="lvlStyles" role="group" aria-label="Level bar style">
           <button type="button" data-s="blocks">Blocks</button><button type="button" data-s="spine">Spine</button><button type="button" data-s="coffee">Coffee</button><button type="button" data-s="battery">Battery</button><button type="button" data-s="dots">Dots</button>
         </div>
       </div>
-      <div class="pickrow"><span class="picklabel">Fill color</span>
+      <div class="pickrow"><span class="picklabel">Color</span>
         <div class="swatches" id="lvlColors" role="group" aria-label="Fill color">
-          <button type="button" data-c="#8e8cf5" style="--sw:#8e8cf5" aria-label="Lavender"></button><button type="button" data-c="#5ac8fa" style="--sw:#5ac8fa" aria-label="Sky"></button><button type="button" data-c="#5fcfb0" style="--sw:#5fcfb0" aria-label="Mint"></button><button type="button" data-c="#ff8fab" style="--sw:#ff8fab" aria-label="Rose"></button><button type="button" data-c="#f6b04d" style="--sw:#f6b04d" aria-label="Amber"></button><button type="button" data-c="#c19bff" style="--sw:#c19bff" aria-label="Lilac"></button>
+          <button type="button" data-c="#f5b942" style="--sw:#f5b942" aria-label="Gold"></button><button type="button" data-c="#5ac8fa" style="--sw:#5ac8fa" aria-label="Sky"></button><button type="button" data-c="#00d26a" style="--sw:#00d26a" aria-label="Green"></button><button type="button" data-c="#ff8fab" style="--sw:#ff8fab" aria-label="Rose"></button><button type="button" data-c="#f6b04d" style="--sw:#f6b04d" aria-label="Amber"></button><button type="button" data-c="#c19bff" style="--sw:#c19bff" aria-label="Lilac"></button>
         </div>
       </div>
     </details>
   </section>
+
   <section class="panel">
-    <h2>Shift stats <span id="shiftDate"></span></h2>
-    <div class="stats">
-      <div class="stat"><div class="k">Time worked</div><div class="v" id="worked">0:00:00</div></div>
-      <div class="stat"><div class="k">Take-home est.</div><div class="v" id="net">$0.00</div></div>
-      <div class="stat"><div class="k">This week</div><div class="v" id="week">$0.00</div></div>
-    </div>
-    <div class="goalbar" aria-hidden="true"><i id="goalFill"></i></div>
-    <div class="goaltext"><span id="goalLeft">Daily goal</span><span id="goalPct">0%</span></div>
-  </section>
-  <section class="panel">
-    <h2>Badges <span id="badgeCount">0 unlocked</span></h2>
+    <h2>Milestones <span id="badgeCount">0 unlocked</span></h2>
     <div class="badges" id="badges"></div>
   </section>
+
   <section class="panel">
     <h2>Shift details <span id="clockState">Not on the clock</span></h2>
-    <p class="note hint" id="clockHint">Tap Clock In when your shift starts. Its times will show here so you can fix them if you forget.</p>
+    <p class="note hint" id="clockHint">Clock in when your shift starts. You can fix the times here later.</p>
     <div class="controls" id="timeRow" hidden>
-      <div class="field" id="inWrap"><label for="inTime">Started at</label><input id="inTime" type="time" step="60"></div>
-      <div class="field" id="outWrap"><label for="outTime">Clocked out at</label><input id="outTime" type="time" step="60"></div>
+      <div class="field" id="inWrap"><label for="inTime">Started</label><input id="inTime" type="time" step="60"></div>
+      <div class="field" id="outWrap"><label for="outTime">Clocked out</label><input id="outTime" type="time" step="60"></div>
     </div>
     <div class="controls">
-      <div class="field"><label for="rate">Pay per hour $</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
-      <div class="field"><label for="goal">Daily goal $</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
-      <div class="field span2"><label for="payFreq">I get paid</label><select id="payFreq">
-        <option value="weekly">Every week</option><option value="biweekly">Every 2 weeks</option><option value="semimonthly">Twice a month (1st–15th, 16th–end)</option><option value="monthly">Once a month</option><option value="daily">Every day</option>
+      <div class="field"><label for="rate">Hourly pay</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
+      <div class="field"><label for="goal">Daily goal</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
+      <div class="field"><label for="payFreq">Paid</label><select id="payFreq">
+        <option value="weekly">Every week</option><option value="biweekly">Every 2 weeks</option><option value="semimonthly">Twice a month</option><option value="monthly">Once a month</option><option value="daily">Every day</option>
       </select></div>
-      <div class="field span2" id="payAnchorWrap" hidden><label for="payAnchor">A day your current pay period started</label><input id="payAnchor" type="date"></div>
+      <div class="field" id="payAnchorWrap" hidden><label for="payAnchor">Current period started</label><input id="payAnchor" type="date"></div>
     </div>
     <details class="addpast">
-      <summary>Forgot to clock in? Add a shift</summary>
+      <summary>Add a missed shift</summary>
       <form class="controls" id="pastForm">
-        <div class="field span2"><label for="pastDate">Day</label><input id="pastDate" type="date" required></div>
+        <div class="field"><label for="pastDate">Day</label><input id="pastDate" type="date" required></div>
         <div class="field"><label for="pastIn">Start</label><input id="pastIn" type="time" step="60" required></div>
         <div class="field"><label for="pastOut">End</label><input id="pastOut" type="time" step="60" required></div>
-        <div class="field span2"><label for="pastBreak">Unpaid break (minutes)</label><input id="pastBreak" type="number" min="0" step="5" inputmode="numeric" placeholder="0"></div>
-        <button class="primary span2" type="submit">Add shift</button>
+        <div class="field"><label for="pastBreak">Unpaid break (min)</label><input id="pastBreak" type="number" min="0" step="5" inputmode="numeric" placeholder="0"></div>
+        <button class="primary" type="submit">Add Shift</button>
       </form>
     </details>
-    <p class="note" id="thNote">Pay changes apply to new time only. Take-home uses the Take-home % in Settings.</p>
+    <p class="note" id="thNote">Pay changes apply from now on.</p>
   </section>
 </section>
+
 <section class="tab" id="tab-sheet" aria-label="Timesheet" hidden>
-  <header class="largetitle"><h1>Timesheet</h1></header>
+  <header class="largetitle"><h1>Timesheet</h1><div class="sub" id="histTotal"></div></header>
   <section class="panel">
-    <h2>Days worked <span id="histTotal"></span></h2>
+    <h2>Days worked</h2>
     <div class="tablewrap"><table class="hist sheet"><thead><tr><th>Date</th><th>In</th><th>Out</th><th>Hours</th><th>Take-home</th><th>Spent</th><th>Left over</th></tr></thead><tbody id="histBody"></tbody><tfoot id="histFoot"></tfoot></table></div>
     <p class="empty" id="histEmpty">Clock in to start your timesheet.</p>
-    <div class="btns"><button id="btnXlsx" type="button">Download spreadsheet (.xlsx)</button></div>
-    <p class="note">Fills in by itself from your clock-ins and Today's spending: one row per day, weekly subtotals, and what was left after spending (red means you spent more than you earned). The download is an Excel file with working formulas, plus sheets for every clock-in, every purchase and every bank balance you entered.</p>
+    <div class="btns"><button id="btnXlsx" type="button">Export to Excel</button></div>
   </section>
   <section class="panel" id="reportPanel">
-    <h2>Reports <span>Hours and pay, ready to print or send</span></h2>
+    <h2>Reports</h2>
     <div class="seg" id="repSeg" role="group" aria-label="Report period">
       <button type="button" data-p="day" aria-pressed="false">Day</button>
       <button type="button" data-p="week" aria-pressed="true">Week</button>
@@ -612,26 +711,41 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       <button type="button" data-p="custom" aria-pressed="false">Custom</button>
     </div>
     <div class="controls" id="repDates">
-      <div class="field span2" id="repOnWrap"><label for="repOn" id="repOnLabel">Any day in the week</label><input id="repOn" type="date"></div>
+      <div class="field" id="repOnWrap"><label for="repOn" id="repOnLabel">Any day in the week</label><input id="repOn" type="date"></div>
       <div class="field" id="repFromWrap" hidden><label for="repFrom">From</label><input id="repFrom" type="date"></div>
       <div class="field" id="repToWrap" hidden><label for="repTo">To</label><input id="repTo" type="date"></div>
     </div>
-    <label class="check"><input type="checkbox" id="repSpend"> Include spending</label>
-    <label class="check"><input type="checkbox" id="repSign" checked> Add signature lines</label>
+    <label class="check">Include spending<input type="checkbox" id="repSpend"></label>
+    <label class="check">Signature lines<input type="checkbox" id="repSign" checked></label>
     <div class="verdict" id="repPreview"><b>This week</b><span class="amt"></span></div>
-    <div class="btns"><button class="primary" id="btnReport" type="button">Create report</button></div>
+    <div class="btns"><button class="primary" id="btnReport" type="button">Create Report</button></div>
   </section>
   <section class="panel">
-    <h2>All-time totals <span id="careerSince"></span></h2>
+    <h2>All time <span id="careerSince"></span></h2>
     <div class="stats">
-      <div class="stat"><div class="k">Total earned</div><div class="v" id="careerGross">$0.00</div></div>
-      <div class="stat"><div class="k">Take-home est.</div><div class="v" id="careerNet">$0.00</div></div>
-      <div class="stat"><div class="k">Hours · Days</div><div class="v" id="careerHours">0.00 · 0</div></div>
+      <div class="stat"><div class="k">Earned</div><div class="v" id="careerGross">$0.00</div></div>
+      <div class="stat"><div class="k">Take-home</div><div class="v" id="careerNet">$0.00</div></div>
+      <div class="stat"><div class="k">Hours · days</div><div class="v" id="careerHours">0.00 · 0</div></div>
     </div>
   </section>
 </section>
+
 <section class="tab" id="tab-money" aria-label="Money" hidden>
   <header class="largetitle"><h1>Money</h1></header>
+  <section class="moneyhero">
+    <div class="label">Bank balance now</div>
+    <div class="bignum" id="balNowMoney">—</div>
+    <div class="sub" id="balNowSub">Enter your balance below</div>
+  </section>
+  <section class="panel">
+    <div class="controls">
+      <div class="field"><label for="balance">New balance</label><input id="balance" type="number" step="0.01" inputmode="decimal" placeholder="From your bank app"></div>
+      <div class="field"><span class="flabel">Waiting on payday</span><span class="fval" id="unpaid">$0.00</span></div>
+      <div class="field"><span class="flabel">After payday</span><span class="fval" id="projected">—</span></div>
+    </div>
+    <div class="btns"><button id="btnPaid" type="button">I Got Paid</button></div>
+    <p class="note" id="paidNote">When a paycheck lands, tap I Got Paid, then fix the balance if the deposit was different.</p>
+  </section>
   <section class="panel" id="payPanel">
     <h2>Paychecks <span id="payFreqLabel">Paid every week</span></h2>
     <div class="paycur">
@@ -641,73 +755,63 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     </div>
     <ul class="paylist" id="payList"></ul>
     <details class="addpast" id="stubBox">
-      <summary>Got a pay stub? Add it</summary>
+      <summary>Add a pay stub</summary>
       <form class="controls" id="stubForm">
-        <div class="field span2"><label for="stubPeriod">Pay period</label><select id="stubPeriod"></select></div>
-        <div class="field"><label for="stubGross">Gross pay $</label><input id="stubGross" type="number" min="0.01" step="0.01" inputmode="decimal" required></div>
-        <div class="field"><label for="stubNet">Take-home (net) $</label><input id="stubNet" type="number" min="0.01" step="0.01" inputmode="decimal" required></div>
-        <div class="field span2"><label for="stubHours">Hours on the stub (optional)</label><input id="stubHours" type="number" min="0" step="0.01" inputmode="decimal"></div>
-        <button class="primary span2" type="submit">Save pay stub</button>
+        <div class="field"><label for="stubPeriod">Pay period</label><select id="stubPeriod"></select></div>
+        <div class="field"><label for="stubGross">Gross pay</label><input id="stubGross" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="$0.00"></div>
+        <div class="field"><label for="stubNet">Take-home</label><input id="stubNet" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="$0.00"></div>
+        <div class="field"><label for="stubHours">Hours <small>optional</small></label><input id="stubHours" type="number" min="0" step="0.01" inputmode="decimal"></div>
+        <button class="primary" type="submit">Save Pay Stub</button>
       </form>
-      <p class="note">Your real take-home % from stubs replaces the estimate everywhere in Shift Score.</p>
+      <p class="note">Your real take-home rate from stubs replaces the estimate everywhere.</p>
     </details>
-    <p class="note">Set how often you're paid under Shift details on the Today tab. Tap Summary for a printable paycheck summary.</p>
   </section>
   <section class="panel">
     <h2>Today's spending <span id="spendDate"></span></h2>
     <div class="stats">
-      <div class="stat"><div class="k">Earned today</div><div class="v" id="earnToday">$0.00</div></div>
-      <div class="stat"><div class="k">Spent today</div><div class="v" id="spentToday">$0.00</div></div>
+      <div class="stat"><div class="k">Earned</div><div class="v" id="earnToday">$0.00</div></div>
+      <div class="stat"><div class="k">Spent</div><div class="v" id="spentToday">$0.00</div></div>
       <div class="stat"><div class="k">Left over</div><div class="v" id="leftToday">$0.00</div></div>
     </div>
     <div class="verdict" id="verdict"><b id="verdictText">No spending logged yet</b><span class="amt" id="verdictAmt"></span></div>
-    <form class="spendform" id="spendForm">
-      <div class="field"><label for="spendAmt">Amount $</label><input id="spendAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.50" required></div>
-      <div class="field"><label for="spendWhat">What for</label><input id="spendWhat" type="text" maxlength="40" placeholder="Chipotle, gas, Starbucks…"></div>
-      <button class="primary" type="submit">Add</button>
-    </form>
     <ul class="spendlist" id="spendList"></ul>
-    <p class="note">Earned today is take-home pay from today's shifts. Spending also comes off your projected bank balance. Purchases are sorted into categories on the Budget tab.</p>
-  </section>
-  <section class="panel">
-    <h2>Bank balance <span>You type it in · private to this device</span></h2>
-    <div class="stats">
-      <div class="stat"><div class="field"><label for="balance">Current balance $</label><input id="balance" type="number" step="0.01" inputmode="decimal" placeholder="Enter"></div></div>
-      <div class="stat"><div class="k">Waiting on payday</div><div class="v" id="unpaid">$0.00</div></div>
-      <div class="stat"><div class="k">After payday</div><div class="v" id="projected">—</div></div>
-    </div>
-    <div class="btns"><button id="btnPaid" type="button">I got paid</button></div>
-    <p class="note" id="paidNote">Take-home from every shift since your last paycheck. When a paycheck lands, tap “I got paid”, then fix the balance to the exact deposit if it differs.</p>
+    <details class="addpast">
+      <summary>Quick add</summary>
+      <form class="spendform" id="spendForm">
+        <div class="field"><label for="spendAmt">Amount</label><input id="spendAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="$0.00" required></div>
+        <div class="field"><label for="spendWhat">What for</label><input id="spendWhat" type="text" maxlength="40" placeholder="Chipotle, gas…"></div>
+        <button class="primary" type="submit">Add</button>
+      </form>
+    </details>
   </section>
   <section class="panel">
     <h2>Since your last balance <span id="bcWhen"></span></h2>
     <div class="stats">
-      <div class="stat"><div class="k">Previous</div><div class="v" id="bcPrev">—</div></div>
+      <div class="stat"><div class="k">Before</div><div class="v" id="bcPrev">—</div></div>
       <div class="stat"><div class="k">Now</div><div class="v" id="bcNow">—</div></div>
       <div class="stat"><div class="k">Change</div><div class="v" id="bcChange">—</div></div>
     </div>
     <div class="verdict" id="bcVerdict"><b id="bcText">Enter your balance twice to compare</b><span class="amt" id="bcAmt"></span></div>
-    <div class="field" id="bcPrevWrap" hidden style="margin-top:12px"><label for="prevBal">Your previous balance $ (if you know it)</label><input id="prevBal" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 650.00"></div>
-    <p class="note">Spent = previous balance + paychecks marked received − balance now. Update the balance whenever you check your bank app.</p>
+    <div class="controls" id="bcPrevWrap" hidden style="margin-top:12px"><div class="field"><label for="prevBal">Previous balance</label><input id="prevBal" type="number" step="0.01" inputmode="decimal" placeholder="If you know it"></div></div>
   </section>
   <section class="panel">
     <h2>Saved from earnings <span>All time</span></h2>
     <div class="stats">
-      <div class="stat"><div class="k">Take-home earned</div><div class="v" id="svEarned">$0.00</div></div>
-      <div class="stat"><div class="k">Spent since day 1</div><div class="v" id="svSpent">$0.00</div></div>
+      <div class="stat"><div class="k">Take-home</div><div class="v" id="svEarned">$0.00</div></div>
+      <div class="stat"><div class="k">Spent</div><div class="v" id="svSpent">$0.00</div></div>
       <div class="stat"><div class="k">Saved</div><div class="v" id="svSaved">$0.00</div></div>
     </div>
     <div class="goalbar" aria-hidden="true"><i id="svFill"></i></div>
     <div class="goaltext"><span id="svText">Share of earnings saved</span><span id="svPct">0%</span></div>
-    <p class="note">Spent counts what you log in Today's spending, or what your bank balance shows you spent, whichever is higher.</p>
   </section>
 </section>
+
 <section class="tab" id="tab-budget" aria-label="Budget" hidden>
   <header class="largetitle"><h1>Budget</h1><div class="sub" id="budSub">This month</div></header>
   <section class="panel">
     <div class="seg seg2" id="budSeg" role="group" aria-label="Budget period">
       <button type="button" data-p="month" aria-pressed="true">Monthly</button>
-      <button type="button" data-p="pay" aria-pressed="false">Each paycheck</button>
+      <button type="button" data-p="pay" aria-pressed="false">Each Paycheck</button>
     </div>
     <div class="budhero">
       <div class="ring" aria-hidden="true"><svg viewBox="0 0 120 120" id="budRing"></svg>
@@ -722,60 +826,34 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <p class="note" id="budEarn"></p>
   </section>
 
-  <section class="panel" id="wfPanel">
-    <h2>Can I afford it? <span>How long you'd work for it</span></h2>
-    <div class="fchips wfpre" id="wfPresets">
-      <button type="button" data-w="Movie for 2" data-p="15" data-n="2" data-x="12">🎬 Movie for 2</button>
-      <button type="button" data-w="Dinner date" data-p="28" data-n="2" data-x="0">🍽️ Dinner date</button>
-      <button type="button" data-w="Concert ticket" data-p="75" data-n="1" data-x="15">🎟️ Concert</button>
-      <button type="button" data-w="New sneakers" data-p="120" data-n="1" data-x="0">👟 Sneakers</button>
-      <button type="button" data-w="Coffee" data-p="6" data-n="1" data-x="0">☕ Coffee</button>
-    </div>
-    <form class="wfform" id="wfForm" autocomplete="off">
-      <div class="field span2"><label for="wfWhat">What is it?</label><input id="wfWhat" type="text" maxlength="50" placeholder="e.g. Jailer 2 at Cinemark"></div>
-      <div class="field"><label for="wfPrice">Price each $</label><input id="wfPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="15.00"></div>
-      <div class="field"><label>How many</label><div class="stepper"><button type="button" id="wfMinus" aria-label="One fewer">−</button><output id="wfQty">1</output><button type="button" id="wfPlus" aria-label="One more">+</button></div></div>
-      <div class="field span2"><label for="wfExtra">Extras $ <small>(snacks, fees, tip, gas, optional)</small></label><input id="wfExtra" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
-    </form>
-    <div class="wfres" id="wfRes" hidden>
-      <div class="wfbig"><b id="wfHours">0 hrs</b><span>of work</span></div>
-      <p class="wfsub" id="wfSub"></p>
-      <ul class="wflist" id="wfList"></ul>
-      <div class="btns"><button type="button" class="primary" id="wfSave">Save as a goal</button><button type="button" id="wfBought">I bought it</button></div>
-    </div>
-    <div id="wfGoalsWrap" hidden>
-      <h3 class="savertips-h">Saving up for</h3>
-      <ul class="wfgoals" id="wfGoals"></ul>
-    </div>
-  </section>
-
   <section class="panel floorpanel" id="floorPanel">
-    <h2>Balance floor <button type="button" class="linkbtn" id="floorEditBtn" hidden>Change</button></h2>
+    <h2>Never go below <button type="button" class="linkbtn" id="floorEditBtn" hidden>Change</button></h2>
     <div id="floorSetup">
-      <p class="note" style="margin-top:0">Pick an amount your bank balance should never go below. If it gets close, Shift Score switches to <b>Saver mode</b>: a bare-minimum budget until your next paycheck.</p>
+      <p class="note">Pick the lowest your bank balance should ever get. You'll get an alert the moment you drop under it, and a warning before you're on pace to.</p>
       <div class="floorrow">
-        <div class="field"><label for="floorAmt">Keep my balance above $</label><input id="floorAmt" type="number" min="1" step="10" inputmode="decimal" placeholder="500"></div>
-        <button type="button" class="primary" id="floorOn">Turn on</button>
+        <div class="field"><label for="floorAmt">Keep my balance above</label><input id="floorAmt" type="number" min="1" step="10" inputmode="decimal" placeholder="$500"></div>
+        <button type="button" class="primary" id="floorOn">Turn On</button>
       </div>
     </div>
     <div id="floorNeedBal" hidden>
-      <p class="note" style="margin-top:0">To watch your floor, Shift Score needs your bank balance. Enter it once and it's kept up to date as you log spending and paychecks.</p>
+      <p class="note">To watch your floor, Shift Score needs your bank balance once. After that it stays up to date as you log spending and paychecks.</p>
       <div class="floorrow">
-        <div class="field"><label for="floorBal">My bank balance right now $</label><input id="floorBal" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 640.00"></div>
+        <div class="field"><label for="floorBal">Bank balance now</label><input id="floorBal" type="number" step="0.01" inputmode="decimal" placeholder="$0.00"></div>
         <button type="button" class="primary" id="floorBalSave">Save</button>
       </div>
     </div>
     <div id="floorStatus" hidden>
-      <div class="floorline"><div><span class="k">Balance now (estimate)</span><b id="floorBalNow">$0.00</b></div><div class="r"><span class="k" id="floorRoomK">Above your floor</span><b id="floorRoom">$0.00</b></div></div>
+      <div class="floorline"><div><span class="k">Balance now</span><b id="floorBalNow">$0.00</b></div><div class="r"><span class="k" id="floorRoomK">Above your floor</span><b id="floorRoom">$0.00</b></div></div>
       <div class="floorbar" aria-hidden="true"><i id="floorFill"></i><span id="floorMark"></span></div>
       <div class="verdict" id="floorVerdict"><b id="floorVerdictText">You're safe</b><span class="amt" id="floorVerdictAmt"></span></div>
       <p class="note" id="floorNote"></p>
+      <div class="alertrow" id="alertRow"><div><span>Floor alerts</span><small id="alertSub">Get notified when you drop below</small></div><button type="button" id="alertBtn">Turn On</button></div>
       <div class="btns" id="floorSaverBtns"></div>
     </div>
   </section>
 
   <section class="panel saver" id="saverPanel" hidden>
-    <h2>🛡️ Saver mode <span id="saverUntil"></span></h2>
+    <h2>Saver mode <span id="saverUntil"></span></h2>
     <div class="saverhero">
       <div><span class="k">Spend at most</span><b id="saverDaily">$0.00</b><span class="k">a day</span></div>
       <div><span class="k">Left today</span><b id="saverToday">$0.00</b></div>
@@ -784,48 +862,90 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     <ul class="saverplan" id="saverPlan"></ul>
     <h3 class="savertips-h">Easiest ways to spend less</h3>
     <ul class="insights" id="saverTips"></ul>
-    <p class="note" id="saverNote">Saver limits replace your normal limits until payday or until your balance is back above your floor. Your normal budget is kept and comes back automatically.</p>
+    <p class="note" id="saverNote"></p>
+  </section>
+
+  <section class="panel" id="cutPanel">
+    <h2>Where to cut back <span id="cutSub">Last 30 days</span></h2>
+    <div class="cuthead" id="cutHead" hidden><b id="cutTotal">$0</b><span id="cutTotalSub">a month you could keep</span></div>
+    <ul class="cutlist" id="cutList"></ul>
+    <p class="note" id="cutNote"></p>
   </section>
 
   <section class="panel" id="budSetup" hidden>
     <h2>Plan your budget</h2>
-    <p class="note" style="margin-top:0">Set a limit for each category. Shift Score can suggest one from your pay: about 90% of your estimated take-home, so roughly 10% goes to savings.</p>
-    <div class="btns"><button type="button" class="primary" id="budSuggest">Suggest a budget from my pay</button><button type="button" id="budOwn">I'll set my own</button></div>
-  </section>
-
-  <section class="panel">
-    <h2>Add spending <span>Sorted for you as you type</span></h2>
-    <form class="budform" id="budForm">
-      <div class="field"><label for="budAmt">Amount $</label><input id="budAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="12.50" required></div>
-      <div class="field"><label for="budWhat">What for</label><input id="budWhat" type="text" maxlength="40" placeholder="Chipotle, gas, rent…"></div>
-      <div class="field"><label for="budCat">Category</label><select id="budCat"></select></div>
-      <div class="field"><label for="budDate">Date</label><input id="budDate" type="date"></div>
-      <div class="field span2 wherefield">
-        <label for="budWhere">Where</label>
-        <div class="seg seg2 wseg" id="whereSeg" role="group" aria-label="Where you spent it">
-          <button type="button" data-k="place" aria-pressed="true">📍 In person</button>
-          <button type="button" data-k="web" aria-pressed="false">🌐 Online</button>
-        </div>
-        <div class="whererow">
-          <input id="budWhere" type="text" maxlength="60" list="whereList" placeholder="Store or place, e.g. H-E-B on Texas Ave" autocomplete="off">
-          <button type="button" id="btnLoc" class="locbtn" aria-label="Use my current location">📍 Here</button>
-        </div>
-        <datalist id="whereList"></datalist>
-        <div class="locnote" id="locNote" hidden></div>
-      </div>
-      <button class="primary span2" type="submit">Add</button>
-    </form>
-    <div class="btns importrow">
-      <label class="filebtn">Import from a file (CSV)<input id="fileCsv" type="file" accept=".csv,text/csv,text/plain" hidden></label>
-    </div>
-    <p class="note">Import a spending export from your bank (Capital One, Chase, Discover and others let you download one as CSV) or any sheet with Date, Description and Amount columns. Duplicates are skipped automatically.</p>
+    <p class="note">Set a limit for each category, or let Shift Score suggest one from your pay (about 90% of take-home, so 10% goes to savings).</p>
+    <div class="btns"><button type="button" class="primary" id="budSuggest">Suggest From My Pay</button><button type="button" id="budOwn">Set My Own</button></div>
   </section>
 
   <section class="panel">
     <h2>Categories <button type="button" class="linkbtn" id="budEdit">Edit</button></h2>
     <ul class="budcats" id="budCats"></ul>
-    <div class="btns" id="budEditBtns" hidden><button type="button" id="budAddCat">Add a category</button><button type="button" class="primary" id="budDone">Done</button></div>
-    <p class="note" id="budCatNote">Limits are per month. On "Each paycheck", they're scaled to the length of your pay period.</p>
+    <div class="btns" id="budEditBtns" hidden><button type="button" id="budAddCat">Add Category</button><button type="button" class="primary" id="budDone">Done</button></div>
+    <p class="note" id="budCatNote">Limits are per month.</p>
+  </section>
+
+  <section class="panel">
+    <details class="sheetform solo" id="budAddBox">
+      <summary><span>Add a purchase</span></summary>
+      <form class="budform" id="budForm">
+        <div class="field"><label for="budAmt">Amount</label><input id="budAmt" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="$0.00" required></div>
+        <div class="field"><label for="budWhat">What for</label><input id="budWhat" type="text" maxlength="40" placeholder="Chipotle, gas, rent…"></div>
+        <div class="field"><label for="budCat">Category</label><select id="budCat"></select></div>
+        <div class="field"><label for="budDate">Date</label><input id="budDate" type="date"></div>
+        <div class="field wherefield">
+          <label for="budWhere">Where</label>
+          <div class="seg seg2 wseg" id="whereSeg" role="group" aria-label="Where you spent it">
+            <button type="button" data-k="place" aria-pressed="true">In Person</button>
+            <button type="button" data-k="web" aria-pressed="false">Online</button>
+          </div>
+          <div class="whererow">
+            <input id="budWhere" type="text" maxlength="60" list="whereList" placeholder="Store or place" autocomplete="off">
+            <button type="button" id="btnLoc" class="locbtn" aria-label="Use my current location">Here</button>
+          </div>
+          <datalist id="whereList"></datalist>
+          <div class="locnote" id="locNote" hidden></div>
+        </div>
+        <button class="primary" type="submit">Add Purchase</button>
+      </form>
+      <div class="btns importrow">
+        <label class="filebtn">Import Bank CSV<input id="fileCsv" type="file" accept=".csv,text/csv,text/plain" hidden></label>
+      </div>
+      <p class="note">Most banks let you download transactions as a CSV. Duplicates are skipped.</p>
+    </details>
+  </section>
+
+  <section class="panel">
+    <h2>Spending <span id="budTxCount"></span></h2>
+    <div class="fchips" id="budFilter"></div>
+    <div id="budTx"></div>
+  </section>
+
+  <section class="panel" id="wfPanel">
+    <h2>Can I afford it?</h2>
+    <div class="fchips wfpre" id="wfPresets">
+      <button type="button" data-w="Movie for 2" data-p="15" data-n="2" data-x="12">Movie for 2</button>
+      <button type="button" data-w="Dinner date" data-p="28" data-n="2" data-x="0">Dinner date</button>
+      <button type="button" data-w="Concert ticket" data-p="75" data-n="1" data-x="15">Concert</button>
+      <button type="button" data-w="New sneakers" data-p="120" data-n="1" data-x="0">Sneakers</button>
+      <button type="button" data-w="Coffee" data-p="6" data-n="1" data-x="0">Coffee</button>
+    </div>
+    <form class="wfform" id="wfForm" autocomplete="off">
+      <div class="field"><label for="wfWhat">What is it?</label><input id="wfWhat" type="text" maxlength="50" placeholder="Jailer 2 at Cinemark"></div>
+      <div class="field"><label for="wfPrice">Price each</label><input id="wfPrice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="$0.00"></div>
+      <div class="field"><label>How many</label><div class="stepper"><button type="button" id="wfMinus" aria-label="One fewer">−</button><output id="wfQty">1</output><button type="button" id="wfPlus" aria-label="One more">+</button></div></div>
+      <div class="field"><label for="wfExtra">Extras <small>snacks, fees, tip</small></label><input id="wfExtra" type="number" min="0" step="0.01" inputmode="decimal" placeholder="$0.00"></div>
+    </form>
+    <div class="wfres" id="wfRes" hidden>
+      <div class="wfbig"><b id="wfHours">0 hrs</b><span>of work</span></div>
+      <p class="wfsub" id="wfSub"></p>
+      <ul class="wflist" id="wfList"></ul>
+      <div class="btns"><button type="button" class="primary" id="wfSave">Save as Goal</button><button type="button" id="wfBought">I Bought It</button></div>
+    </div>
+    <div id="wfGoalsWrap" hidden>
+      <h3 class="savertips-h">Saving up for</h3>
+      <ul class="wfgoals" id="wfGoals"></ul>
+    </div>
   </section>
 
   <section class="panel">
@@ -835,18 +955,12 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       <div class="wlegend"><span><i class="wp"></i>In person <b id="wsPlaceAmt">$0</b></span><span><i class="ww"></i>Online <b id="wsWebAmt">$0</b></span><span><i class="wu"></i>Not set <b id="wsNoneAmt">$0</b></span></div>
     </div>
     <ul class="places" id="wherePlaces"></ul>
-    <p class="note" id="whereNote">Add where you bought something (a store, a place, or a website) and your top spots show up here. Tap one to see every purchase there.</p>
+    <p class="note" id="whereNote">Add where you bought something and your top spots show up here.</p>
   </section>
 
   <section class="panel">
     <h2>Insights</h2>
     <ul class="insights" id="budInsights"></ul>
-  </section>
-
-  <section class="panel">
-    <h2>Spending <span id="budTxCount"></span></h2>
-    <div class="fchips" id="budFilter"></div>
-    <div id="budTx"></div>
   </section>
 </section>
 
@@ -854,33 +968,52 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   <header class="largetitle"><h1>Settings</h1></header>
   <section class="panel install" id="installBox" hidden>
     <p id="installText">Add Shift Score to your home screen to use it like an app.</p>
-    <button class="primary" id="btnInstall" type="button" hidden>Install app</button>
+    <button class="primary" id="btnInstall" type="button" hidden>Install</button>
   </section>
   <section class="panel">
-    <h2>Settings <span>Private · stored on this device</span></h2>
+    <h2>Appearance</h2>
+    <div class="seg seg3" id="themeSeg" role="group" aria-label="Appearance">
+      <button type="button" data-t="dark" aria-pressed="true">Dark</button>
+      <button type="button" data-t="system" aria-pressed="false">Automatic</button>
+      <button type="button" data-t="light" aria-pressed="false">Light</button>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>You</h2>
     <div class="controls">
-      <div class="field span2"><label for="setName">Your name (shows on reports)</label><input id="setName" type="text" maxlength="60" autocomplete="name"></div>
-      <div class="field span2"><label for="setJob">Job name</label><input id="setJob" type="text" maxlength="40" autocomplete="organization"></div>
-      <div class="field span2"><label for="setState">State</label><select id="setState"><option value="">Choose your state…</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select></div>
-      <div class="field span2"><label for="setFiling">Filing status</label><select id="setFiling"><option value="single">Single</option><option value="mfj">Married filing jointly</option><option value="hoh">Head of household</option></select></div>
-      <div class="field span2"><label for="setStateRate">State income tax %</label><input id="setStateRate" type="number" min="0" max="15" step="0.01" inputmode="decimal"></div>
-      <div class="field span2"><label for="setTH">Take-home % <small id="thMode">(estimated for you)</small></label><input id="setTH" type="number" min="1" max="100" step="0.01" inputmode="decimal"></div>
+      <div class="field"><label for="setName">Name <small>on reports</small></label><input id="setName" type="text" maxlength="60" autocomplete="name" placeholder="Your name"></div>
+      <div class="field"><label for="setJob">Job</label><input id="setJob" type="text" maxlength="40" autocomplete="organization" placeholder="Where you work"></div>
     </div>
-    <div class="btns">
-      <button id="btnBackup" type="button">Back up my data</button>
-      <label class="filebtn">Restore a backup<input id="fileRestore" type="file" accept="application/json,.json" hidden></label>
-      <label class="filebtn">Import purchases<input id="fileImport" type="file" accept="application/json,.json" hidden></label>
-      <button id="btnReset" type="button" class="danger">Erase all data</button>
+  </section>
+  <section class="panel">
+    <h2>Taxes</h2>
+    <div class="controls">
+      <div class="field"><label for="setState">State</label><select id="setState"><option value="">Choose your state…</option><option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="DC">District of Columbia</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option></select></div>
+      <div class="field"><label for="setFiling">Filing status</label><select id="setFiling"><option value="single">Single</option><option value="mfj">Married, jointly</option><option value="hoh">Head of household</option></select></div>
+      <div class="field"><label for="setStateRate">State tax %</label><input id="setStateRate" type="number" min="0" max="15" step="0.01" inputmode="decimal"></div>
+      <div class="field"><label for="setTH">Take-home % <small id="thMode">estimated</small></label><input id="setTH" type="number" min="1" max="100" step="0.01" inputmode="decimal"></div>
     </div>
-    <div class="verdict" id="thBreak"><b>Take-home estimate</b><span class="amt"></span></div>
+    <div class="verdict" id="thBreak"><b>Take-home</b><span class="amt"></span></div>
     <p class="note" id="thExplain"></p>
-    <div class="btns"><button type="button" id="btnTHAuto" hidden>Go back to the automatic estimate</button></div>
-    <p class="note">Estimates only: real paychecks depend on your W-4 and local taxes. State rates are approximate for typical part-time pay; edit yours if you know it. Your data lives only on this device, so back it up before switching phones or clearing your browser.</p>
+    <div class="btns"><button type="button" id="btnTHAuto" hidden>Use Automatic Estimate</button></div>
+    <p class="note">Estimates only. Real paychecks depend on your W-4 and local taxes.</p>
+  </section>
+  <section class="panel">
+    <h2>Data</h2>
+    <div class="rowbtns">
+      <button id="btnBackup" type="button">Back Up My Data</button>
+      <label class="filebtn">Restore a Backup<input id="fileRestore" type="file" accept="application/json,.json" hidden></label>
+      <label class="filebtn">Import Purchases<input id="fileImport" type="file" accept="application/json,.json" hidden></label>
+      <button id="btnReset" type="button" class="danger">Erase All Data</button>
+    </div>
+    <p class="note">Everything lives on this device. Back up before switching phones or clearing your browser.</p>
   </section>
   <div class="sync" data-mode="synced"><span class="sdot"></span><span>Private · saved only on this device</span></div>
-  <footer class="foot">Shift Score · Free, no account, no ads. Your shifts and money never leave this device.<br><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a></footer>
+  <footer class="foot">Shift Score · Free, no account, no ads.<br><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a></footer>
 </section>
 </main>
+<div class="payoutcard" id="payout" aria-live="polite"><span class="coin">$</span><div><b id="payoutTitle">Level up</b><small id="payoutSub"></small></div><span class="pamt" id="payoutAmt"></span></div>
+<div class="sheetback" id="sheetBack" hidden><div class="sheet-card" id="sheetCard" role="alertdialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
 <nav class="tabbar" aria-label="Sections">
   <button class="tabbtn" type="button" data-tab="today" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>Today</span></button>
   <button class="tabbtn" type="button" data-tab="sheet" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><path d="M7.5 9h9M7.5 12.5h9M7.5 16h5"/></svg><span>Timesheet</span></button>
@@ -892,7 +1025,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
 <div class="onboard" id="onboard" hidden>
   <form class="obcard" id="obForm">
     <img class="obmark" src="icons/wordmark.png" alt="Shift Score" width="900" height="202">
-    <h1>Watch your pay <em>add up</em>, live.</h1>
+    <h1>Watch your pay add up, live.</h1>
     <ul class="obpoints">
       <li>A live counter and levels for every hour you work</li>
       <li>A timesheet that fills itself in, with Excel export</li>
@@ -1057,6 +1190,45 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("show"); }, 3200);
   }
 
+  var payoutTimer;
+  function payout(title, sub, amt) {
+    var p = $("payout"), sc = $("scoreCard");
+    $("payoutTitle").textContent = title; $("payoutSub").textContent = sub; $("payoutAmt").textContent = amt || "";
+    p.classList.remove("show"); sc.classList.remove("payout"); void p.offsetWidth;
+    p.classList.add("show"); sc.classList.add("payout");
+    if (window.ShiftNative) ShiftNative.buzz("win");
+    clearTimeout(payoutTimer); payoutTimer = setTimeout(function () { p.classList.remove("show"); sc.classList.remove("payout"); }, 2800);
+  }
+  function renderMoneyHero() {
+    var hb = $("balNowMoney"); if (!hb || typeof CAT_DEFAULTS === "undefined") return;
+    var bn = balanceNow(); hb.classList.remove("safe", "low");
+    if (bn === null) { hb.textContent = "—"; $("balNowSub").textContent = "Enter your balance from your bank app"; return; }
+    hb.textContent = (bn < 0 ? "−" : "") + money(Math.abs(bn));
+    var f = floorCfg(); if (f && f.amount > 0) hb.classList.add(bn < f.amount ? "low" : "safe");
+    var sp = spentSince(state.balanceSetAt || 0), when = fmtDay(state.balanceSetAt || Date.now(), { weekday: "short" }) + " " + fmtTime(state.balanceSetAt || Date.now());
+    $("balNowSub").textContent = sp > 0.004 ? money(sp) + " spent since you updated it " + when : "Updated " + when;
+  }
+  // ---- Sheets: alerts and questions that need an answer ----
+  var sheetOpen = null;
+  var ICON_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 17.2v.01"/></svg>';
+  var ICON_ASK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6M12 17.2v.01"/></svg>';
+  function closeSheet() { $("sheetBack").hidden = true; $("sheetCard").innerHTML = ""; sheetOpen = null; }
+  function openSheet(o) {
+    var c = $("sheetCard"); c.innerHTML = ""; sheetOpen = o;
+    var ic = document.createElement("div"); ic.className = "sic" + (o.tone === "warn" ? " warn" : ""); ic.innerHTML = o.icon || ICON_WARN; c.appendChild(ic);
+    var h = document.createElement("h2"); h.id = "sheetTitle"; h.textContent = o.title; c.appendChild(h);
+    if (o.big) { var bg = document.createElement("div"); bg.className = "sbig"; bg.textContent = o.big; if (o.tone === "warn") bg.style.color = "var(--gold)"; c.appendChild(bg); }
+    (o.text || []).forEach(function (t) { var p = document.createElement("p"); p.textContent = t; c.appendChild(p); });
+    if (o.build) o.build(c);
+    var bs = document.createElement("div"); bs.className = "btns";
+    (o.buttons || []).forEach(function (x) { var b = document.createElement("button"); b.type = x.submit ? "submit" : "button"; b.textContent = x.label; if (x.cls) b.className = x.cls; if (x.form) b.setAttribute("form", x.form); if (!x.submit) b.addEventListener("click", function () { if (x.keep !== true) closeSheet(); if (x.fn) x.fn(); }); bs.appendChild(b); });
+    c.appendChild(bs);
+    $("sheetBack").hidden = false;
+    var first = c.querySelector("input:not([type=hidden])"); if (first) setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  $("sheetBack").addEventListener("click", function (e) { if (e.target === this && sheetOpen && sheetOpen.dismiss) closeSheet(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && sheetOpen && sheetOpen.dismiss) closeSheet(); });
+
   function render() {
     var running = state.clockIn && !state.clockOut;
     var end = state.clockOut || Date.now();
@@ -1184,7 +1356,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var pct = Math.min(100, dayEarned / state.goal * 100);
     $("goalFill").style.width = pct.toFixed(1) + "%";
     $("goalPct").textContent = Math.floor(pct) + "%";
-    $("goalLeft").textContent = dayEarned >= state.goal ? "Daily goal hit · " + money(state.goal) : money(state.goal - dayEarned) + " to daily goal";
+    $("goalRing").style.strokeDasharray = Math.max(0, pct).toFixed(2) + " 100";
+    $("scoreCard").classList.toggle("goaldone", dayEarned >= state.goal);
+    $("goalLeft").innerHTML = dayEarned >= state.goal ? "Goal hit · <b>" + money(state.goal) + "</b>" : "<b>" + money(state.goal - dayEarned) + "</b> to your " + money(state.goal).replace(".00", "") + " goal";
+    renderMoneyHero();
 
     var unlocked = 0, highest = -1;
     Array.prototype.forEach.call(badgesEl.children, function (el, i) {
@@ -1194,8 +1369,8 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     $("badgeCount").textContent = unlocked + " of " + BADGES.length + " unlocked";
 
     if (running) {
-      if (lastLevel !== -1 && lvl > lastLevel) toast("Level up! Level " + (lvl + 1) + " · " + LEVELS[Math.min(lvl, 7)] + " · " + money(dayEarned));
-      else if (lastBadge !== -1 && highest > lastBadge) toast("Badge unlocked: " + BADGES[highest].name);
+      if (lastLevel !== -1 && lvl > lastLevel) payout("Level " + (lvl + 1) + " · " + LEVELS[Math.min(lvl, 7)], (lvl === 1 ? "1 hour" : lvl + " hours") + " in the books", "+" + money(state.rate));
+      else if (lastBadge !== -1 && highest > lastBadge) { payout(BADGES[highest].name, "Milestone unlocked", money(dayEarned)); var bEl = badgesEl.children[highest]; bEl.classList.remove("pop"); void bEl.offsetWidth; bEl.classList.add("pop"); }
     }
     lastLevel = lvl; lastBadge = highest;
   }
@@ -1237,10 +1412,10 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         cell(wr, wk[w].h.toFixed(2)); cell(wr, money(wk[w].n)); cell(wr, money(wk[w].s)); cell(wr, signed(wk[w].n - wk[w].s), leftCls(wk[w].n - wk[w].s));
         body.appendChild(wr);
       }
-      var tr = document.createElement("tr"); if (d.live) tr.className = "live";
+      var tr = document.createElement("tr"); if (d.live) tr.className = "live"; else if (d.in === null) tr.className = "off";
       cell(tr, new Date(d.day).toLocaleDateString([], { weekday: "short", month: "numeric", day: "numeric" }) + (d.brk >= 60000 ? " · " + Math.round(d.brk / 60000) + "m break" : "") + (d.parts > 1 ? " · " + d.parts + " parts" : ""));
-      cell(tr, d.in === null ? "Off" : fmtTime(d.in)); cell(tr, d.in === null ? "" : (d.live ? "On the clock" : fmtTime(d.out)));
-      cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); cell(tr, d.spent ? money(d.spent) : "—"); cell(tr, signed(d.left), leftCls(d.left));
+      cell(tr, d.in === null ? "No shift" : fmtTime(d.in)); cell(tr, d.in === null ? "" : (d.live ? "now" : fmtTime(d.out)));
+      cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); cell(tr, d.spent ? money(d.spent) : "—", d.spent ? "sp" : "sp none"); cell(tr, signed(d.left), leftCls(d.left));
       body.appendChild(tr);
     });
     var sum = function (f) { return days.reduce(function (a, d) { return a + d[f]; }, 0); };
@@ -1407,19 +1582,65 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   $("rate").addEventListener("input", function () { var r = parseFloat(this.value); if (r >= 0) { state.rate = r; save(); render(); } });
   $("goal").addEventListener("input", function () { var g = parseFloat(this.value); if (g > 0) { state.goal = g; save(); render(); } });
 
-  $("balance").addEventListener("input", function () {
-    var b = parseFloat(this.value); state.balance = isNaN(b) ? null : b; state.balanceSetAt = Date.now(); save(); render();
-    if (typeof renderBudget === "function" && typeof CAT_DEFAULTS !== "undefined") renderBudget();
-  });
   $("balance").addEventListener("change", function () {
     var b = parseFloat(this.value); if (isNaN(b)) return;
-    var prev = state.balanceLog[state.balanceLog.length - 1];
-    logBalance(b); save(); render();
-    if (prev && Math.abs(prev.bal - b) >= 0.005) {
-      var spent = prev.bal + depositsBetween(prev.t, Date.now()) - b;
-      toast(spent > 0 ? "You spent about " + money(spent) + " since your last balance" : "Balance up " + money(-spent) + " since last time");
-    }
+    commitBalance(b); this.blur();
   });
+  $("balance").addEventListener("keydown", function (e) { if (e.key === "Enter") this.blur(); });
+  // Every drop in the bank balance must be explained, so the timesheet records everything.
+  function commitBalance(b) {
+    var now = Date.now(), had = typeof state.balance === "number";
+    var expected = had ? state.balance - spentSince(state.balanceSetAt || 0) : null, prevAt = state.balanceSetAt || now;
+    state.balance = Math.round(b * 100) / 100; state.balanceSetAt = now; logBalance(state.balance); save();
+    syncInputs(); render(); renderHistory(); if (typeof renderBudget === "function" && typeof CAT_DEFAULTS !== "undefined") renderBudget();
+    if (!had) { toast("Balance saved"); return; }
+    var gap = Math.round((expected - state.balance) * 100) / 100;
+    if (gap >= 0.5) askUnlogged(gap, gap, prevAt, now);
+    else if (gap <= -0.5) toast("That's " + money(-gap) + " more than expected: a refund or deposit?");
+    else toast("Balance matches everything you've logged");
+  }
+  function askUnlogged(total, remaining, prevAt, at) {
+    var fid = "unlogForm";
+    openSheet({
+      icon: ICON_ASK, tone: "warn", dismiss: false,
+      title: remaining < total ? "Still unaccounted for" : "Your balance dropped",
+      big: "−" + money(remaining),
+      text: [remaining < total ? "Record the rest so your timesheet stays complete." : "That's more than you've logged since " + fmtDay(prevAt, { weekday: "short", month: "short", day: "numeric" }) + ". What was it for? It goes on your timesheet."],
+      build: function (c) {
+        var f = document.createElement("form"); f.id = fid; f.autocomplete = "off";
+        f.innerHTML = '<div class="field"><label for="ulAmt">Amount</label><input id="ulAmt" type="number" min="0.01" step="0.01" inputmode="decimal" required></div>' +
+          '<div class="field"><label for="ulWhat">What for</label><input id="ulWhat" type="text" maxlength="40" placeholder="Gas, Venmo, groceries…" required></div>' +
+          '<div class="field"><label for="ulCat">Category</label><select id="ulCat"></select></div>' +
+          '<div class="field"><label for="ulDate">Day</label><input id="ulDate" type="date" required></div>';
+        c.appendChild(f);
+        f.querySelector("#ulAmt").value = remaining.toFixed(2);
+        var cat = f.querySelector("#ulCat"), touched = false; fillCatSelect(cat, "other");
+        cat.addEventListener("change", function () { touched = true; });
+        f.querySelector("#ulWhat").addEventListener("input", function () { if (!touched) cat.value = guessCat(this.value); });
+        var d = f.querySelector("#ulDate"); d.value = ymd(at); d.max = ymd(at); d.min = ymd(prevAt);
+        f.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var amt = Math.round(parseFloat(f.querySelector("#ulAmt").value) * 100) / 100;
+          if (!(amt > 0)) { toast("Enter an amount above $0"); return; }
+          if (amt > remaining) amt = remaining;
+          var what = f.querySelector("#ulWhat").value.trim(); if (!what) { f.querySelector("#ulWhat").focus(); return; }
+          recordLoss(amt, what, cat.value, fromYmd(d.value), at);
+          var rest = Math.round((remaining - amt) * 100) / 100;
+          closeSheet();
+          if (rest >= 0.5) askUnlogged(total, rest, prevAt, at); else toast("Recorded · it's on your timesheet");
+        });
+      },
+      buttons: [{ label: "Record", cls: "primary", submit: true, form: fid },
+        { label: "I'm Not Sure", cls: "plain", fn: function () { recordLoss(remaining, "Unknown spending", "other", dayStart(at), at, true); toast("Recorded as unknown spending · on your timesheet"); } }]
+    });
+  }
+  function recordLoss(amt, what, cat, day, at, unknown) {
+    // Dated just before the balance update, so it explains the drop without counting twice.
+    var t = isNaN(day) || day >= dayStart(at) ? at - 1000 : day + 12 * 3600000;
+    var rec = { id: at + "-" + Math.random().toString(36).slice(2, 7), t: t, amt: amt, what: what, cat: cat || "other", fromBalance: true };
+    if (unknown) rec.unknown = true;
+    state.expenses.push(rec); save(); renderSpend(); render(); renderHistory();
+  }
   $("prevBal").addEventListener("change", function () {
     var p = parseFloat(this.value); if (isNaN(p)) return;
     var first = state.balanceLog[0];
@@ -1917,7 +2138,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     if (k === "web") clearLoc();
     fillWhereList();
   }
-  function clearLoc() { pendingLoc = null; $("btnLoc").classList.remove("on"); $("btnLoc").textContent = "📍 Here"; $("locNote").hidden = true; }
+  function clearLoc() { pendingLoc = null; $("btnLoc").classList.remove("on"); $("btnLoc").textContent = "Here"; $("locNote").hidden = true; }
   function fillWhereList() {
     var seen = {}, dl = $("whereList"); dl.innerHTML = "";
     state.expenses.slice().sort(function (a, b) { return b.t - a.t; }).forEach(function (e) {
@@ -2033,6 +2254,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   function renderFloor() {
     if (!$("floorPanel")) return;
     var now = Date.now(), f = floorCfg(), fs = floorState(now);
+    $("floorBanner").hidden = true;
     $("floorSetup").hidden = !fs.off; $("floorNeedBal").hidden = !fs.needBal; $("floorStatus").hidden = fs.off || fs.needBal;
     $("floorEditBtn").hidden = !!fs.off;
     if (fs.off) { if (f && f.amount && document.activeElement !== $("floorAmt")) $("floorAmt").value = f.amount; $("saverPanel").hidden = true; return; }
@@ -2080,17 +2302,63 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
         ? "You're already below your floor, so the plan covers essentials only (scaled to what you usually spend on them). Everything else waits until payday."
         : "Saver limits replace your normal limits until payday or until you're comfortably above your floor again. Your normal budget is kept and comes back automatically.";
     }
-    // a heads-up the moment the floor is crossed
-    if (lastFloorLevel && lastFloorLevel !== fs.level && fs.level !== "safe") {
-      toast(fs.level === "below" ? "Your balance is below " + money(fs.floor) + ". Saver mode is on." : "Heads up: at this pace you'll dip below " + money(fs.floor) + " before payday.");
-      if (window.ShiftNative) ShiftNative.buzz("tap");
-    }
+    // Alert once each time the floor is crossed (remembered across visits), and keep a banner up while below.
+    if (fs.level === "below" && f.alerted !== "below") { f.alerted = "below"; saveLocal(); floorAlert("below", fs); }
+    else if (fs.level === "watch" && !f.alerted) { f.alerted = "watch"; saveLocal(); floorAlert("watch", fs); }
+    else if (fs.level === "safe" && f.alerted) { f.alerted = null; saveLocal(); }
+    var bn = $("floorBanner"); bn.hidden = fs.level !== "below";
+    if (fs.level === "below") { $("floorBannerText").textContent = money(-fs.room) + " below your floor"; $("floorBannerSub").textContent = "Balance " + money(fs.bal) + " · floor " + moneyShort(fs.floor); }
+    renderAlertRow(f);
     lastFloorLevel = fs.level;
   }
+  function floorAlert(kind, fs) {
+    var day = fmtDay(fs.dipAt || fs.pay, { weekday: "short", month: "short", day: "numeric" });
+    var title = kind === "below" ? "You're below your " + moneyShort(fs.floor) + " floor" : "You're close to your " + moneyShort(fs.floor) + " floor";
+    var body = kind === "below" ? "Your balance is about " + money(fs.bal) + ", " + money(-fs.room) + " under. Saver mode is on until payday."
+      : "At your usual " + money(fs.pace) + " a day, you'll dip below it around " + day + ".";
+    notifyUser(title, body);
+    if (window.ShiftNative) ShiftNative.buzz("warn");
+    if (document.visibilityState !== "visible" || (sheetOpen && !sheetOpen.dismiss)) return;
+    openSheet({ title: title, tone: kind === "below" ? "" : "warn", dismiss: true, big: kind === "below" ? "−" + money(-fs.room) : money(fs.room) + " left",
+      text: [body], buttons: [{ label: kind === "below" ? "See My Saver Plan" : "See Where to Cut Back", cls: "primary", fn: function () { showTab("budget"); setTimeout(function () { var el = $(kind === "below" ? "saverPanel" : "cutPanel"); if (el && !el.hidden) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); } }, { label: "OK", cls: "plain" }] });
+  }
+  function alertSupport() { return !!(window.ShiftNative && ShiftNative.askAlerts) || ("Notification" in window); }
+  function alertPerm() { return window.ShiftNative && ShiftNative.askAlerts ? "granted" : ("Notification" in window ? Notification.permission : "denied"); }
+  function notifyUser(title, body) {
+    var f = floorCfg(); if (!f || !f.alerts) return;
+    if (window.ShiftNative && ShiftNative.alertNow) { ShiftNative.alertNow(title, body); return; }
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    var opts = { body: body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: "shiftscore-floor" };
+    var plain = function () { try { new Notification(title, opts); } catch (e) {} };
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) navigator.serviceWorker.getRegistration().then(function (r) { if (r) r.showNotification(title, opts); else plain(); }, plain); else plain();
+  }
+  function renderAlertRow(f) {
+    var btn = $("alertBtn"), sub = $("alertSub"); if (!btn || !f) return;
+    if (!alertSupport()) { btn.hidden = true; sub.textContent = "Alerts show inside the app here. Add Shift Score to your home screen to get notifications."; return; }
+    btn.hidden = false;
+    var perm = alertPerm(), on = !!f.alerts && perm === "granted";
+    btn.textContent = on ? "On" : (perm === "denied" ? "Blocked" : "Turn On"); btn.classList.toggle("on", on);
+    sub.textContent = on ? "You'll get a notification if you drop below " + moneyShort(f.amount) : perm === "denied" ? "Notifications are off for Shift Score in your settings" : "Get a notification the moment you drop below";
+  }
+  function requestAlerts(then) {
+    var f = floorCfg(); if (!f) return;
+    var done = function (ok) { f.alerts = !!ok; save(); renderFloor(); if (then) then(ok); };
+    if (window.ShiftNative && ShiftNative.askAlerts) ShiftNative.askAlerts().then(done, function () { done(false); });
+    else if ("Notification" in window) { try { var p = Notification.requestPermission(function (x) { done(x === "granted"); }); if (p && p.then) p.then(function (x) { done(x === "granted"); }); } catch (e) { done(false); } }
+  }
+  $("alertBtn").addEventListener("click", function () {
+    var f = floorCfg(); if (!f) return;
+    if (f.alerts && alertPerm() === "granted") { f.alerts = false; save(); renderFloor(); toast("Floor alerts off"); return; }
+    if (alertPerm() === "denied") { toast("Turn on notifications for Shift Score in your phone's Settings"); return; }
+    requestAlerts(function (ok) { toast(ok ? "Floor alerts on" : "Notifications weren't allowed"); });
+  });
+  $("floorBannerBtn").addEventListener("click", function () { showTab("budget"); setTimeout(function () { var el = $("saverPanel"); if (el && !el.hidden) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); });
+
   $("floorOn").addEventListener("click", function () {
     var v = parseFloat($("floorAmt").value); if (!(v > 0)) { toast("Enter an amount, like 500"); $("floorAmt").focus(); return; }
     var b = budget(); b.floor = { amount: Math.round(v * 100) / 100, auto: true, snoozeUntil: 0, forceOn: false };
-    save(); renderBudget(); toast("Floor set at " + money(v) + ". Saver mode turns on if you get close.");
+    save(); renderBudget(); toast("Floor set at " + money(v) + ". You'll be alerted if you go under.");
+    if (alertSupport() && alertPerm() !== "denied") requestAlerts();
   });
   $("floorEditBtn").addEventListener("click", function () {
     var b = budget(), cur = b.floor ? b.floor.amount : "";
@@ -2098,6 +2366,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   });
   $("floorBalSave").addEventListener("click", function () {
     var v = parseFloat($("floorBal").value); if (isNaN(v)) { toast("Enter your balance"); return; }
+    if (typeof state.balance === "number") { commitBalance(v); return; }
     state.balance = Math.round(v * 100) / 100; state.balanceSetAt = Date.now(); logBalance(state.balance); save(); render(); renderBudget();
     $("balance").value = state.balance; toast("Balance saved");
   });
@@ -2252,6 +2521,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     renderWhere(r, list, spent);
     renderInsights(r, list, byCat, total, spent);
     renderTx(r, list);
+    renderCuts();
   }
 
   function renderBudCats(r, byCat) {
@@ -2331,6 +2601,73 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     });
   }
 
+  // ---- Where to cut back: the few changes that would save the most ----
+  function cutPlan(now) {
+    var DAY = 86400000, from = now - 30 * DAY;
+    var rec = state.expenses.filter(function (e) { return e.t >= from && e.t <= now && !e.unknown; });
+    if (rec.length < 3) return { items: [], total: 0, span: 0 };
+    var first = rec.reduce(function (m, e) { return Math.min(m, e.t); }, now);
+    var span = Math.max(7, Math.min(30, (now - first) / DAY)), scale = 30 / span;
+    var DELIV = /doordash|uber ?eats|grubhub|postmates|instacart|caviar|delivery/i;
+    var RIDE = /\buber\b|lyft|hitch|taxi|\brides?\b|waymo/i;
+    var CONV = /7-?eleven|circle k|wawa|quiktrip|\bqt\b|cvs|walgreens|speedway|corner store|gas station/i;
+    var txt = function (e) { return ((e.what || "") + " " + whereLabel(e.where)).toLowerCase(); };
+    var used = {}, items = [];
+    var grp = function (test) { var g = { n: 0, a: 0, cats: {} }; rec.forEach(function (e) { if (used[e.id] || e.amt >= 150 || ESSENTIAL[catOf(e).id] && catOf(e).id !== "gas") return; if (test(e)) { g.n++; g.a += e.amt; g.cats[catOf(e).id] = (g.cats[catOf(e).id] || 0) + e.amt; g.ids = (g.ids || []).concat(e.id); } }); return g; };
+    var take = function (g) { (g.ids || []).forEach(function (id) { used[id] = 1; }); };
+    var topCat = function (g) { var best = null; for (var k in g.cats) if (!best || g.cats[k] > g.cats[best]) best = k; return best; };
+    var days = Math.round(span) + " days";
+    var d = grp(function (e) { return DELIV.test(txt(e)); });
+    if (d.n >= 2) { take(d); items.push({ title: "Cut delivery orders in half", detail: d.n + " delivery orders cost " + money(d.a) + " in " + days + ". Pickup or cooking skips the delivery fee, service fee and tip, which often add a third to the bill.", save: d.a * scale * 0.5, cat: topCat(d) }); }
+    var r = grp(function (e) { return RIDE.test(txt(e)) && !DELIV.test(txt(e)); });
+    if (r.n >= 2) { take(r); items.push({ title: "Swap 2 of every 5 rides", detail: r.n + " rides cost " + money(r.a) + ". The bus, a bike, walking or a friend for short trips adds up fast.", save: r.a * scale * 0.4, cat: topCat(r) }); }
+    var c = grp(function (e) { return CONV.test(txt(e)); });
+    if (c.n >= 2) { take(c); items.push({ title: "Stock up instead of convenience-store runs", detail: c.n + " stops cost " + money(c.a) + ". The same snacks and drinks run about a third less at a grocery store.", save: c.a * scale * 0.35, cat: topCat(c) }); }
+    var spots = {};
+    rec.forEach(function (e) { if (used[e.id] || ESSENTIAL[catOf(e).id] || e.amt >= 150) return; var k = (whereLabel(e.where) || e.what || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").split(" ").slice(0, 2).join(" ").trim(); if (!k) return; var sp = spots[k] = spots[k] || { n: 0, a: 0, label: whereLabel(e.where) || e.what, cats: {}, ids: [] }; sp.n++; sp.a += e.amt; sp.cats[catOf(e).id] = (sp.cats[catOf(e).id] || 0) + e.amt; sp.ids.push(e.id); });
+    Object.keys(spots).map(function (k) { return spots[k]; }).filter(function (sp) { return sp.n >= 3; }).sort(function (a, b) { return b.a - a.a; }).slice(0, 2).forEach(function (sp) { take(sp); items.push({ title: "Go to " + sp.label + " half as often", detail: sp.n + " visits cost " + money(sp.a) + " in " + days + ".", save: sp.a * scale * 0.5, cat: topCat(sp) }); });
+    var small = grp(function (e) { return e.amt < 12; });
+    if (small.n >= 5) { take(small); items.push({ title: "Skip a few small buys", detail: small.n + " purchases under $12 added up to " + money(small.a) + ". Skipping one in three is barely noticeable.", save: small.a * scale * 0.33, cat: topCat(small) }); }
+    var mStart = new Date(new Date(now).getFullYear(), new Date(now).getMonth(), 1).getTime(), frac = Math.max(0.2, (now - mStart) / (30.44 * DAY));
+    budget().cats.forEach(function (ct) {
+      if (!(ct.limit > 0)) return;
+      var m = state.expenses.filter(function (e) { return e.t >= mStart && e.t <= now && catOf(e).id === ct.id; }).reduce(function (a, e) { return a + e.amt; }, 0), pace = m / frac;
+      if (pace > ct.limit * 1.05 && !items.some(function (x) { return x.cat === ct.id; })) items.push({ title: "Bring " + ct.name + " back under its limit", detail: "You're on pace for " + money(pace) + " this month against a " + money(ct.limit) + " limit.", save: pace - ct.limit, cat: ct.id });
+    });
+    items = items.filter(function (x) { return x.save >= 3; }).sort(function (a, b) { return b.save - a.save; }).slice(0, 4);
+    items.forEach(function (x) { x.save = Math.round(x.save); var cm = rec.filter(function (e) { return x.cat && catOf(e).id === x.cat; }).reduce(function (a, e) { return a + e.amt; }, 0) * scale; x.capTo = x.cat ? Math.max(0, Math.round((cm - x.save) / 5) * 5) : 0; });
+    return { items: items, total: items.reduce(function (a, x) { return a + x.save; }, 0), span: span };
+  }
+  function dollars(n) { return (n < 0 ? "−" : "") + "$" + Math.round(Math.abs(n)).toLocaleString(); }
+  function renderCuts() {
+    if (!$("cutList")) return;
+    var p = cutPlan(Date.now()), ul = $("cutList"); ul.innerHTML = "";
+    $("cutHead").hidden = !p.items.length;
+    if (!p.items.length) { $("cutSub").textContent = ""; $("cutNote").textContent = "Log or import a couple of weeks of spending and the changes that would save you the most show up here."; return; }
+    $("cutTotal").textContent = dollars(p.total);
+    var hrs = state.rate > 0 ? p.total * 12 / (state.rate * TH()) : 0;
+    $("cutTotalSub").textContent = "a month you could keep · " + dollars(p.total * 12) + " a year" + (hrs ? ", about " + Math.round(hrs) + " hours of work" : "");
+    $("cutSub").textContent = "Last " + Math.round(p.span) + " days";
+    p.items.forEach(function (x) {
+      var li = document.createElement("li");
+      var t = document.createElement("div"); t.className = "ct"; t.textContent = x.title;
+      var sv = document.createElement("div"); sv.className = "cs"; sv.textContent = dollars(x.save) + "/mo";
+      var h = state.rate > 0 ? x.save / (state.rate * TH()) : 0; var sm = document.createElement("small"); sm.textContent = h ? (h < 1 ? Math.round(h * 60) + " min" : (Math.round(h * 10) / 10) + " hrs") + " of work" : ""; sv.appendChild(sm);
+      var dd = document.createElement("div"); dd.className = "cd"; dd.textContent = x.detail;
+      li.appendChild(t); li.appendChild(sv); li.appendChild(dd);
+      var ct = x.cat ? catById(x.cat) : null;
+      if (ct && x.capTo > 0) {
+        var row = document.createElement("div"); row.className = "ca2"; var b = document.createElement("button"); b.type = "button";
+        var capped = ct.limit > 0 && ct.limit <= x.capTo;
+        b.textContent = capped ? ct.name + " capped at " + dollars(ct.limit) + "/mo" : "Cap " + ct.name + " at " + dollars(x.capTo) + "/mo"; b.classList.toggle("on", capped);
+        b.addEventListener("click", function () { if (capped) return; ct.limit = x.capTo; save(); renderBudget(); toast(ct.name + " capped at " + money(x.capTo) + " a month"); });
+        row.appendChild(b); li.appendChild(row);
+      }
+      ul.appendChild(li);
+    });
+    $("cutNote").textContent = "Estimates from your last " + Math.round(p.span) + " days of spending, scaled to a month.";
+  }
+
   function renderInsights(r, list, byCat, total, spent) {
     var ul = $("budInsights"); ul.innerHTML = "";
     var add = function (icon, text, sub) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; i.textContent = icon; var d = document.createElement("div"); d.textContent = text; if (sub) { var s2 = document.createElement("small"); s2.textContent = sub; d.appendChild(s2); } li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
@@ -2355,7 +2692,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var box = $("budTx"), chips = $("budFilter"); box.innerHTML = ""; chips.innerHTML = "";
     var used = {}; list.forEach(function (e) { used[catOf(e).id] = true; });
     if (budFilter !== "all" && budFilter.indexOf(":") < 0 && !used[budFilter]) budFilter = "all";
-    var mkPlaceChip = function (e) { if (!e) return; var bt = document.createElement("button"); bt.type = "button"; bt.setAttribute("aria-pressed", "true"); bt.textContent = (e.where.kind === "web" ? "🌐 " : "📍 ") + whereLabel(e.where) + "  ×"; bt.addEventListener("click", function () { budFilter = "all"; renderBudget(); }); chips.insertBefore(bt, chips.children[1] || null); };
+    var mkPlaceChip = function (e) { if (!e) return; var bt = document.createElement("button"); bt.type = "button"; bt.setAttribute("aria-pressed", "true"); bt.textContent = whereLabel(e.where) + "  ×"; bt.addEventListener("click", function () { budFilter = "all"; renderBudget(); }); chips.insertBefore(bt, chips.children[1] || null); };
     var mk = function (id, label) { var bt = document.createElement("button"); bt.type = "button"; bt.textContent = label; bt.setAttribute("aria-pressed", budFilter === id ? "true" : "false"); bt.addEventListener("click", function () { budFilter = id; renderBudget(); }); chips.appendChild(bt); };
     mk("all", "All");
     budget().cats.forEach(function (c) { if (used[c.id]) mk(c.id, c.icon + " " + c.name); });
@@ -2386,7 +2723,7 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
       var wl = whereLabel(e.where);
       if (wl) {
         var href = whereHref(e.where), a = document.createElement(href ? "a" : "span"); a.className = "wl";
-        a.textContent = (e.where.kind === "web" ? "🌐 " : "📍 ") + wl;
+        a.textContent = wl;
         if (href) { a.href = href; a.target = "_blank"; a.rel = "noopener"; a.title = e.where.kind === "web" ? "Open website" : "Open in Maps"; }
         sub.appendChild(a);
       }
@@ -2423,13 +2760,13 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
     var btn = this; btn.textContent = "Locating…";
     navigator.geolocation.getCurrentPosition(function (pos) {
       pendingLoc = { lat: Math.round(pos.coords.latitude * 1e5) / 1e5, lng: Math.round(pos.coords.longitude * 1e5) / 1e5, acc: Math.round(pos.coords.accuracy || 0) };
-      btn.classList.add("on"); btn.textContent = "📍 Pinned";
+      btn.classList.add("on"); btn.textContent = "Pinned";
       var n = $("locNote"); n.hidden = false; n.innerHTML = "";
       n.appendChild(document.createTextNode("Location pinned" + (pendingLoc.acc ? " (within about " + pendingLoc.acc + " m)" : "") + ". Saved only on this device. "));
       var x = document.createElement("button"); x.type = "button"; x.textContent = "Remove"; x.addEventListener("click", clearLoc); n.appendChild(x);
       if (!$("budWhere").value.trim()) $("budWhere").focus();
     }, function (err) {
-      btn.textContent = "📍 Here";
+      btn.textContent = "Here";
       toast(err && err.code === 1 ? "Location permission is off. You can still type the place." : "Couldn't get your location. Type the place instead.");
     }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
   });
@@ -2558,6 +2895,18 @@ input:focus { background: var(--glass-strong); border-color: color-mix(in srgb, 
   });
 
   var TABS = ["today", "sheet", "money", "budget", "settings"];
+  function applyTheme(t) {
+    t = t || "dark"; document.documentElement.setAttribute("data-theme", t);
+    try { localStorage.setItem("shiftscore.theme", t); } catch (e) {}
+    var light = t === "light" || (t === "system" && window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches);
+    var m = document.getElementById("themeColor"); if (m) m.setAttribute("content", light ? "#f3f5f4" : "#0b0f0e");
+    Array.prototype.forEach.call(document.querySelectorAll("#themeSeg button"), function (b) { b.setAttribute("aria-pressed", b.dataset.t === t ? "true" : "false"); });
+    if (window.ShiftNative && ShiftNative.setDark) ShiftNative.setDark(!light);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("#themeSeg button"), function (b) { b.addEventListener("click", function () { applyTheme(b.dataset.t); }); });
+  applyTheme(document.documentElement.getAttribute("data-theme"));
+  if (window.matchMedia) { try { matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () { if (document.documentElement.getAttribute("data-theme") === "system") applyTheme("system"); }); } catch (e) {} }
+
   function showTab(t) {
     TABS.forEach(function (n) {
       $("tab-" + n).hidden = n !== t;

@@ -1,6 +1,6 @@
 // Shift Score service worker: makes the app load instantly and work offline.
 // Bump VERSION on every deploy so phones pick up the new files.
-const VERSION = "shiftscore-v13-afford";
+const VERSION = "shiftscore-v14-redesign";
 const SHELL = [
   "./",
   "index.html",
@@ -45,4 +45,13 @@ self.addEventListener("fetch", (event) => {
       return res;
     }))
   );
+});
+
+// Tapping a floor alert opens the app.
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+    for (const c of list) { if ("focus" in c) return c.focus(); }
+    return self.clients.openWindow ? self.clients.openWindow("./") : undefined;
+  }));
 });
