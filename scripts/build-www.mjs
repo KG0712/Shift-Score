@@ -6,7 +6,7 @@ import { build } from "esbuild";
 rmSync("www", { recursive: true, force: true });
 mkdirSync("www", { recursive: true });
 for (const f of ["manifest.webmanifest", "privacy.html", "terms.html"]) cpSync(f, `www/${f}`);
-for (const d of ["icons", "vendor"]) cpSync(d, `www/${d}`, { recursive: true });
+for (const d of ["icons", "vendor", "fonts"]) cpSync(d, `www/${d}`, { recursive: true });
 
 await build({ entryPoints: ["src/native.js"], bundle: true, minify: true, format: "iife", target: ["safari15", "chrome100"], outfile: "www/native.js" });
 

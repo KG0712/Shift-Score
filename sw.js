@@ -1,6 +1,6 @@
 // Shift Score service worker: makes the app load instantly and work offline.
 // Bump VERSION on every deploy so phones pick up the new files.
-const VERSION = "shiftscore-v14-redesign";
+const VERSION = "shiftscore-v15-market";
 const SHELL = [
   "./",
   "index.html",
@@ -9,6 +9,12 @@ const SHELL = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/icon-maskable-512.png",
+  "icons/v2-icon-192.png",
+  "icons/v2-icon-512.png",
+  "icons/v2-icon-maskable-512.png",
+  "fonts/source-serif-4.woff2",
+  "fonts/ibm-plex-mono-latin-400-normal.woff2",
+  "fonts/ibm-plex-mono-latin-500-normal.woff2",
   "icons/apple-touch-icon.png",
   "icons/favicon-48.png",
   "icons/wordmark.png"
