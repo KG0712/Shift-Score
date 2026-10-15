@@ -1,0 +1,18 @@
+# Old ChiroPlanet pages -> sections of the new one-page site
+/about-us                    /#doctors        301
+/the-office                  /#visit          301
+/why-us                      /#why            301
+/patients/first-visit        /#first-visit    301
+/patients/map-and-directions /#visit          301
+/patients/contact-us         /#visit          301
+/patients/schedule-appointment https://patient.chirotouch.com/GraceWellnessCenterPLLC/signup/email 302
+/patients/*                  /#first-visit    301
+/patients                    /#first-visit    301
+/services/*                  /#services       301
+/services                    /#services       301
+/education/*                 /#services       301
+/education                   /#services       301
+/health-newsletter/*         /                301
+/health-newsletter           /                301
+/admin                       /                302
+/index.php                   /                301
