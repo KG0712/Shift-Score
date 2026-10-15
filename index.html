@@ -603,6 +603,72 @@ button { color: var(--ink); }
 .verdict.over .amt, .verdict.over b { color: var(--bear); }
 .budcats .ca.over { color: var(--bear); }
 
+/* ---------- Real-app pass: native type for UI, store logos, line icons ---------- */
+/* Headings and list figures use the system font like Fidelity, Chase and Apple Wallet; serif stays on the two hero numbers only. */
+.largetitle h1 { font-family: var(--display); font-weight: 700; font-size: 34px; letter-spacing: -0.025em; }
+.panel h2, .obcard h1, .sheet-card h2 { font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; }
+.panel h2 { font-size: 20px; }
+.stat .v, .ringtxt b, .budnums b, .floorline b, .saverhero b, .budcats .ca, .txlist .tr, .places .pa, .paylist .pr, .fval, .spendlist .right, .wfgoals .gt span, .verdict .amt, .sheet td:nth-child(5), .sbig, .cuthead b, .wfbig b, .paybig {
+  font-family: var(--display); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.sbig, .cuthead b, .wfbig b, .paybig { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Line icons */
+.ci svg, .pi svg { width: 18px; height: 18px; }
+.ci { color: var(--c, var(--muted)); font-size: 0; }
+.saverplan .ci { color: var(--muted); }
+.ii, .wi { display: grid; place-items: center; color: var(--muted); }
+.ii svg { width: 19px; height: 19px; margin-top: 1px; }
+.wi svg { width: 17px; height: 17px; margin-top: 2px; }
+.wflist li.bad .wi { color: var(--bear); }
+.wflist li.good .wi { color: var(--bull); }
+.places .pi { color: var(--muted); }
+
+/* Store logos: white circle with a hairline, like a bank's transaction list */
+.logo { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; overflow: hidden; background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
+.logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.logo.sm img { width: 24px; height: 24px; object-fit: contain; }
+.logo.mono { background: color-mix(in srgb, var(--c, #9a958a) 16%, var(--cell)); color: color-mix(in srgb, var(--c, #9a958a) 85%, var(--ink)); box-shadow: none;
+  font: 600 16px/1 var(--display); letter-spacing: 0; }
+:root[data-theme="dark"] .logo:not(.mono) { box-shadow: none; }
+@media (prefers-color-scheme: dark) { :root[data-theme="system"] .logo:not(.mono) { box-shadow: none; } }
+
+/* Transaction rows */
+.txlist li.txrow { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; min-height: 64px; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.txlist li.txrow:active { background: var(--fill); margin: 0 -10px; padding-left: 10px; padding-right: 10px; border-radius: 10px; }
+.txrow .tw b { font-weight: 500; font-size: 16px; letter-spacing: -0.01em; }
+.txrow .tw small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.005em; }
+.txlist .txrow .tr { font-weight: 500; font-size: 16px; color: var(--ink); }
+.txlist li.empty { color: var(--muted); font-size: 15px; padding: 14px 0; }
+.spendlist.txlist { margin-top: 6px; }
+.txday { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: none; letter-spacing: 0; margin: 22px 0 4px; }
+
+/* Purchase detail sheet */
+.sheet-card .sic.logohead { background: none; width: 56px; height: 56px; }
+.sheet-card .sic.logohead .logo { width: 56px; height: 56px; }
+.sheet-card .sic.logohead .logo.mono { font-size: 22px; }
+.sheet-card .sic.logohead .logo.sm img { width: 32px; height: 32px; }
+.sheet-card form { margin-top: 14px; text-align: left; }
+.sheet-card .btns button.delete { color: var(--bear); }
+
+/* iOS-style switch */
+.check.toggle { margin-top: 14px; }
+.check.toggle > span { display: flex; flex-direction: column; min-width: 0; }
+.check.toggle small { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.check.toggle input { -webkit-appearance: none; appearance: none; width: 51px; height: 31px; border-radius: 16px; background: var(--fill); position: relative; cursor: pointer; transition: background .2s; margin: 0; }
+.check.toggle input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, .2); transition: transform .2s; }
+.check.toggle input:checked { background: var(--bull); }
+.check.toggle input:checked::after { transform: translateX(20px); }
+.check.toggle input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Small market data in the system font (like Robinhood/Fidelity), not a code font */
+:root { --ticker: var(--display); }
+.ticker, .goalmini, .moneyhero .sub, .money .tick, .payoutcard .pamt { font-variant-numeric: tabular-nums; letter-spacing: -0.005em; }
+.ticker, .moneyhero .sub { font-size: 15px; }
+.money .tick { font-weight: 500; }
+.rl .v { font-family: var(--display); font-weight: 600; font-size: 17px; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; }
+.rl.goal small { font-family: var(--display); font-weight: 400; }
+.logo.mono { color: color-mix(in srgb, var(--c, #9a958a) 70%, var(--ink)); }
+
 .paper { max-width: 820px; margin: 0 auto; background: #fff; color: #1c1c1e; border-radius: 14px; padding: 40px 36px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; font-size: 13px; line-height: 1.45; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .paper h1 { font-size: 22px; margin: 0 0 2px; letter-spacing: -0.01em; }
@@ -1011,6 +1077,7 @@ button { color: var(--ink); }
       <button type="button" data-t="dark" aria-pressed="false">Dark</button>
       <button type="button" data-t="light" aria-pressed="false">Light</button>
     </div>
+    <label class="check toggle"><span>Store logos<small>Show DoorDash, Cinemark and other store logos next to purchases</small></span><input type="checkbox" role="switch" id="setLogos" checked></label>
   </section>
   <section class="panel">
     <h2>You</h2>
@@ -1283,7 +1350,7 @@ button { color: var(--ink); }
     var frac = Math.floor((dayEarned * 10000) % 100);
     $("tick").textContent = pad(frac);
     var perMin = state.rate / 60;
-    $("rateLine").innerHTML = state.onBreak && running ? '<span class="pause">❚❚ On break</span><span>unpaid · ' + fmtDur(Date.now() - state.onBreak).replace(/^0:/, "") + '</span>'
+    $("rateLine").innerHTML = state.onBreak && running ? '<span class="pause">On break</span><span>unpaid · ' + fmtDur(Date.now() - state.onBreak).replace(/^0:/, "") + '</span>'
       : running ? '<span class="up">▲ ' + money(state.rate) + '/hr</span><span>+' + money(perMin) + ' a minute</span>' : '<span>' + money(state.rate) + '/hr</span><span>' + (state.clockIn ? "Clocked out" : "Not on the clock") + '</span>';
     var bb = $("btnBreak"); bb.hidden = !running;
     $("btnIn").hidden = !!running; $("btnOut").hidden = !running;
@@ -1687,17 +1754,11 @@ button { color: var(--ink); }
     var t0 = dayStart(Date.now());
     $("spendDate").textContent = new Date().toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
     var list = $("spendList"); list.innerHTML = "";
-    state.expenses.filter(function (e) { return e.t >= t0; }).slice().reverse().forEach(function (e) {
-      var li = document.createElement("li");
-      var what = document.createElement("span"); what.className = "what";
-      what.textContent = (typeof CAT_DEFAULTS !== "undefined" ? catOf(e).icon + " " : "") + (e.what || "Spending");
-      var tm = document.createElement("small"); tm.textContent = fmtTime(e.t); what.appendChild(tm);
-      var right = document.createElement("span"); right.className = "right";
-      right.appendChild(document.createTextNode(money(e.amt)));
-      var del = document.createElement("button"); del.type = "button"; del.textContent = "Remove"; del.setAttribute("aria-label", "Remove " + (e.what || "spending"));
-      del.addEventListener("click", function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); });
-      right.appendChild(del); li.appendChild(what); li.appendChild(right); list.appendChild(li);
-    });
+    if (typeof MERCHANTS === "undefined") { setTimeout(renderSpend, 0); return; }
+    list.className = "txlist spendlist";
+    var todays = state.expenses.filter(function (e) { return e.t >= t0; }).slice().reverse();
+    todays.forEach(function (e) { list.appendChild(txRow(e, true)); });
+    if (!todays.length) { var em = document.createElement("li"); em.className = "empty"; em.textContent = "No purchases today."; list.appendChild(em); }
     if (typeof renderBudget === "function" && typeof CAT_DEFAULTS !== "undefined") renderBudget();
   }
   $("spendForm").addEventListener("submit", function (ev) {
@@ -2217,7 +2278,7 @@ button { color: var(--ink); }
   function moneyShort(n) { var a = Math.abs(n); return (n < 0 ? "-" : "") + "$" + (a >= 1000 ? Math.round(a).toLocaleString() : a.toFixed(a >= 100 ? 0 : 2)); }
   function fillCatSelect(sel, chosen) {
     sel.innerHTML = "";
-    budget().cats.forEach(function (c) { var o = document.createElement("option"); o.value = c.id; o.textContent = c.icon + " " + c.name; sel.appendChild(o); });
+    budget().cats.forEach(function (c) { var o = document.createElement("option"); o.value = c.id; o.textContent = c.name; sel.appendChild(o); });
     sel.value = chosen && catById(chosen) ? chosen : fallbackCat().id;
   }
   function svgEl(tag, attrs) { var el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (var k in attrs) el.setAttribute(k, attrs[k]); return el; }
@@ -2328,13 +2389,13 @@ button { color: var(--ink); }
       var ul = $("saverPlan"); ul.innerHTML = "";
       plan.plan.forEach(function (x) {
         var li = document.createElement("li");
-        var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = x.c.icon;
+        var ic = document.createElement("span"); ic.className = "ci"; ic.style.setProperty("--c", x.c.color); setIcon(ic, x.c);
         var nm = document.createElement("div"); nm.textContent = x.c.name; var sm = document.createElement("small"); sm.textContent = x.why; nm.appendChild(sm);
         var am = document.createElement("div"); am.className = "amt" + (x.amt <= 0 ? " zero" : ""); am.textContent = x.amt > 0 ? money(x.amt) : "$0";
         li.appendChild(ic); li.appendChild(nm); li.appendChild(am); ul.appendChild(li);
       });
       var tl = $("saverTips"); tl.innerHTML = "";
-      saverTips(fs, now).forEach(function (t) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; i.textContent = t[0]; var d = document.createElement("div"); d.textContent = t[1]; var s2 = document.createElement("small"); s2.textContent = t[2]; d.appendChild(s2); li.appendChild(i); li.appendChild(d); tl.appendChild(li); });
+      saverTips(fs, now).forEach(function (t) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; setIcon(i, t[0]); var d = document.createElement("div"); d.textContent = t[1]; var s2 = document.createElement("small"); s2.textContent = t[2]; d.appendChild(s2); li.appendChild(i); li.appendChild(d); tl.appendChild(li); });
       $("saverNote").textContent = fs.room <= 0
         ? "You're already below your floor, so the plan covers essentials only (scaled to what you usually spend on them). Everything else waits until payday."
         : "Saver limits replace your normal limits until payday or until you're comfortably above your floor again. Your normal budget is kept and comes back automatically.";
@@ -2432,7 +2493,7 @@ button { color: var(--ink); }
       $("wfHours").textContent = rate > 0 ? hm(hrs) : "Set your pay rate";
       $("wfSub").textContent = money(total) + " total" + (wfQty > 1 ? " (" + wfQty + " × " + money(parseFloat($("wfPrice").value) || 0) + (parseFloat($("wfExtra").value) > 0 ? " + " + money(parseFloat($("wfExtra").value)) + " extras" : "") + ")" : "") + " · you keep about " + money(rate) + " of every hour at " + money(state.rate || 0) + "/hr after estimated taxes";
       var ul = $("wfList"); ul.innerHTML = "";
-      var add = function (icon, html, cls) { var li = document.createElement("li"); if (cls) li.className = cls; var i = document.createElement("span"); i.textContent = icon; var d = document.createElement("div"); d.innerHTML = html; li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
+      var add = function (icon, html, cls) { var li = document.createElement("li"); if (cls) li.className = cls; var i = document.createElement("span"); i.className = "wi"; setIcon(i, icon); var d = document.createElement("div"); d.innerHTML = html; li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
       var shift = typicalShift();
       var sl = (Math.round(shift * 10) / 10) + "-hour";
       add("🗓️", "That's <b>" + (hrs / shift >= 0.95 ? (Math.round(hrs / shift * 10) / 10) + " of your usual " + sl + " shifts" : Math.round(hrs / shift * 100) + "% of one usual " + sl + " shift") + "</b>.");
@@ -2570,7 +2631,7 @@ button { color: var(--ink); }
       : (budget().period === "pay" ? "Limits are set per month and scaled to this " + Math.round((r.to - r.from) / 86400000) + "-day pay period." : "Limits are per month. Tap Edit to change them.");
     budget().cats.forEach(function (c) {
       var li = document.createElement("li"); li.style.setProperty("--c", c.color);
-      var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = c.icon; li.appendChild(ic);
+      var ic = document.createElement("span"); ic.className = "ci"; setIcon(ic, c); li.appendChild(ic);
       if (budEditing) {
         var nm = document.createElement("input"); nm.type = "text"; nm.maxLength = 28; nm.value = c.name; nm.setAttribute("aria-label", "Category name");
         nm.addEventListener("change", function () { c.name = this.value.trim() || c.name; save(); renderBudget(); });
@@ -2625,7 +2686,7 @@ button { color: var(--ink); }
     var max = arr.length ? arr[0].amt : 1;
     arr.slice(0, 8).forEach(function (p) {
       var li = document.createElement("li");
-      var pi = document.createElement("span"); pi.className = "pi"; pi.textContent = p.kind === "web" ? "🌐" : "📍";
+      var pi = document.createElement("span"); pi.className = "pi"; setIcon(pi, p.kind === "web" ? "🌐" : "📍");
       var pn = document.createElement("div"); pn.className = "pn";
       var b = document.createElement("b"); b.textContent = p.label; pn.appendChild(b);
       var sm = document.createElement("small"); sm.textContent = p.n + (p.n === 1 ? " purchase" : " purchases") + " · last " + fmtDay(p.last, { month: "short", day: "numeric" }) + (p.kind === "web" ? " · online" : ""); pn.appendChild(sm);
@@ -2637,6 +2698,151 @@ button { color: var(--ink); }
       ul.appendChild(li);
     });
   }
+
+
+  // ---- Icons: clean line icons instead of emoji, and real store logos for purchases ----
+  var ICONS = {
+    utensils: ["p:M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2", "p:M7 2v20", "p:M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"],
+    cart: ["c:8,21,1", "c:19,21,1", "p:M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"],
+    car: ["p:M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2", "c:7,17,2", "p:M9 17h6", "c:17,17,2"],
+    bag: ["p:M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z", "p:M3 6h18", "p:M16 10a4 4 0 0 1-8 0"],
+    receipt: ["p:M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z", "p:M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8", "p:M12 17.5v-11"],
+    ticket: ["p:M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z", "p:M13 5v2", "p:M13 17v2", "p:M13 11v2"],
+    dots: ["c:12,12,1", "c:19,12,1", "c:5,12,1"],
+    cap: ["p:M22 10v6", "p:M2 10l10-5 10 5-10 5z", "p:M6 12v5c3 3 9 3 12 0v-5"],
+    paw: ["c:11,4,2", "c:18,8,2", "c:20,16,2", "p:M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.05Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"],
+    dumbbell: ["p:M6.5 6.5h11", "p:M6.5 17.5h11", "p:M6.5 4v16", "p:M17.5 4v16", "p:M3 9v6", "p:M21 9v6"],
+    gift: ["r:3,8,18,4,1", "p:M12 8v13", "p:M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", "p:M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"],
+    plane: ["p:M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"],
+    home: ["p:M3 10 12 3l9 7v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"],
+    pill: ["p:m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z", "p:m8.5 8.5 7 7"],
+    book: ["p:M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"],
+    tag: ["p:M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z", "c:7.5,7.5,1"],
+    trendUp: ["p:M22 7 13.5 15.5 8.5 10.5 2 17", "p:M16 7h6v6"],
+    trendDown: ["p:M22 17 13.5 8.5 8.5 13.5 2 7", "p:M16 17h6v-6"],
+    clock: ["c:12,12,10", "p:M12 6v6l4 2"],
+    calendar: ["r:3,4,18,18,2", "p:M16 2v4", "p:M8 2v4", "p:M3 10h18"],
+    check: ["c:12,12,10", "p:m9 12 2 2 4-4"],
+    alert: ["p:M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z", "p:M12 9v4", "p:M12 17h.01"],
+    shield: ["p:M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"],
+    bank: ["p:M3 22h18", "p:M6 18v-7", "p:M10 18v-7", "p:M14 18v-7", "p:M18 18v-7", "p:M12 2l8 5H4z"],
+    bulb: ["p:M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5", "p:M9 18h6", "p:M10 22h4"],
+    sparkle: ["p:M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"],
+    globe: ["c:12,12,10", "p:M2 12h20", "p:M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"],
+    pin: ["p:M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0", "c:12,10,3"],
+    chef: ["p:M17 21a1 1 0 0 0 1-1v-5.35c0-.46.32-.84.73-1.04a4 4 0 0 0-2.13-7.59 5 5 0 0 0-9.19 0 4 4 0 0 0-2.13 7.59c.41.2.72.58.72 1.04V20a1 1 0 0 0 1 1Z", "p:M6 17h12"],
+    bus: ["p:M8 6v6", "p:M15 6v6", "p:M2 12h19.6", "p:M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3", "c:7,18,2", "p:M9 18h5", "c:16,18,2"]
+  };
+  var EMOJI_ICON = { "🍔": "utensils", "🛒": "cart", "⛽": "car", "🛍️": "bag", "🛍": "bag", "🧾": "receipt", "🎉": "ticket", "💡": "bulb", "🎓": "cap", "🐾": "paw", "💪": "dumbbell", "🎁": "gift", "✈️": "plane", "✈": "plane", "🏠": "home", "💊": "pill", "📚": "book", "🏷️": "tag", "🏷": "tag",
+    "🍳": "chef", "🚌": "bus", "📉": "trendDown", "📈": "trendUp", "⏱️": "clock", "⏱": "clock", "🗓️": "calendar", "🗓": "calendar", "✅": "check", "🛡️": "shield", "🛡": "shield", "⚠️": "alert", "⚠": "alert", "🏦": "bank", "✨": "sparkle", "🌐": "globe", "📍": "pin" };
+  var CAT_ICON = { food: "utensils", groc: "cart", gas: "car", shop: "bag", bills: "receipt", fun: "ticket", other: "dots", school: "cap" };
+  function svgIcon(name) {
+    var parts = ICONS[name]; if (!parts) return "";
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + parts.map(function (p) {
+      var k = p.slice(0, 1), v = p.slice(2).split(",");
+      return k === "p" ? '<path d="' + p.slice(2) + '"/>' : k === "c" ? '<circle cx="' + v[0] + '" cy="' + v[1] + '" r="' + v[2] + '"/>' : '<rect x="' + v[0] + '" y="' + v[1] + '" width="' + v[2] + '" height="' + v[3] + '" rx="' + v[4] + '"/>';
+    }).join("") + "</svg>";
+  }
+  function setIcon(el, x) {
+    var name = x && typeof x === "object" ? (CAT_ICON[x.id] || EMOJI_ICON[x.icon] || "tag") : EMOJI_ICON[x];
+    if (!name && x) name = "tag";
+    if (name) el.innerHTML = svgIcon(name); else el.textContent = "";
+  }
+  var MERCHANTS = [
+    [/door ?dash/, "DoorDash", "doordash.com", 1], [/uber ?eats/, "Uber Eats", "ubereats.com", 1], [/grubhub/, "Grubhub", "grubhub.com", 1], [/instacart/, "Instacart", "instacart.com", 1], [/postmates/, "Postmates", "postmates.com", 1],
+    [/\buber\b/, "Uber", "uber.com"], [/\blyft\b/, "Lyft", "lyft.com"], [/\bhitch\b/, "Hitch", "ridehitch.com"],
+    [/cinemark/, "Cinemark", "cinemark.com"], [/\bamc\b/, "AMC Theatres", "amctheatres.com"], [/\bregal\b/, "Regal", "regmovies.com"],
+    [/7-?eleven|7 eleven/, "7-Eleven", "7-eleven.com"], [/subway/, "Subway", "subway.com"], [/jack in the box/, "Jack in the Box", "jackinthebox.com"], [/laredo taco/, "Laredo Taco Company", "laredotaco.com"],
+    [/tx burger/, "TX Burger", "txburger.com"], [/fuego/, "Fuego Tortilla Grill", "fuegotortillagrill.com"], [/chili'?s/, "Chili's", "chilis.com"], [/burger king/, "Burger King", "bk.com"], [/mcdonald/, "McDonald's", "mcdonalds.com"],
+    [/whataburger/, "Whataburger", "whataburger.com"], [/chick-?fil-?a/, "Chick-fil-A", "chick-fil-a.com"], [/taco bell/, "Taco Bell", "tacobell.com"], [/wendy'?s/, "Wendy's", "wendys.com"], [/\bsonic\b/, "Sonic", "sonicdrivein.com"],
+    [/raising cane|\bcane'?s\b/, "Raising Cane's", "raisingcanes.com"], [/panda express/, "Panda Express", "pandaexpress.com"], [/wingstop/, "Wingstop", "wingstop.com"], [/chipotle/, "Chipotle", "chipotle.com"], [/starbucks/, "Starbucks", "starbucks.com"],
+    [/dutch bros/, "Dutch Bros", "dutchbros.com"], [/dunkin/, "Dunkin'", "dunkindonuts.com"], [/domino/, "Domino's", "dominos.com"], [/pizza hut/, "Pizza Hut", "pizzahut.com"], [/popeyes/, "Popeyes", "popeyes.com"], [/five guys/, "Five Guys", "fiveguys.com"],
+    [/panera/, "Panera Bread", "panerabread.com"], [/h-?e-?b\b/, "H-E-B", "heb.com"], [/walmart/, "Walmart", "walmart.com"], [/\btarget\b/, "Target", "target.com"], [/costco/, "Costco", "costco.com"], [/kroger/, "Kroger", "kroger.com"], [/\baldi\b/, "Aldi", "aldi.us"],
+    [/trader joe/, "Trader Joe's", "traderjoes.com"], [/whole foods/, "Whole Foods", "wholefoodsmarket.com"], [/sam'?s club/, "Sam's Club", "samsclub.com"], [/amazon|amzn/, "Amazon", "amazon.com"], [/apple|icloud/, "Apple", "apple.com"],
+    [/netflix/, "Netflix", "netflix.com"], [/spotify/, "Spotify", "spotify.com"], [/\bhulu\b/, "Hulu", "hulu.com"], [/disney/, "Disney+", "disneyplus.com"], [/youtube/, "YouTube", "youtube.com"], [/\bshell\b/, "Shell", "shell.us"], [/exxon/, "Exxon", "exxon.com"],
+    [/chevron/, "Chevron", "chevron.com"], [/valero/, "Valero", "valero.com"], [/buc-?ee/, "Buc-ee's", "buc-ees.com"], [/murphy/, "Murphy USA", "murphyusa.com"], [/quiktrip|\bqt\b/, "QuikTrip", "quiktrip.com"], [/\bcvs\b/, "CVS", "cvs.com"],
+    [/walgreens/, "Walgreens", "walgreens.com"], [/venmo/, "Venmo", "venmo.com"], [/paypal/, "PayPal", "paypal.com"], [/cash app/, "Cash App", "cash.app"], [/\bnike\b/, "Nike", "nike.com"], [/\bh&m\b/, "H&M", "hm.com"], [/\bzara\b/, "Zara", "zara.com"],
+    [/shein/, "Shein", "shein.com"], [/temu/, "Temu", "temu.com"], [/best buy/, "Best Buy", "bestbuy.com"], [/\bulta\b/, "Ulta Beauty", "ulta.com"], [/sephora/, "Sephora", "sephora.com"], [/lululemon/, "lululemon", "lululemon.com"],
+    [/cartedo/, "Cartedo", "cartedo.com"], [/texas a&m|tamu/, "Texas A&M", "tamu.edu"], [/chatgpt|openai/, "ChatGPT", "openai.com"], [/\bclaude\b/, "Claude", "claude.ai"], [/adobe/, "Adobe", "adobe.com"], [/steam/, "Steam", "steampowered.com"],
+    [/playstation/, "PlayStation", "playstation.com"], [/xbox/, "Xbox", "xbox.com"], [/nintendo/, "Nintendo", "nintendo.com"]
+  ];
+  function merchantOf(e) {
+    var t = ((e.what || "") + " " + whereLabel(e.where)).toLowerCase();
+    for (var i = 0; i < MERCHANTS.length; i++) if (MERCHANTS[i][0].test(t)) return { name: MERCHANTS[i][1], domain: MERCHANTS[i][2], platform: !!MERCHANTS[i][3] };
+    if (e.where && e.where.kind === "web") { var st = siteFrom(e.where.site || e.where.name); if (st) return { name: st, domain: st }; }
+    return null;
+  }
+  function txTitle(e, m) {
+    var w = (e.what || "").replace(/\s*\((door ?dash|uber ?eats|grubhub|instacart|postmates)[^)]*\)\s*/i, " ").trim();
+    return w || (m ? m.name : "Purchase");
+  }
+  var logoOk = {};
+  // Letter first, then swap in the store's real logo once it has loaded at a usable size.
+  function logoEl(m, title, c) {
+    var el = document.createElement("span"); el.className = "logo mono";
+    el.style.setProperty("--c", (c && c.color) || "#9a958a");
+    el.textContent = (title || "?").replace(/[^A-Za-z0-9]/g, "").slice(0, 1).toUpperCase() || "•";
+    if (!m || state.noLogos || logoOk[m.domain] === false) return el;
+    var srcs = ["https://www.google.com/s2/favicons?sz=128&domain=" + m.domain, "https://icons.duckduckgo.com/ip3/" + m.domain + ".ico"], i = 0;
+    if (typeof logoOk[m.domain] === "string") srcs = [logoOk[m.domain]];
+    var img = new Image(); img.alt = ""; img.decoding = "async"; img.referrerPolicy = "no-referrer";
+    var next = function () { if (++i < srcs.length) img.src = srcs[i]; else logoOk[m.domain] = false; };
+    img.onload = function () {
+      var w = img.naturalWidth || 0;
+      if (w < 24 && i < srcs.length - 1) { next(); return; }
+      if (w < 17) { logoOk[m.domain] = false; return; }
+      logoOk[m.domain] = img.src;
+      el.className = "logo" + (w < 64 ? " sm" : ""); el.textContent = ""; el.appendChild(img);
+    };
+    img.onerror = next;
+    img.src = srcs[0]; return el;
+  }
+  // One purchase row, used by the Budget list and Today's spending.
+  function txRow(e, showTime) {
+    var c = catOf(e), m = merchantOf(e), title = txTitle(e, m);
+    var li = document.createElement("li"); li.className = "txrow"; li.tabIndex = 0; li.setAttribute("role", "button");
+    li.appendChild(logoEl(m, title, c));
+    var tw = document.createElement("div"); tw.className = "tw";
+    var nb = document.createElement("b"); nb.textContent = title; tw.appendChild(nb);
+    var sm = document.createElement("small"); var bits = [c.name];
+    if (m && m.platform && title !== m.name) bits.unshift("via " + m.name);
+    else if (whereLabel(e.where) && (!m || whereLabel(e.where).toLowerCase().indexOf(m.name.toLowerCase()) < 0)) bits.push(whereLabel(e.where));
+    if (showTime) bits.push(fmtTime(e.t));
+    if (e.unknown) bits.unshift("Unrecorded");
+    sm.textContent = bits.join(" · "); tw.appendChild(sm);
+    var tr = document.createElement("div"); tr.className = "tr"; tr.textContent = "−" + money(e.amt);
+    li.appendChild(tw); li.appendChild(tr);
+    var open = function () { openTxSheet(e); };
+    li.addEventListener("click", open); li.addEventListener("keydown", function (ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); } });
+    return li;
+  }
+  function openTxSheet(e) {
+    var m = merchantOf(e), c = catOf(e), title = txTitle(e, m), fid = "txForm";
+    openSheet({ dismiss: true, title: title, big: "−" + money(e.amt),
+      text: [fmtDay(e.t, { weekday: "long", month: "short", day: "numeric" }) + " at " + fmtTime(e.t) + (whereLabel(e.where) ? " · " + whereLabel(e.where) : "")],
+      build: function (card) {
+        var ic = card.querySelector(".sic"); if (ic) { ic.className = "sic logohead"; ic.innerHTML = ""; ic.appendChild(logoEl(m, title, c)); }
+        var f = document.createElement("form"); f.id = fid; f.autocomplete = "off";
+        f.innerHTML = '<div class="field"><label for="txWhat">Name</label><input id="txWhat" type="text" maxlength="40"></div><div class="field"><label for="txCat">Category</label><select id="txCat"></select></div><div class="field"><label for="txAmt">Amount</label><input id="txAmt" type="number" min="0.01" step="0.01" inputmode="decimal"></div>';
+        card.appendChild(f);
+        f.querySelector("#txWhat").value = e.what || title; f.querySelector("#txAmt").value = e.amt.toFixed(2); fillCatSelect(f.querySelector("#txCat"), c.id);
+        f.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var a = Math.round(parseFloat(f.querySelector("#txAmt").value) * 100) / 100; if (a > 0) e.amt = a;
+          e.what = f.querySelector("#txWhat").value.trim() || e.what; e.cat = f.querySelector("#txCat").value;
+          save(); closeSheet(); renderSpend(); render(); renderHistory(); toast("Saved");
+        });
+      },
+      buttons: [{ label: "Save", cls: "primary", submit: true, form: fid },
+        { label: "Delete Purchase", cls: "plain delete", fn: function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); toast("Deleted " + money(e.amt)); } },
+        { label: "Cancel", cls: "plain" }]
+    });
+  }
+  (function () {
+    var t = document.getElementById("setLogos"); if (!t) return;
+    t.checked = !state.noLogos;
+    t.addEventListener("change", function () { state.noLogos = !t.checked; logoOk = {}; save(); renderSpend(); if (typeof renderBudget === "function") renderBudget(); });
+  })();
 
   // ---- Where to cut back: the few changes that would save the most ----
   function cutPlan(now) {
@@ -2707,7 +2913,7 @@ button { color: var(--ink); }
 
   function renderInsights(r, list, byCat, total, spent) {
     var ul = $("budInsights"); ul.innerHTML = "";
-    var add = function (icon, text, sub) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; i.textContent = icon; var d = document.createElement("div"); d.textContent = text; if (sub) { var s2 = document.createElement("small"); s2.textContent = sub; d.appendChild(s2); } li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
+    var add = function (icon, text, sub) { var li = document.createElement("li"); var i = document.createElement("span"); i.className = "ii"; setIcon(i, icon); var d = document.createElement("div"); d.textContent = text; if (sub) { var s2 = document.createElement("small"); s2.textContent = sub; d.appendChild(s2); } li.appendChild(i); li.appendChild(d); ul.appendChild(li); };
     if (!list.length) { add("✨", "Log a few purchases and insights show up here.", "Try the Add spending form above, or Today's spending on the Money tab."); return; }
     var top = null; budget().cats.forEach(function (c) { if ((byCat[c.id] || 0) > 0 && (!top || byCat[c.id] > byCat[top.id])) top = c; });
     if (top) add(top.icon, "Most of your spending went to " + top.name + ": " + money(byCat[top.id]) + ".", Math.round(byCat[top.id] / spent * 100) + "% of everything you spent this period.");
@@ -2729,10 +2935,10 @@ button { color: var(--ink); }
     var box = $("budTx"), chips = $("budFilter"); box.innerHTML = ""; chips.innerHTML = "";
     var used = {}; list.forEach(function (e) { used[catOf(e).id] = true; });
     if (budFilter !== "all" && budFilter.indexOf(":") < 0 && !used[budFilter]) budFilter = "all";
-    var mkPlaceChip = function (e) { if (!e) return; var bt = document.createElement("button"); bt.type = "button"; bt.setAttribute("aria-pressed", "true"); bt.textContent = (e.where.kind === "web" ? "🌐 " : "📍 ") + whereLabel(e.where) + "  ×"; bt.addEventListener("click", function () { budFilter = "all"; renderBudget(); }); chips.insertBefore(bt, chips.children[1] || null); };
+    var mkPlaceChip = function (e) { if (!e) return; var bt = document.createElement("button"); bt.type = "button"; bt.setAttribute("aria-pressed", "true"); bt.textContent = whereLabel(e.where) + "  ×"; bt.addEventListener("click", function () { budFilter = "all"; renderBudget(); }); chips.insertBefore(bt, chips.children[1] || null); };
     var mk = function (id, label) { var bt = document.createElement("button"); bt.type = "button"; bt.textContent = label; bt.setAttribute("aria-pressed", budFilter === id ? "true" : "false"); bt.addEventListener("click", function () { budFilter = id; renderBudget(); }); chips.appendChild(bt); };
     mk("all", "All");
-    budget().cats.forEach(function (c) { if (used[c.id]) mk(c.id, c.icon + " " + c.name); });
+    budget().cats.forEach(function (c) { if (used[c.id]) mk(c.id, c.name); });
     chips.hidden = list.length === 0;
     var isPlace = budFilter.indexOf("place:") === 0 || budFilter.indexOf("web:") === 0;
     if (isPlace && !list.some(function (e) { return whereKey(e.where) === budFilter; })) { budFilter = "all"; isPlace = false; }
@@ -2746,30 +2952,11 @@ button { color: var(--ink); }
       if (d0 !== day) {
         day = d0; dayTotal = 0;
         head = document.createElement("div"); head.className = "txday"; head.innerHTML = "<span></span><span></span>";
-        head.firstChild.textContent = d0 === dayStart(Date.now()) ? "Today" : fmtDay(d0); box.appendChild(head);
+        head.firstChild.textContent = d0 === dayStart(Date.now()) ? "Today" : d0 === dayStart(Date.now()) - 86400000 ? "Yesterday" : fmtDay(d0, { weekday: "long", month: "short", day: "numeric" }); box.appendChild(head);
         ul = document.createElement("ul"); ul.className = "txlist"; box.appendChild(ul);
       }
       dayTotal += e.amt; head.lastChild.textContent = money(dayTotal);
-      var c = catOf(e), li = document.createElement("li"); li.style.setProperty("--c", c.color);
-      var ic = document.createElement("span"); ic.className = "ci"; ic.textContent = c.icon;
-      var tw = document.createElement("div"); tw.className = "tw";
-      var nb = document.createElement("b"); nb.textContent = e.what || "Spending"; tw.appendChild(nb);
-      var sel = document.createElement("select"); sel.setAttribute("aria-label", "Category for " + (e.what || "this purchase")); fillCatSelect(sel, c.id);
-      sel.addEventListener("change", function () { e.cat = this.value; save(); renderBudget(); });
-      var sub = document.createElement("div"); sub.className = "tsub"; sub.appendChild(sel);
-      var wl = whereLabel(e.where);
-      if (wl) {
-        var href = whereHref(e.where), a = document.createElement(href ? "a" : "span"); a.className = "wl";
-        a.textContent = wl;
-        if (href) { a.href = href; a.target = "_blank"; a.rel = "noopener"; a.title = e.where.kind === "web" ? "Open website" : "Open in Maps"; }
-        sub.appendChild(a);
-      }
-      tw.appendChild(sub);
-      var tr = document.createElement("div"); tr.className = "tr"; tr.appendChild(document.createTextNode(money(e.amt)));
-      var del = document.createElement("button"); del.type = "button"; del.textContent = "×"; del.setAttribute("aria-label", "Remove " + (e.what || "purchase"));
-      del.addEventListener("click", function () { state.expenses = state.expenses.filter(function (x) { return x.id !== e.id; }); save(); renderSpend(); render(); renderHistory(); toast("Removed " + money(e.amt)); });
-      tr.appendChild(del);
-      li.appendChild(ic); li.appendChild(tw); li.appendChild(tr); ul.appendChild(li);
+      ul.appendChild(txRow(e, false));
     });
   }
 
@@ -2832,7 +3019,7 @@ button { color: var(--ink); }
     var fsy = floorState(Date.now());
     if (fsy.saver && prevFloor && !prevFloor.saver) { toast(fsy.level === "below" ? "Your balance just dropped below " + money(fsy.floor) + ". Saver mode is on: see your plan above." : "At this pace you'll dip below " + money(fsy.floor) + " before payday. Saver mode is on."); }
     else if (fsy.saver) { var sv2 = saverPlan(fsy, Date.now()); toast("Logged " + money(amt) + (sv2.byId[cat] === 0 ? " · outside your saver plan" : "") + " · " + money(sv2.leftToday) + " left today"); }
-    else toast("Logged " + money(amt) + " · " + (c ? c.icon + " " + c.name : "") + (L > 0 ? (v > L ? " · " + money(v - L) + " over" : " · " + money(L - v) + " left") : ""));
+    else toast("Logged " + money(amt) + " · " + (c ? c.name : "") + (L > 0 ? (v > L ? " · " + money(v - L) + " over" : " · " + money(L - v) + " left") : ""));
     if (window.ShiftNative) ShiftNative.buzz("tap");
   });
   $("budEdit").addEventListener("click", function () { budEditing = true; renderBudget(); });

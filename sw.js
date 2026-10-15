@@ -1,6 +1,6 @@
 // Shift Score service worker: makes the app load instantly and work offline.
 // Bump VERSION on every deploy so phones pick up the new files.
-const VERSION = "shiftscore-v15-market";
+const VERSION = "shiftscore-v16-logos";
 const SHELL = [
   "./",
   "index.html",
