@@ -1,6 +1,6 @@
 // Shift Score service worker: makes the app load instantly and work offline.
 // Bump VERSION on every deploy so phones pick up the new files.
-const VERSION = "shiftscore-v17-networth";
+const VERSION = "shiftscore-v18-fresh";
 const SHELL = [
   "./",
   "index.html",
@@ -35,11 +35,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
-  // Pages: try the network first so updates show up, fall back to the cached app offline.
+  // Pages: always ask the server for the newest version (skipping the browser's 10-minute page cache)
+  // so updates show up the next time the app opens; fall back to the cached app offline.
   if (req.mode === "navigate") {
     event.respondWith(
-      fetch(req)
-        .then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put("index.html", copy)); return res; })
+      fetch(req, { cache: "no-cache" })
+        .then((res) => { if (res.ok && res.type === "basic") { const copy = res.clone(); caches.open(VERSION).then((c) => c.put("index.html", copy)); } return res; })
         .catch(() => caches.match("index.html"))
     );
     return;

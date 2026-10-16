@@ -3041,7 +3041,7 @@ button { color: var(--ink); }
     nwSig = sig;
     var r = nwNow(), now = Date.now();
     $("balNowLabel").textContent = state.bankName ? state.bankName + " balance" : "Bank balance now";
-    $("nwChip").hidden = !accts.length; $("nwChipAmt").textContent = nwFmt(r.total);
+    $("nwChip").hidden = false; $("nwChipAmt").textContent = accts.length ? nwFmt(r.total) : "Add your accounts";
     $("nwTotal").textContent = nwFmt(r.total);
     var nAc = accts.length + (bn !== null ? 1 : 0);
     $("nwWhen").textContent = accts.length ? nAc + (nAc === 1 ? " account" : " accounts") : "All accounts";
