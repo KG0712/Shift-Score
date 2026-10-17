@@ -5,17 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shift Score · watch your pay add up</title>
 <meta name="description" content="A free hourly pay tracker that turns every shift into a game. Live earnings, a timesheet, spending and savings. Private: your data stays on your device.">
-<meta name="theme-color" content="#f6f2ea" id="themeColor">
+<meta name="theme-color" content="#0B0F0E" id="themeColor">
 <script>(function(){var t="system";try{t=localStorage.getItem("shiftscore.theme2")||"system"}catch(e){}document.documentElement.setAttribute("data-theme",t);})();</script>
 <link rel="manifest" href="manifest.webmanifest?v=2">
-<link rel="preload" href="fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/space-grotesk-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dm-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="icons/favicon-48.png?v=2" type="image/png" sizes="48x48">
 <link rel="icon" href="icons/v2-icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Shift Score">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta property="og:title" content="Shift Score">
 <meta property="og:description" content="Watch your pay add up, shift by shift. Free and private.">
 <meta property="og:image" content="icons/v2-icon-512.png">
@@ -759,6 +760,247 @@ button { color: var(--ink); }
   .paper tr { break-inside: avoid; }
 }
 
+
+/* =====================================================================
+   v3 visual system — dark fintech. Overrides earlier layers; visual only.
+   Numerals: Space Grotesk (tabular). UI text: DM Sans.
+   ===================================================================== */
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Space Grotesk"; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+/* "Shift UI": digits and money punctuation come from Space Grotesk, everything else from DM Sans,
+   so every number in any sentence uses the numeral face without touching the markup. */
+@font-face { font-family: "Shift UI"; src: url(fonts/space-grotesk-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0024-0025, U+002B-002E, U+0030-003A, U+2212; }
+@font-face { font-family: "Shift UI"; src: url(fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: swap; unicode-range: U+0024-0025, U+002B-002E, U+0030-003A, U+2212; }
+@font-face { font-family: "Shift UI"; src: url(fonts/space-grotesk-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: swap; unicode-range: U+0024-0025, U+002B-002E, U+0030-003A, U+2212; }
+@font-face { font-family: "Shift UI"; src: url(fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); font-weight: 700; font-display: swap; unicode-range: U+0024-0025, U+002B-002E, U+0030-003A, U+2212; }
+@font-face { font-family: "Shift UI"; src: url(fonts/dm-sans-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Shift UI"; src: url(fonts/dm-sans-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Shift UI"; src: url(fonts/dm-sans-latin-600-normal.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Shift UI"; src: url(fonts/dm-sans-latin-700-normal.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+/* Offline / first-paint fallbacks, metric-matched so text doesn't jump when the real fonts arrive */
+@font-face { font-family: "Space Grotesk Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); size-adjust: 102%; ascent-override: 96%; descent-override: 29%; line-gap-override: 0%; }
+@font-face { font-family: "DM Sans Fallback"; src: local("Arial"), local("Helvetica Neue"), local("Helvetica"); size-adjust: 99%; ascent-override: 100%; descent-override: 31%; line-gap-override: 0%; }
+
+:root {
+  --v-bg: #0B0F0E; --v-surface: #121815; --v-raise: #18201C; --v-border: rgba(255, 255, 255, 0.08);
+  --v-green: #00D26A; --v-green-soft: rgba(0, 210, 106, 0.12); --v-green-track: rgba(0, 210, 106, 0.16);
+  --v-gold: #F5B942; --v-gold-soft: rgba(245, 185, 66, 0.12); --v-red: #FF6B5E; --v-red-soft: rgba(255, 107, 94, 0.12);
+  --v-text: #F2F5F3; --v-text2: rgba(242, 245, 243, 0.6); --v-text3: rgba(242, 245, 243, 0.38); --v-on-green: #0B0F0E;
+  --font-num: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-ui: "Shift UI", "DM Sans Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --rail: 232px;
+}
+:root[data-theme="light"] {
+  --v-bg: #F3F5F4; --v-surface: #FFFFFF; --v-raise: #EEF1EF; --v-border: rgba(11, 15, 14, 0.09);
+  --v-green: #00A85A; --v-green-soft: rgba(0, 168, 90, 0.10); --v-green-track: rgba(0, 168, 90, 0.14);
+  --v-gold: #B7791F; --v-gold-soft: rgba(183, 121, 31, 0.12); --v-red: #D64535; --v-red-soft: rgba(214, 69, 53, 0.10);
+  --v-text: #0B0F0E; --v-text2: rgba(11, 15, 14, 0.62); --v-text3: rgba(11, 15, 14, 0.42); --v-on-green: #FFFFFF;
+}
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    --v-bg: #F3F5F4; --v-surface: #FFFFFF; --v-raise: #EEF1EF; --v-border: rgba(11, 15, 14, 0.09);
+    --v-green: #00A85A; --v-green-soft: rgba(0, 168, 90, 0.10); --v-green-track: rgba(0, 168, 90, 0.14);
+    --v-gold: #B7791F; --v-gold-soft: rgba(183, 121, 31, 0.12); --v-red: #D64535; --v-red-soft: rgba(214, 69, 53, 0.10);
+    --v-text: #0B0F0E; --v-text2: rgba(11, 15, 14, 0.62); --v-text3: rgba(11, 15, 14, 0.42); --v-on-green: #FFFFFF;
+  }
+}
+/* Map the tokens onto the variables every earlier layer already uses */
+:root, :root[data-theme] {
+  --bg: var(--v-bg); --cell: var(--v-surface); --cell2: var(--v-raise); --raise: var(--v-raise);
+  --ink: var(--v-text); --muted: var(--v-text2); --faint: var(--v-text3); --line: var(--v-border); --fill: var(--v-raise);
+  --bull: var(--v-green); --bull-soft: var(--v-green-soft); --bear: var(--v-red); --bear-soft: var(--v-red-soft);
+  --money: var(--v-green); --tint: var(--v-green); --accent: var(--v-green); --good: var(--v-green); --gold: var(--v-green);
+  --bad: var(--v-red); --bad-soft: var(--v-red-soft); --warn: var(--v-red);
+  --btn: var(--v-green); --on-btn: var(--v-on-green); --shadow: none; --radius: 14px;
+  --body: var(--font-ui); --display: var(--font-ui); --ticker: var(--font-ui); --serif: var(--font-num); --rounded: var(--font-num); --mono: var(--font-num);
+  --lit: var(--v-green);
+}
+html, body { background: var(--v-bg); }
+body { font-family: var(--font-ui); font-size: 16px; letter-spacing: -0.005em; color: var(--v-text); font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font-family: var(--font-ui); font-variant-numeric: tabular-nums; }
+
+/* ---------- Shell: phone column, tablet grid, desktop rail ---------- */
+.wrap { max-width: 480px; margin: 0 auto;
+  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) calc(104px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.tab { gap: 16px; }
+.largetitle { padding: 18px 2px 2px; }
+.largetitle h1 { font-family: var(--font-ui); font-weight: 700; font-size: 30px; letter-spacing: -0.02em; line-height: 1.15; }
+.largetitle .sub { font-size: 14px; color: var(--v-text2); }
+.status { border-radius: 999px; background: var(--v-raise); color: var(--v-text2); font-size: 12px; font-weight: 600; padding: 4px 10px 4px 8px; }
+.status .dot { background: var(--v-text3); }
+.live.status { background: var(--v-green-soft); color: var(--v-green); }
+.live.status .dot { background: var(--v-green); }
+
+.panel { background: var(--v-surface); border: 1px solid var(--v-border); border-radius: 14px; box-shadow: none; padding: 18px; }
+.panel h2 { font-family: var(--font-ui); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 14px; }
+.panel h2 > span { font-size: 14px; color: var(--v-text2); font-weight: 400; }
+.note { color: var(--v-text3); }
+
+.tabbar { left: 0; right: 0; width: auto; transform: none; bottom: 0; border-radius: 0; border: 0; border-top: 1px solid var(--v-border); box-shadow: none;
+  background: var(--v-bg); padding: 4px max(8px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+.tabbtn { min-height: 50px; color: var(--v-text3); font-size: 11px; font-weight: 500; }
+.tabbtn[aria-selected="true"] { color: var(--v-green); }
+.tabbtn svg { width: 24px; height: 24px; }
+
+@media (min-width: 768px) {
+  .wrap { max-width: 980px; padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  .tab:not(#tab-today) { max-width: 720px; margin: 0 auto; width: 100%; }
+  .tabbar { padding-left: max(15%, env(safe-area-inset-left, 0px)); padding-right: max(15%, env(safe-area-inset-right, 0px)); }
+}
+@media (min-width: 1024px) {
+  body { padding-left: var(--rail); }
+  .wrap { max-width: 1200px; padding: calc(12px + env(safe-area-inset-top, 0px)) 40px 56px; }
+  .tab:not(#tab-today) { max-width: 760px; margin: 0; }
+  .largetitle { padding-top: 22px; }
+  .largetitle h1 { font-size: 32px; }
+  .tabbar { top: 0; bottom: 0; right: auto; width: var(--rail); display: flex; flex-direction: column; gap: 2px; align-items: stretch;
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 14px 24px max(14px, env(safe-area-inset-left, 0px)); border-top: 0; border-right: 1px solid var(--v-border); background: var(--v-bg); }
+  .tabbar::before { content: "Shift Score"; display: block; padding: 0 12px 22px; font-family: var(--font-ui); font-size: 18px; font-weight: 700; letter-spacing: -0.02em; color: var(--v-text); }
+  .tabbtn { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; font-size: 15px; font-weight: 500; color: var(--v-text2); }
+  .tabbtn svg { width: 22px; height: 22px; flex: none; }
+  .tabbtn:hover { background: var(--v-raise); color: var(--v-text); }
+  .tabbtn[aria-selected="true"] { background: var(--v-green-soft); color: var(--v-green); }
+}
+
+/* ---------- Today ---------- */
+/* Live earnings hero */
+.score.hero { background: var(--v-surface); border: 1px solid var(--v-border); border-radius: 14px; padding: 22px 20px 20px; display: flex; flex-direction: column; }
+.score .qlabel { font-size: 14px; font-weight: 500; color: var(--v-text2); letter-spacing: 0; }
+.money { font-family: var(--font-num); font-weight: 500; font-size: clamp(60px, 18vw, 92px); line-height: 1; height: 1.06em; letter-spacing: -0.045em; color: var(--v-text);
+  margin-top: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; overflow: hidden; }
+.money .cur { font-size: .46em; vertical-align: .78em; margin-right: 6px; color: var(--v-text2); letter-spacing: 0; font-weight: 500; }
+.money .tick { font-family: var(--font-num); font-size: .22em; vertical-align: .32em; margin-left: 8px; color: var(--v-text3); letter-spacing: 0; font-weight: 500; display: inline-block; width: 2.4ch; }
+.ticker { font-family: var(--font-ui); font-size: 15px; color: var(--v-text2); margin-top: 14px; min-height: 22px; gap: 14px; letter-spacing: 0; }
+.ticker .up { color: var(--v-green); font-weight: 600; }
+.ticker .pause { color: var(--v-gold); font-weight: 600; }
+.clockbtns { margin-top: auto; padding-top: 22px; gap: 10px; }
+.clockbtns button { min-height: 52px; border-radius: 10px; font-size: 16px; font-weight: 600; letter-spacing: 0; }
+#btnIn { background: var(--v-green); color: var(--v-on-green); }
+#btnOut, #btnBreak, #btnUndo { background: var(--v-raise); color: var(--v-text); box-shadow: inset 0 0 0 1px var(--v-border); }
+#btnBreak.onbreak { background: var(--v-gold-soft); color: var(--v-gold); box-shadow: none; }
+.stale { border-radius: 10px; background: var(--v-red-soft); color: var(--v-red); font-size: 15px; }
+
+/* Goal ring, Apple Fitness style */
+.ringrow { grid-template-columns: 148px minmax(0, 1fr); gap: 22px; }
+.ringwrap { position: relative; width: 148px; height: 148px; }
+.goalring { width: 148px; height: 148px; }
+.goalring circle { stroke-width: 13; }
+.gr-track { stroke: var(--v-green-track); }
+.gr-fill { stroke: var(--v-green); }
+#scoreCard.goaldone ~ .ringcard .gr-fill { stroke: var(--v-gold); }
+#scoreCard.goaldone ~ .ringcard .gr-track { stroke: var(--v-gold-soft); }
+.ringc { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 2px; }
+.ringc span { font-family: var(--font-num); font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--v-text); font-variant-numeric: tabular-nums; }
+.ringc small { font-size: 12px; color: var(--v-text3); font-weight: 500; }
+.rl { padding: 9px 0; border-top-color: var(--v-border); }
+.rl .k { font-size: 14px; color: var(--v-text2); }
+.rl .v { font-family: var(--font-num); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; color: var(--v-text); font-variant-numeric: tabular-nums; }
+.rl.goal { flex-direction: column; align-items: flex-start; gap: 2px; }
+.rl.goal .v { color: var(--v-green); font-size: 22px; }
+#scoreCard.goaldone ~ .ringcard .rl.goal .v { color: var(--v-gold); }
+.rl.goal small { font-family: var(--font-num); font-size: 14px; color: var(--v-text3); font-weight: 500; }
+.goalmini { font-family: var(--font-ui); font-size: 14px; color: var(--v-text2); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--v-border); }
+.goalmini b { color: var(--v-green); font-weight: 600; }
+#scoreCard.goaldone ~ .ringcard .goalmini b { color: var(--v-gold); }
+@media (max-width: 380px) { .ringrow { grid-template-columns: 116px minmax(0, 1fr); gap: 16px; } .ringwrap, .goalring { width: 116px; height: 116px; } .ringc span { font-size: 24px; } }
+
+/* Milestones: scroll row on phones (with end padding and edge fade), grid on desktop */
+.t-miles { overflow: hidden; }
+.badges { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; margin: 0 -18px; padding: 2px 18px 4px; scroll-padding-inline: 18px; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent 100%); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent 100%); }
+.badges::after { content: ""; flex: 0 0 10px; }
+.badge { flex: 0 0 auto; scroll-snap-align: start; display: grid; gap: 2px; padding: 10px 14px; min-height: 52px; align-content: center; border-radius: 10px;
+  background: transparent; border: 1px solid var(--v-border); color: var(--v-text3); }
+.badge b { font-family: var(--font-ui); font-size: 14px; font-weight: 600; white-space: nowrap; color: var(--v-text2); }
+.badge small { font-size: 12px; white-space: nowrap; color: var(--v-text3); }
+.badge.on { background: var(--v-gold-soft); border-color: color-mix(in srgb, var(--v-gold) 45%, transparent); }
+.badge.on b { color: var(--v-gold); }
+.badge.on small { color: var(--v-text2); }
+#badgeCount { font-variant-numeric: tabular-nums; }
+
+/* Level */
+.t-level .spine { gap: 6px; }
+.bone { border-radius: 6px; }
+.vert .lv { font-family: var(--font-num); font-size: 12px; color: var(--v-text3); }
+.vert.now .lv { color: var(--v-green); }
+.level-name { color: var(--v-text2); font-size: 14px; }
+.level-name b { color: var(--v-text); }
+#nextText { font-variant-numeric: tabular-nums; }
+details.lvlpick, details.addpast { border-top-color: var(--v-border); }
+details > summary { min-height: 44px; display: flex; align-items: center; font-size: 15px; font-weight: 500; color: var(--v-text); }
+.chips button { min-height: 36px; border-radius: 8px; background: var(--v-raise); color: var(--v-text2); font-size: 14px; }
+.chips button[aria-pressed="true"] { background: var(--v-green-soft); color: var(--v-green); }
+
+/* Shift details: time chips + big numerals */
+.tchips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.tchip { position: relative; display: grid; gap: 0; padding: 8px 40px 4px 12px; min-height: 64px; border-radius: 10px; background: var(--v-raise); border: 1px solid var(--v-border); cursor: pointer; }
+.tchip[hidden] { display: none; }
+.tchip label { font-size: 12px; font-weight: 500; color: var(--v-text3); }
+.tchip input { font-family: var(--font-num); font-size: 20px; font-weight: 500; color: var(--v-text); background: none; border: 0; padding: 0; width: 100%; min-height: 44px; text-align: left; letter-spacing: -0.01em; }
+.tchip input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
+.tchip .ed { position: absolute; right: 12px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--v-text3); pointer-events: none; }
+.tchip:focus-within { border-color: color-mix(in srgb, var(--v-green) 55%, transparent); }
+.bignums { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bnum { display: grid; gap: 6px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--v-border); min-width: 0; }
+.bnum label { font-size: 13px; font-weight: 500; color: var(--v-text2); }
+.numin { display: flex; align-items: baseline; gap: 2px; min-width: 0; }
+.numin .cur { font-family: var(--font-num); font-size: 22px; font-weight: 500; color: var(--v-text2); }
+.numin .unit { font-family: var(--font-num); font-size: 15px; color: var(--v-text3); margin-left: 4px; }
+.numin input { flex: 1 1 auto; min-width: 0; width: 100%; font-family: var(--font-num); font-size: 34px; font-weight: 500; letter-spacing: -0.03em; color: var(--v-text); background: none; border: 0; padding: 0; min-height: 44px; text-align: left; }
+.numin input:focus { outline: none; }
+.bnum:focus-within { border-color: color-mix(in srgb, var(--v-green) 55%, transparent); }
+.t-details .controls { margin-top: 12px; }
+.t-details .field { border-top-color: var(--v-border); min-height: 48px; }
+.t-details .field label { font-size: 15px; }
+.t-details .field > select, .t-details .field > input { color: var(--v-text2); }
+.t-details form > button.primary { min-height: 48px; border-radius: 10px; }
+
+/* Level-up / milestone toast */
+.payoutcard { background: var(--v-surface); border-radius: 14px; box-shadow: 0 12px 32px rgba(0, 0, 0, .35), inset 0 0 0 1px var(--v-border); }
+.payoutcard .coin { background: var(--v-gold-soft); color: var(--v-gold); }
+.payoutcard b { font-family: var(--font-ui); font-size: 16px; }
+.payoutcard .pamt { font-family: var(--font-num); color: var(--v-gold); }
+.toast { background: var(--v-raise); color: var(--v-text); box-shadow: inset 0 0 0 1px var(--v-border); border-radius: 10px; }
+
+/* Today grid: tablet 2 columns, desktop 12-column dashboard */
+@media (min-width: 768px) {
+  #tab-today { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  #tab-today > .largetitle, #tab-today > .stale, #tab-today > .t-miles { grid-column: 1 / -1; }
+  .money { font-size: clamp(56px, 7.4vw, 84px); }
+}
+@media (min-width: 1024px) {
+  #tab-today { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; }
+  #tab-today > .score.hero { grid-column: span 7; padding: 28px 28px 24px; }
+  #tab-today > .ringcard { grid-column: span 5; }
+  #tab-today > .t-level { grid-column: span 5; }
+  #tab-today > .t-details { grid-column: span 7; }
+  .money { font-size: clamp(76px, 7vw, 108px); }
+  .badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); overflow: visible; margin: 0; padding: 0; -webkit-mask-image: none; mask-image: none; }
+  .badges::after { content: none; }
+  .badge { min-height: 60px; }
+}
+
+/* 44px touch targets */
+.chips button { min-height: 44px; padding-left: 14px; padding-right: 14px; }
+.swatches button { width: 44px; height: 44px; }
+.t-details .field > select, .t-details .field > input, .t-details form .field > input { min-height: 44px; }
+@media (min-width: 1024px) {
+  #tab-today > .t-miles { grid-column: span 7; }
+  #tab-today > .t-level { grid-column: span 5; }
+  #tab-today > .t-details { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; grid-auto-flow: row dense; align-items: start; }
+  .t-details > h2 { grid-column: 1 / -1; }
+  .t-details > .tchips { grid-column: 1; margin-bottom: 0; }
+  .t-details > .bignums { grid-column: 2; }
+  .t-details > .controls { grid-column: 1; margin-top: 16px; }
+  .t-details > details.addpast { grid-column: 2; margin-top: 16px; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  #tab-today > .t-level, #tab-today > .t-details { grid-column: 1 / -1; }
+}
+
 </style>
 
 <main class="wrap">
@@ -767,7 +1009,7 @@ button { color: var(--ink); }
 <section class="tab" id="tab-today" aria-label="Today">
   <header class="largetitle"><h1>Today</h1><div class="sub"><span id="jobName">My job</span><span class="status" id="status"><span class="dot"></span><span id="statusText">Not clocked in</span></span></div></header>
   <div class="stale" id="stale" hidden></div>
-  <section class="score" id="scoreCard" aria-live="off">
+  <section class="score hero" id="scoreCard" aria-live="off">
     <div class="qlabel">Earned today</div>
     <div class="money" id="money"><span class="cur">$</span><span id="dollars">0.00</span><span class="tick" id="tick">00</span></div>
     <div class="ticker" id="rateLine"></div>
@@ -782,19 +1024,27 @@ button { color: var(--ink); }
   <section class="panel ringcard">
     <h2>This shift <span id="shiftDate"></span></h2>
     <div class="ringrow">
-      <svg class="goalring" viewBox="0 0 120 120" aria-hidden="true"><circle class="gr-track" cx="60" cy="60" r="50"/><circle class="gr-fill" id="goalRing" cx="60" cy="60" r="50" pathLength="100"/></svg>
+      <div class="ringwrap">
+        <svg class="goalring" viewBox="0 0 120 120" aria-hidden="true"><circle class="gr-track" cx="60" cy="60" r="50"/><circle class="gr-fill" id="goalRing" cx="60" cy="60" r="50" pathLength="100"/></svg>
+        <div class="ringc"><span id="goalPct">0%</span><small>of goal</small></div>
+      </div>
       <div class="rlines">
-        <div class="rl goal"><span class="k">Daily goal</span><span class="v"><span id="goalNow">$0.00</span><small id="goalOf"> / $60</small></span></div>
+        <div class="rl goal"><span class="k">Daily goal</span><span class="v"><span id="goalNow">$0.00</span><small id="goalOf"> / $60.00</small></span></div>
         <div class="rl"><span class="k">Time</span><span class="v" id="worked">0:00:00</span></div>
         <div class="rl"><span class="k">Take-home</span><span class="v" id="net">$0.00</span></div>
         <div class="rl"><span class="k">This week</span><span class="v" id="week">$0.00</span></div>
       </div>
     </div>
     <div class="goalmini" id="goalLeft"></div>
-    <div hidden><i id="goalFill"></i><span id="goalPct">0%</span></div>
+    <div hidden><i id="goalFill"></i></div>
   </section>
 
-  <section class="panel">
+  <section class="panel t-miles">
+    <h2>Milestones <span id="badgeCount">0 unlocked</span></h2>
+    <div class="badges" id="badges"></div>
+  </section>
+
+  <section class="panel t-level">
     <h2>Level <span id="nextText">Next level in --:--</span></h2>
     <div class="spine" id="spine" aria-label="Hours completed, one block per hour"></div>
     <div class="level-name" id="levelName"></div>
@@ -813,21 +1063,18 @@ button { color: var(--ink); }
     </details>
   </section>
 
-  <section class="panel">
-    <h2>Milestones <span id="badgeCount">0 unlocked</span></h2>
-    <div class="badges" id="badges"></div>
-  </section>
-
-  <section class="panel">
+  <section class="panel t-details">
     <h2>Shift details <span id="clockState">Not on the clock</span></h2>
-    <p class="note hint" id="clockHint">Clock in when your shift starts. You can fix the times here later.</p>
-    <div class="controls" id="timeRow" hidden>
-      <div class="field" id="inWrap"><label for="inTime">Started</label><input id="inTime" type="time" step="60"></div>
-      <div class="field" id="outWrap"><label for="outTime">Clocked out</label><input id="outTime" type="time" step="60"></div>
+    <p class="note hint" id="clockHint" hidden></p>
+    <div class="tchips" id="timeRow" hidden>
+      <div class="tchip" id="inWrap"><label for="inTime">Started</label><input id="inTime" type="time" step="60"><svg class="ed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></div>
+      <div class="tchip" id="outWrap"><label for="outTime">Clocked out</label><input id="outTime" type="time" step="60"><svg class="ed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></div>
+    </div>
+    <div class="bignums">
+      <div class="bnum"><label for="rate">Hourly pay</label><div class="numin"><span class="cur" aria-hidden="true">$</span><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"><span class="unit" aria-hidden="true">/hr</span></div></div>
+      <div class="bnum"><label for="goal">Daily goal</label><div class="numin"><span class="cur" aria-hidden="true">$</span><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div></div>
     </div>
     <div class="controls">
-      <div class="field"><label for="rate">Hourly pay</label><input id="rate" type="number" min="0" step="0.25" inputmode="decimal"></div>
-      <div class="field"><label for="goal">Daily goal</label><input id="goal" type="number" min="1" step="1" inputmode="decimal"></div>
       <div class="field"><label for="payFreq">Paid</label><select id="payFreq">
         <option value="weekly">Every week</option><option value="biweekly">Every 2 weeks</option><option value="semimonthly">Twice a month</option><option value="monthly">Once a month</option><option value="daily">Every day</option>
       </select></div>
@@ -843,7 +1090,7 @@ button { color: var(--ink); }
         <button class="primary" type="submit">Add Shift</button>
       </form>
     </details>
-    <p class="note" id="thNote">Pay changes apply from now on.</p>
+    <p class="note" id="thNote" hidden></p>
   </section>
 </section>
 
@@ -1529,8 +1776,8 @@ button { color: var(--ink); }
     $("goalPct").textContent = Math.floor(pct) + "%";
     $("goalRing").style.strokeDasharray = Math.max(0, pct).toFixed(2) + " 100";
     $("scoreCard").classList.toggle("goaldone", dayEarned >= state.goal);
-    $("goalNow").textContent = money(dayEarned); $("goalOf").textContent = " / " + money(state.goal).replace(".00", "");
-    $("goalLeft").innerHTML = dayEarned >= state.goal ? "<b>▲ Goal met</b> · " + Math.floor(dayEarned / state.goal * 100) + "% of " + money(state.goal).replace(".00", "") : "<b>" + Math.floor(pct) + "%</b> · " + money(state.goal - dayEarned) + " to go";
+    $("goalNow").textContent = money(dayEarned); $("goalOf").textContent = " / " + money(state.goal);
+    $("goalLeft").innerHTML = dayEarned >= state.goal ? "<b>▲ Goal met</b> · " + Math.floor(dayEarned / state.goal * 100) + "% of " + money(state.goal) : "<b>" + Math.floor(pct) + "%</b> · " + money(state.goal - dayEarned) + " to go";
     renderMoneyHero(); renderNetWorth();
 
     var unlocked = 0, highest = -1;
@@ -3495,7 +3742,7 @@ button { color: var(--ink); }
     t = t || "system"; document.documentElement.setAttribute("data-theme", t);
     try { localStorage.setItem("shiftscore.theme2", t); } catch (e) {}
     var light = t === "light" || (t === "system" && !(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches));
-    var m = document.getElementById("themeColor"); if (m) m.setAttribute("content", light ? "#f6f2ea" : "#121513");
+    var m = document.getElementById("themeColor"); if (m) m.setAttribute("content", light ? "#F3F5F4" : "#0B0F0E");
     Array.prototype.forEach.call(document.querySelectorAll("#themeSeg button"), function (b) { b.setAttribute("aria-pressed", b.dataset.t === t ? "true" : "false"); });
     if (window.ShiftNative && ShiftNative.setDark) ShiftNative.setDark(!light);
   }
