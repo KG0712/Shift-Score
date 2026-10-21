@@ -1721,7 +1721,7 @@ button.primary, #btnIn { background: #34C759; color: #FFFFFF; box-shadow: none; 
     var whole = Math.floor(dayEarned * 100) / 100;
     $("dollars").textContent = whole.toFixed(2);
     var frac = Math.floor((dayEarned * 10000) % 100);
-    $("tick").textContent = pad(frac); if (typeof renderEarnChart === "function") renderEarnChart(dayEarned);
+    $("tick").textContent = pad(frac); if (typeof renderEarnChart === "function") renderEarnChart(dayEarned); if (typeof liveTitle === "function") liveTitle(dayEarned, running);
     var perMin = state.rate / 60;
     $("rateLine").innerHTML = state.onBreak && running ? '<span class="pause">On break</span><span>unpaid · ' + fmtDur(Date.now() - state.onBreak).replace(/^0:/, "") + '</span>'
       : running ? '<span class="up">▲ ' + money(state.rate) + '/hr</span><span>+' + money(perMin) + ' a minute</span>' : '<span>' + money(state.rate) + '/hr</span><span>' + (state.clockIn ? "Clocked out" : "Not on the clock") + '</span>';
@@ -1920,6 +1920,18 @@ button.primary, #btnIn { background: #34C759; color: #FFFFFF; box-shadow: none; 
       },
       buttons: [{ label: "Done", cls: "primary" }]
     });
+  }
+
+  // ---- Live count outside the page: window title + Dock badge ----
+  var lastBadge = -1;
+  function liveTitle(v, running) {
+    var t = running ? money(v) + " earned \u00b7 Shift Score" : "Shift Score \u00b7 " + (state.job || "watch your pay add up");
+    if (document.title !== t) document.title = t;
+    var b = running ? Math.floor(v) : 0;
+    if (b !== lastBadge && "setAppBadge" in navigator) {
+      lastBadge = b;
+      try { (b > 0 ? navigator.setAppBadge(b) : navigator.clearAppBadge()).catch(function () {}); } catch (e) {}
+    }
   }
 
   // ---- Earnings chart: the last 14 days, today live ----
