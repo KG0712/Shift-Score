@@ -1026,6 +1026,7 @@ button.primary, #btnIn { background: #34C759; color: #FFFFFF; box-shadow: none; 
 #btnOut, #btnBreak, #btnUndo, .btns > button:not(.primary) { background: #F2F2F7; color: #1D1D1F; }
 .money, #dollars { color: #1D1D1F; background: none; -webkit-background-clip: border-box; background-clip: border-box; text-shadow: none; filter: none; }
 
+.sheet td.sp .spbtn{all:unset;box-sizing:border-box;display:inline-block;cursor:pointer;color:inherit;font:inherit;padding:10px 6px;margin:-10px -6px;border-radius:6px;text-decoration:underline;text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}.sheet td.sp .spbtn:hover{background:var(--line)}.sheet td.sp .spbtn:focus-visible{outline:2px solid #34C759;outline-offset:1px}.dayspend{max-height:52vh;overflow-y:auto;text-align:left;margin:4px 0 6px;width:100%}.dayspend li{cursor:pointer}
 </style>
 
 <main class="wrap">
@@ -1859,7 +1860,7 @@ button.primary, #btnIn { background: #34C759; color: #FFFFFF; box-shadow: none; 
       var tr = document.createElement("tr"); if (d.live) tr.className = "live"; else if (d.in === null) tr.className = "off";
       cell(tr, new Date(d.day).toLocaleDateString([], { weekday: "short", month: "numeric", day: "numeric" }) + (d.brk >= 60000 ? " · " + Math.round(d.brk / 60000) + "m break" : "") + (d.parts > 1 ? " · " + d.parts + " parts" : ""));
       cell(tr, d.in === null ? "No shift" : fmtTime(d.in)); cell(tr, d.in === null ? "" : (d.live ? "now" : fmtTime(d.out)));
-      cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); cell(tr, d.spent ? money(d.spent) : "—", d.spent ? "sp" : "sp none"); cell(tr, signed(d.left), leftCls(d.left));
+      cell(tr, d.hours.toFixed(2)); cell(tr, money(d.net)); if (d.spent) { var tdS = document.createElement("td"); tdS.className = "sp"; var bS = document.createElement("button"); bS.type = "button"; bS.className = "spbtn"; bS.textContent = money(d.spent); bS.setAttribute("aria-label", "See what you spent on " + fmtDay(d.day, { weekday: "long", month: "short", day: "numeric" })); (function (day) { bS.addEventListener("click", function () { openDaySpend(day); }); })(d.day); tdS.appendChild(bS); tr.appendChild(tdS); } else cell(tr, "—", "sp none"); cell(tr, signed(d.left), leftCls(d.left));
       body.appendChild(tr);
     });
     var sum = function (f) { return days.reduce(function (a, d) { return a + d[f]; }, 0); };
@@ -1873,6 +1874,22 @@ button.primary, #btnIn { background: #34C759; color: #FFFFFF; box-shadow: none; 
     $("histEmpty").hidden = days.length > 0;
     $("histTotal").textContent = days.length ? hrs.toFixed(2) + " hrs · " + money(tot) + " earned · " + money(sp) + " spent" : "";
     if (typeof renderPaychecks === "function") renderPaychecks();
+  }
+
+  // Every purchase from one day, opened from the timesheet's Spent number.
+  function openDaySpend(day) {
+    var list = state.expenses.filter(function (e) { return dayStart(e.t) === day; }).sort(function (a, b) { return a.t - b.t; });
+    var tot = list.reduce(function (a, e) { return a + e.amt; }, 0);
+    openSheet({ dismiss: true, icon: typeof svgIcon === "function" ? svgIcon("receipt") : undefined,
+      title: fmtDay(day, { weekday: "long", month: "short", day: "numeric" }), big: "\u2212" + money(tot),
+      text: [list.length + (list.length === 1 ? " purchase" : " purchases") + " \u00b7 tap one to edit it"],
+      build: function (card) {
+        var ul = document.createElement("ul"); ul.className = "txlist dayspend";
+        list.forEach(function (e) { ul.appendChild(txRow(e, true)); });
+        card.appendChild(ul);
+      },
+      buttons: [{ label: "Done", cls: "primary" }]
+    });
   }
 
   // Excel download (SheetJS builds the workbook; the platform's downloads capability saves it).
